@@ -15,13 +15,17 @@ namespace ApiBD.Controllers
             _dbContext = dbContext;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbIndRedsocial>>> Get()
+        public async Task<ActionResult<List<TbIndRedsocial>>> Get()
         {
-            var redessociales = await _dbContext.TbIndRedsocials.ToListAsync();
-            return redessociales;
+            var listRedSocial = from datos in _dbContext.TbIndRedsocials
+                              select datos;
+
+            var redSociales = await listRedSocial.ToListAsync();
+
+            return Ok(redSociales);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbIndRedsocial>> GetById(int id)

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ApiBD.Models.TbConfUser>
+
+@{
+    ViewData["Title"] = "Listado de Usuarios";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <a class="btn btn-primary " href="/UsuarioCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Correo
+                                    </th>
+                                    <th>
+                                        Usuario
+                                    </th>
+                                    <th>
+                                        Estado
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Rol)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Username)
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.Active)*@
+                                            @if (item.Active == false)
+                                            {
+                                                <span class="badge rounded-pill bg-danger text-white">INACTIVO</span>
+                                            }
+                                            else if (item.Active == true)
+                                            {
+                                                <span class="badge rounded-pill bg-success text-white">ACTIVO</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Rol.Rol)
+                                        </td>
+                                        <td>
+                                            @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

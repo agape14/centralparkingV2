@@ -1,0 +1,525 @@
+﻿@{
+    ViewData["Title"] = "Proveedores";
+}
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <h1 class="display-4 text-white animated slideInDown mb-4">
+            Proveedores
+        </h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="index.html">
+                        Inicio
+                    </a>
+                </li>
+                <li aria-current="page" class="breadcrumb-item text-primary active">
+                    Proveedores
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Cuerpo page Start -->
+<div class="container-xxl border border-secondary py-6 bg-light">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h2>
+                        REGISTRO UNICO DE PROVEEDORES SELECCIONADOS DE PRODUCTOS/SERVICIOS/ACTIVO FIJO/SUBCONTRATISTA
+                    </h2>
+                    <p>
+                        Ingrese sus datos, para registrarlo en la base de datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="accordion_container col-lg-12">
+                <div class="row justify-content-center">
+                    <form>
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-2 col-form-label" for="state_id">
+                                Fecha
+                            </label>
+                            <div class="col-sm-3">
+                                <input class="form-control" id="txtFechaActual" name="txtFechaActual" type="date" value="">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-2 col-form-label" for="txtSolicitado">
+                                Solicitado por
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="txtSolicitado" placeholder="Ingrese sus nombres completos..." type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                INFORMACIÓN FISCAL
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtRuc">
+                                    RUC
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtRuc" placeholder="RUC" type="number">
+                                    </input>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="cbxTipoPersona">
+                                    Tipo Persona
+                                </label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" id="cbxTipoPersona" placeholder="Tipo Persona">
+                                        <option value="NATURAL">
+                                            NATURAL
+                                        </option>
+                                        <option value="JURIDICA">
+                                            JURIDICA
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtDni">
+                                    DNI
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtDni" placeholder="DNI" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtNombresRazonSocial">
+                                    Nombres
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="txtNombresRazonSocial" placeholder="Nombres o Razon Social..." type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtDireccion">
+                                    Direccion
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="txtDireccion" placeholder="Direccion..." type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="cbxDistrito">
+                                    Distrito
+                                </label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="cbxDistrito" placeholder="Distrito">
+                                        <option value="LIMA">
+                                            LIMA
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtCodPostal">
+                                    Cod. Postal
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtCodPostal" placeholder="Cod. Postal" type="number">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtTelefono">
+                                    Telefono
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtTelefono" placeholder="Telefono" type="number">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtFax">
+                                    Fax
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtFax" placeholder="Fax" type="number">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="cbxRubro">
+                                    Rubro
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="cbxRubro" placeholder="Departamento">
+                                        <option value="1">
+                                            Tecnología de la información
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                REPRESENTANTE LEGAL
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtNombresRL">
+                                    Nombres
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtCargo">
+                                    Cargo
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtTelefonorl">
+                                    Telefono:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="Nac">
+                                    Celular
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtEmail">
+                                    Email
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                CONTACTO COMERCIAL
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtNombresRL">
+                                    Nombres
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtCargo">
+                                    Cargo
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtTelefonorl">
+                                    Telefono:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="Nac">
+                                    Celular
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtEmail">
+                                    Email
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                Tipo de retencion y/o detraccion, en facturas
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <div class="col-sm-5">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Afecto a Retencion de IGV
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Afecto a Detraccion de IGV
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" for="txtPorcentaje">
+                                    % de Detraccion
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtPorcentaje" type="number" value="">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                Retencion en Recibo por Honorarios
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <div class="col-sm-5">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Afecto Renta de 4ta. Categoría
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Exonerado renta 4ta.
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" for="txtPorcentaje">
+                                    Comprobante Exoneracion N°
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtPorcentaje" type="text" value="">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                TIPO DE DOCUMENTO QUE NOS EMITIRA
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Factura
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Recibo por Honorarios
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Otros
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                DATOS ORGANIZACION DE COMPRAS
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtSoles">
+                                    Soles
+                                </label>
+                                <div class="col-sm-2">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    </input>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="txtDolares">
+                                    Dolares
+                                </label>
+                                <div class="col-sm-2">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    </input>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="txtAmbas">
+                                    Ambas
+                                </label>
+                                <div class="col-sm-2 ">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                INFORMACION PARA PAGO PROVEEDORES
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <div class="col-sm-5">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            30 Dias
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            60 Dias
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-group row mb-2">
+                                        <label class="col-sm-2 col-form-label" for="txtEmail">
+                                            Otros
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control" id="txtEmail" placeholder="Otros" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Efectivo
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            Transferencia Bancaria
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                CONTACTO COBRANZAS
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtNombresRL">
+                                    Nombres
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtCargo">
+                                    Cargo
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtTelefonorl">
+                                    Telefono:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="Nac">
+                                    Celular
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtEmail">
+                                    Email
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class=" border p-2 mb-2">
+                            <legend class="float-none w-auto p-2">
+                                Cuenta Bancaria
+                            </legend>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="cbxBanco">
+                                    Banco
+                                </label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="cbxBanco" placeholder="Banco">
+                                        <option value="1">
+                                            Interbank
+                                        </option>
+                                        <option value="1">
+                                            Banco de Credito
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtTitular">
+                                    Titular
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtTitular" name="txtTitular" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label" for="txtCuenta">
+                                    Cuenta
+                                </label>
+                                <div class="col-sm-5">
+                                    <input class="form-control" id="txtCuenta" name="txtCuenta" type="text">
+                                    </input>
+                                </div>
+                                <label class="col-sm-1 col-form-label" for="txtCCI">
+                                    CCI
+                                </label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="txtCCI" name="txtCCI" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group row mb-2">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary btn-lg" type="submit">
+                                    ENVIAR
+                                    <i class="fas fa-paper-plane">
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cuerpo page End -->

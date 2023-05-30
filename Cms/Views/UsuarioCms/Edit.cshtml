@@ -1,0 +1,83 @@
+﻿@model ApiBD.Models.TbConfUser
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="control-label">Nombre</label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="control-label">Correo</label>
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Username" class="control-label">Usuario</label>
+                                            <input asp-for="Username" class="form-control" />
+                                            <span asp-validation-for="Username" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Password" class="control-label">Contraseña</label>
+                                            <input type="password" asp-for="Password" class="form-control" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Active" class="control-label">Estado</label>
+                                            <select class="form-control" asp-for="Active">
+                                                <option value="1">Activo</option>
+                                                <option value="0">Inactivo</option>
+                                            </select>
+                                            <span asp-validation-for="Active" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="RolId" class="control-label">Rol</label>
+                                            <select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId"></select>
+                                            <span asp-validation-for="RolId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @*<input type="submit" value="Save" class="btn btn-primary" />*@
+                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,193 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/vendors/feather/feather.css">
+    <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="~/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="~/js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body>
+    <div class="container-scroller">
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class=" bg-dark text-center navbar-brand-wrapper d-flex align-items-center justify-content-center ">
+                <a class="navbar-brand brand-logo mr-5" href="~/DashbordCms/Inicio"><img src="~/images/logoCP_white.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="~/DashbordCms/Inicio"><img src="~/images/logoCP_mini.png" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="icon-menu"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                            Usuario
+                            <img src="~/images/faces/userperfil.png" alt="Perfil" />
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item">
+                                <i class="ti-settings text-primary"></i>
+                                Configuracion
+                            </a>
+                            <a class="dropdown-item" href="~/Dashbord">
+                                <i class="ti-power-off text-primary"></i>
+                                Salir
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="icon-menu">ES</span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial -->
+            <nav class="sidebar bg-dark sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/DashbordCms/Inicio">
+                            <i class="icon-grid menu-icon"></i>
+                            <span class="menu-title">Panel Control</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                            <i class="icon-layout menu-icon"></i>
+                            <span class="menu-title">Inicio</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-basic">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="~/SlideCms">Banner</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/CaracteristicaCms">Valores</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/IServiciosCms">Servicios</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-nosotros" aria-expanded="false" aria-controls="ui-nosotros">
+                            <i class="icon-umbrella menu-icon"></i>
+                            <span class="menu-title">Nosotros</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-nosotros">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="~/PaginasCms">Paginas</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-servicios" aria-expanded="false" aria-controls="ui-servicios">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Servicios</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-servicios">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="~/IserviciosCms">Servicios</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-contactanos" aria-expanded="false" aria-controls="ui-contactanos">
+                            <i class="icon-share menu-icon"></i>
+                            <span class="menu-title">Contactanos</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-contactanos">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="#">Link</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-trabaja" aria-expanded="false" aria-controls="ui-trabaja">
+                            <i class="icon-star menu-icon"></i>
+                            <span class="menu-title">Trabaja con Nosotros</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-trabaja">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="~/PuestoCms">Puestos</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-config" aria-expanded="false" aria-controls="ui-config">
+                            <i class="icon-cog menu-icon"></i>
+                            <span class="menu-title">Configuraciones</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-config">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="~/EntidadCms">Entidad</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/UsuarioCms">Usuarios</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/RolCms">Roles</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/PermisoCms">Permisos</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/MenuCms">Menu</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/PiePaginaCms">Pie Pagina</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/RedesSocialesCms">Redes Sociales</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div>
+                    @RenderBody()
+                </div>
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023.<a href="#" target="_blank">Central Parking</a> System. Todos los derechos reservados.</span>
+                    </div>
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Desarrollado por <a href="#" target="_blank">Adelacruz</a></span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- plugins:js -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="~/js/dataTables.select.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/template.js"></script>
+    <script src="~/js/settings.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="~/js/dashboard.js"></script>
+    <script src="~/js/Chart.roundedBarCharts.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

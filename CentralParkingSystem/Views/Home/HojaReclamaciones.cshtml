@@ -1,0 +1,403 @@
+﻿@{
+    ViewData["Title"] = "Hoja Reclamaciones";
+}
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <h1 class="display-4 text-white animated slideInDown mb-4">Hoja Reclamaciones</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="index.html">Inicio</a></li>
+                <li class="breadcrumb-item text-primary active" aria-current="page">Hoja Reclamaciones</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Cuerpo page Start -->
+<div class="container-xxl border border-secondary py-6 bg-light">
+    <div class="container">
+        <div class="row">
+            <form>
+                <h3>Hoja de Reclamación</h3>
+                <p class="textRegistraReclamo">
+                    Conforme a lo establecido en código de la Protección y Defensa del
+                    consumidor contamos con un Libro de Reclamaciones a tu disposición para que
+                    puedas registrar tu queja o reclamo acerca de algún pedido o transacción
+                    realizada a través de nuestras páginas.
+                </p>
+                <div style="width: 96%;" class="panel2" id="panel_1">
+                    <div style="display: table; width: 100%;">
+                        <div style="display: table-caption; width: 100%; margin: 0px 0px 10px;">
+                            <span style="text-align: center; line-height: 16px; color: Black; font-size: 14px;
+                                font-family: Raleway,sans-serif; font-weight: bold; line-height: 1;">
+                                1. IDENTIFICACIÓN
+                                DEL CONSUMIDOR RECLAMANTE(*):
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; margin-top: 3px;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Fecha:
+                    </div>
+                    <div style="float: left; width: 55%; height: 22px;" class="p_normal">
+                        12/03/2023
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; margin-top: 3px; overflow: auto;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Fecha del Incidente:
+                    </div>
+                    <div style="float: left; width: 40%">
+                        <input class="form-control mb-2" id="txtFechaIncidente" maxlength="0" class="text-input hasDatepicker" style="font-size: 80%;
+                           font-size: 12px;" type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; display: none;" id="divTienda">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Tienda:
+                    </div>
+                    <div style="float: left; width: 40%" class="selectWrapper">
+                        <select id="IdTienda" name="IdTienda">
+                            <option>--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; overflow: auto;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Nombre(s):
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtNombres" maxlength="100" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Apellidos:
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtApellidos" maxlength="200" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Correo:
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtCorreo" maxlength="200" class="text-input" style="font-size: 80%; width: 100%;
+                            " type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Teléfono:
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtTelefono" maxlength="9" class="text-input" style="font-size: 80%;
+                            width: 100%; " type="text" onkeyup="return validaSoloNumerico('txtTelefono',this)">
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Tipo de Documento:
+                    </div>
+                    <div style="float: left; width: 40%" class="selectWrapper">
+                        <select id="IdTipoDoc" class="form-control mb-2" name="IdDistrito" onchange="changeValue(this);">
+                            <option value="0">--Seleccione--</option>
+                            <option value="1" selected="selected">DNI</option>
+                            <option value="3">CE</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; overflow: auto;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Num de Documento:
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtNroDocumento" maxlength="8" class="text-input" style="font-size: 80%;
+                            width: 100%; " type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; overflow: auto;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Menor de edad:
+                    </div>
+                    <div style="float: left; width: 10%">
+                        <p style="text-align: left;" class="p_normal">
+                            <input name="apoderado" id="tipApoderado" value="false" type="checkbox" onclick="habilitarApoderado();">
+                            <label class="labelPropio" for="tipApoderado">
+                                <span></span>
+                            </label>
+                        </p>
+                    </div>
+
+                </div>
+                <div id="divApoderado" style="display: none;">
+                    <div style="width: 100%; text-align: left; overflow: auto;">
+                        <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        </div>
+                        <div style="float: left; width: 55%">
+                            <input class="form-control mb-2" id="txtApoderado" maxlength="50" class="text-input" placeholder="Nombre de uno de los padres o representante del consumidor." style="font-size: 80%; height: 24px; font-size: 11px;" onkeypress="return jsSoloLetrasKeyPress()">
+                        </div>
+                    </div>
+                    <div style="width: 100%; text-align: left; overflow: auto;">
+                        <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        </div>
+                        <div style="float: left; width: 55%">
+                            <input class="form-control mb-2" id="txtTelfApoderado" maxlength="9" class="text-input" placeholder="Teléfono de uno de los padres o representante del consumidor." style="font-size: 80%; height: 24px; font-size: 11px;" onkeypress="return validaSoloNumerico('txtTelfApoderado',this)">
+                        </div>
+                    </div>
+                    <div style="width: 100%; text-align: left; overflow: auto;">
+                        <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        </div>
+                        <div style="float: left; width: 55%">
+                            <input class="form-control mb-2" id="txtDirApoderado" maxlength="100" class="text-input" placeholder="Dirección de uno de los padres o representante del consumidor." style="font-size: 80%; height: 24px; font-size: 11px;">
+                        </div>
+                    </div>
+                    <div style="width: 100%; text-align: left">
+                        <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        </div>
+                        <div style="float: left; width: 55%">
+                            <input class="form-control mb-2" id="txtCorreoApoderado" maxlength="100" class="text-input" style="font-size: 80%;
+                                width: 100%; height: 24px; font-size: 11px;" type="text" placeholder="Correo de uno de los padres o representante del consumidor.">
+                        </div>
+                        <div style="float: left; width: 5%">
+                            <span style="font-size: 11px; color: red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Departamento:
+                    </div>
+                    <div style="float: left; width: 40%" class="selectWrapper">
+                        <select id="IdDepartamento" name="IdDepartamento" class="form-control mb-2">
+                            <option value="0">--Seleccione--</option>
+                            <option value="1">AMAZONAS</option>
+                            <option value="2">ANCASH</option>
+                            <option value="3">APURIMAC</option>
+                            <option value="4">AREQUIPA</option>
+                            <option value="5">AYACUCHO</option>
+                            <option value="6">CAJAMARCA</option>
+                            <option value="7">CUSCO</option>
+                            <option value="8">HUANCAVELICA</option>
+                            <option value="9">HUANUCO</option>
+                            <option value="10">ICA</option>
+                            <option value="11">JUNIN</option>
+                            <option value="12">LA LIBERTAD</option>
+                            <option value="13">LAMBAYEQUE</option>
+                            <option value="14">LIMA</option>
+                            <option value="15">LORETO</option>
+                            <option value="16">MADRE DE DIOS</option>
+                            <option value="17">MOQUEGUA</option>
+                            <option value="18">PASCO</option>
+                            <option value="19">PIURA</option>
+                            <option value="24">PROV. CONST. DEL CALLAO</option>
+                            <option value="20">PUNO</option>
+                            <option value="21">SAN MARTIN</option>
+                            <option value="22">TACNA</option>
+                            <option value="23">TUMBES</option>
+                            <option value="25">UCAYALI</option>
+                        </select>
+
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Provincia:
+                    </div>
+                    <div style="float: left; width: 40%" class="selectWrapper">
+                        <select id="IdProvincia" name="IdProvincia" class="form-control mb-2">
+                            <option>--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+
+                <div style="width: 100%; text-align: left">
+
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Distrito:
+                    </div>
+                    <div style="float: left; width: 40%" class="selectWrapper">
+                        <select id="IdDistrito" name="IdDistrito" class="form-control mb-2">
+                            <option>--Seleccione--</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Dirección:
+                    </div>
+                    <div style="float: left; width: 55%">
+                        <input class="form-control mb-2" id="txtDireccion" maxlength="400" class="text-input" style="font-size: 80%;
+                            width: 100%; " type="text">
+                    </div>
+                    <div style="float: left; width: 5%">
+                        <span style="font-size: 11px; color: red"></span>
+                    </div>
+                </div>
+                <div style="clear: both;">
+                </div>
+                <div style="height: 10px; display: table-cell;">
+                </div>
+                <div style="width: 96%;" class="panel2" id="panel_2">
+                    <div style="display: table; width: 100%;">
+                        <div style="display: table-caption; width: 100%; margin: 0px 0px 10px;">
+                            <span style="text-align: center; line-height: 16px; color: Black; font-size: 14px;
+                                font-family: Raleway,sans-serif; font-weight: bold; line-height: 1;">
+                                2. IDENTIFICACIÓN
+                                DEL BIEN CONTRATADO:
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 10px; display: table-cell;">
+                </div>
+                <div style="clear: both;">
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right; margin-top: 3px;" class="p_normal">
+                        Reclamaciones:
+                    </div>
+                    <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
+                        <select name="" id="" class="form-control">
+                            <option>Reclamo</option>
+                            <option>Queja</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%; margin-top: 5px;">
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Tipo:
+                    </div>
+                    <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
+                        <select name="" id="" class="form-control">
+                            <option>Servicio</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Estacionamiento:
+                    </div>
+                    <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
+                        <select name="" id="" class="form-control">
+                            <option>Hotel Sheraton</option>
+                            <option>Hotel Pullman Miraflores</option>
+                            <option>Clinica Stella Maris</option>
+                            <option>Hotel Pullman San Isidro</option>
+                            <option>Pacifico Seguros</option>
+                            <option>CC. Polo II</option>
+                            <option>Sagrado Corazón de Jesus</option>
+                            <option>Edificio More</option>
+                            <option>Clinica Tezza</option>
+                        </select>
+                    </div>
+                    <div style="float: left; width: 5%">
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; overflow: auto;">
+                    <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
+                        Detalle:
+                    </div>
+                    <div style="float: left; width: 54%">
+                        <textarea rows="4" cols="4" maxlength="4000" id="txtDetalle" class="text-input" style="
+                            width: 100%; height: 120px; font-size: 12px;"></textarea>
+                        <span style="font-size: 11px;">&nbsp;Máximo permitido 4000 caracteres.</span>
+                    </div>
+                    <div style="float: left; width: 5%">
+                    </div>
+                </div>
+
+                <center>
+                    <div style="width: 80%;  margin-bottom: 20px;">
+                        <input class="btn btn-primary" id="btnReclamo" value="Enviar" class="btnOrdenarMnu" style="width: 50%;
+                            vertical-align: middle;" onclick="RegistrarReclamo()" type="button">
+                    </div>
+                </center>
+                <div style="width: 90%;display: inline-block;text-align: justify;padding-left: 10%;">
+                    <span style="font-size: 11px;">(*)IMPORTANTE:</span>
+                    <br>
+                    <span style="font-size: 11px;">
+                        En caso que el consumidor no consigne como
+                        minimo su nombre, DNI, domicilio o correo electronico, fecha del reclamo o queja
+                        y el detalle de los mismos, éstos se considerarán como no presentados (art 5 D.S.
+                        006-2014-PCM)
+                    </span>
+                    <br>
+                    <br>
+                    <span style="font-size: 11px;">
+                        El proveedor deberá dar respuesta al reclamo o queja en un plazo no mayor de quince (15) días hábiles, el cual es improrrogable.
+                        La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.
+                    </span>
+                    <br>
+                    <br>
+                    <span style="font-size: 11px;">
+                        Se le informa que sus datos serán almacenados en el banco de "Quejas y Reclamos" con
+                        Registro N° 14087 de titularidad DELOSI S.A. por un plazo indeterminado, a fin de dar
+                        respuesta a sus quejas y reclamos, así como llevar un registro de los mismos con el
+                        propósito de cumplir con las normas de protección al consumidor.
+                        Las demás condiciones de tratamiento de sus datos personales, los terceros destinatarios a
+                        sus datos personales, así como el mecanismo para ejercer sus derechos ARCO se
+                        encuentran detallados en el siguiente enlace: <a href="#" target="_blank">...</a>
+                    </span>
+                </div>
+                <div style="height: 10px; display: table-cell;">
+                </div>
+                <div style="clear: both;">
+                </div>
+
+                <div id="DivpopupProcesar" class="DivpopupProcesarReclamo" style="display: none;">
+                    <div id="popupProcesa" class="formPopUpRecla fade in">
+                        <p class="panel" style="text-align: center; vertical-align: middle; font-size: 20px;">
+                            PROCESO RECLAMO
+                        </p>
+                        <p class="msgPopup">
+                            PROCESANDO RECLAMO...
+                        </p>
+                        <p>
+                            <span id="loadCir" class="DivImgPopReclamo"></span>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Cuerpo page End -->

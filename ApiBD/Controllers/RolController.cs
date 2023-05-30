@@ -17,7 +17,7 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfRole>>> Get()
+        public async Task<List<TbConfRole>> Get()
         {
             var roles = await _dbContext.TbConfRoles.ToListAsync();
             return roles;
@@ -65,7 +65,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(rol);
         }
 
         [HttpDelete("{id}")]

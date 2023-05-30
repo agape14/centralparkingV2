@@ -1,0 +1,47 @@
+﻿@model ApiBD.Models.TbIndSlidecab
+
+@{
+    ViewData["Title"] = "Nuevo Slide";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Titulo" class="control-label"></label>
+                                    <input asp-for="Titulo" class="form-control" />
+                                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Imagen" class="control-label"></label>
+                                    <input asp-for="Imagen" class="form-control" />
+                                    <span asp-validation-for="Imagen" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="IdBtn1" class="control-label">Botón</label>
+                                    <select asp-for="IdBtn1" class="form-control" asp-items="ViewBag.IdBtn1"></select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

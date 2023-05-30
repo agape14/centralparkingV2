@@ -17,21 +17,21 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbIndCaracteristica>>> Get()
+        public async Task<List<TbIndCaracteristica>> Get()
         {
             var caracteristicas = await _dbContext.TbIndCaracteristicas.ToListAsync();
             return caracteristicas;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TbIndCaracteristica>> GetById(int id)
+        public async Task<ActionResult<TbIndCaracteristica>> GetById(uint id)
         {
             var caracteristica = await _dbContext.TbIndCaracteristicas.FindAsync(id);
             if (caracteristica == null)
             {
                 return NotFound();
             }
-            return caracteristica;
+            return Ok(caracteristica);
         }
 
         [HttpPost]
@@ -43,7 +43,7 @@ namespace ApiBD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, TbIndCaracteristica caracteristica)
+        public async Task<IActionResult> Update(uint id, TbIndCaracteristica caracteristica)
         {
             if (id != caracteristica.Id)
             {
@@ -65,11 +65,11 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(caracteristica);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(uint id)
         {
             var caracteristica = await _dbContext.TbIndCaracteristicas.FindAsync(id);
             if (caracteristica == null)
@@ -81,7 +81,7 @@ namespace ApiBD.Controllers
             return NoContent();
         }
 
-        private bool CaracteristicaExists(int id)
+        private bool CaracteristicaExists(uint id)
         {
             return _dbContext.TbIndCaracteristicas.Any(e => e.Id == id);
         }

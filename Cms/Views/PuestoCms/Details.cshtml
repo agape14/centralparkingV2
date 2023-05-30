@@ -1,0 +1,56 @@
+﻿@model ApiBD.Models.TbTraPuesto
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+                        <dl class="row">
+                            <dt class = "col-sm-2">
+                                @Html.DisplayNameFor(model => model.Titulo)
+                            </dt>
+                            <dd class = "col-sm-10">
+                                @Html.DisplayFor(model => model.Titulo)
+                            </dd>
+                            <dt class = "col-sm-2">
+                                @Html.DisplayNameFor(model => model.Subtitulo)
+                            </dt>
+                            <dd class = "col-sm-10">
+                                @Html.DisplayFor(model => model.Subtitulo)
+                            </dd>
+                            <dt class = "col-sm-2">
+                                @Html.DisplayNameFor(model => model.Requisitos)
+                            </dt>
+                            <dd class = "col-sm-10">
+                                @Html.Raw(Model.Requisitos)
+                            </dd>
+                            <dt class = "col-sm-2">
+                                @Html.DisplayNameFor(model => model.Ruta)
+                            </dt>
+                            <dd class = "col-sm-10">
+                                @Html.DisplayFor(model => model.Ruta)
+                            </dd>
+                            <dt class = "col-sm-2">
+                                @Html.DisplayNameFor(model => model.Ocupado)
+                            </dt>
+                            <dd class = "col-sm-10">
+                                @Html.Raw(Model.Ocupado == 0 ? "Sin Ocupar" : "Ocupado")
+                            </dd>
+                            <div>
+                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id"><i class="ti-save"></i> Editar</a> |
+                                <a class="btn btn-danger" asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                            </div>
+                        </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,11 +17,16 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfPiepaginadet>>> Get()
+        public async Task<ActionResult<List<TbConfPiepaginadet>>> Get()
         {
-            var piepaginadets = await _dbContext.TbConfPiepaginadets.ToListAsync();
-            return piepaginadets;
+
+            var listPieDet = from datos in this._dbContext.TbConfPiepaginadets
+                             select datos;
+            var pieDet = await listPieDet.ToListAsync();
+
+            return Ok(pieDet);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfPiepaginadet>> GetById(int id)

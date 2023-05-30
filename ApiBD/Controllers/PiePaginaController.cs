@@ -17,11 +17,29 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfPiepaginacab>>> Get()
+        public async Task<ActionResult<List<TbConfPiepaginacab>>> Get()
         {
-            var piepaginas = await _dbContext.TbConfPiepaginacabs.ToListAsync();
-            return piepaginas;
+
+            var listPiePagina= from datos in this._dbContext.TbConfPiepaginacabs
+                                          where datos.Estado == 1
+                                          select datos;
+
+            var piePagina = await listPiePagina.ToListAsync();
+
+            return Ok(piePagina);
         }
+
+        [HttpGet]
+        [Route("listaPiePaginas")]
+        public async Task<ActionResult<List<TbConfPiepaginacab>>> GetPiePaginas()
+        {
+
+            var listPiePagina = await _dbContext.TbConfPiepaginacabs.ToListAsync();
+
+            return listPiePagina;
+        }
+
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfPiepaginacab>> GetById(int id)
@@ -65,7 +83,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(piepagina);
         }
 
         [HttpDelete("{id}")]

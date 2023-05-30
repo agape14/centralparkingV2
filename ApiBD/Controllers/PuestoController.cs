@@ -17,7 +17,7 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbTraPuesto>>> Get()
+        public async Task<ActionResult<List<TbTraPuesto>>> Get()
         {
             var puestos = await _dbContext.TbTraPuestos.ToListAsync();
             return puestos;
@@ -65,7 +65,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(puesto);
         }
 
         [HttpDelete("{id}")]

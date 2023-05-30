@@ -17,11 +17,32 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfMenu>>> Get()
+        public async Task<ActionResult<List<TbConfMenu>>> Get()
         {
-            var menus = await _dbContext.TbConfMenus.ToListAsync();
-            return menus;
+            var listMenus = from datos in _dbContext.TbConfMenus
+                              where datos.Padre == 0 && datos.Estado == 1
+                              select datos;
+
+            var menus = await listMenus.ToListAsync();
+
+            return Ok(menus);
         }
+
+
+        [HttpGet]
+        [Route("subMenus")]
+        public async Task<ActionResult<List<TbConfMenu>>> GetSubMenus()
+        {
+            var listSubMenu = from datos in this._dbContext.TbConfMenus
+                                  where datos.Padre != 0
+                                  && datos.Estado == 1
+                                  select datos;
+            var subMenus = await listSubMenu.ToListAsync();
+
+            return Ok(subMenus);
+
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfMenu>> GetById(int id)

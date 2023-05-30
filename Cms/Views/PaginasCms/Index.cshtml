@@ -1,0 +1,130 @@
+﻿@model IEnumerable<ApiBD.Models.TbConfPaginascab>
+
+@{
+    ViewData["Title"] = "Listado de paginas";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <a class="btn btn-primary " href="/PaginasCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Titulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Subtitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReseniaTitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReseniaDetalle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MisionTitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MisionDetalle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.VisionTitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.VisionDetalle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ValoresTitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ValoresDetalle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReconocTitulo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReconocDetalle)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImagenMision)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImagenValores)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Titulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Subtitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReseniaTitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReseniaDetalle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MisionTitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MisionDetalle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.VisionTitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.VisionDetalle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ValoresTitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ValoresDetalle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReconocTitulo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReconocDetalle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ImagenMision)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ImagenValores)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a> |
+                                            <a href="@Url.Action("Index", "PaginasDetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

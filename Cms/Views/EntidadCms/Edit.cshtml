@@ -1,0 +1,142 @@
+﻿@model ApiBD.Models.TbConfEntidad
+
+@{
+    ViewData["Title"] = "Editar Entidad";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="control-label">Nombre</label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="NameComercial" class="control-label">Nombre Comercial</label>
+                                            <input asp-for="NameComercial" class="form-control" />
+                                            <span asp-validation-for="NameComercial" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Ruc" class="control-label">RUC</label>
+                                            <input asp-for="Ruc" class="form-control" />
+                                            <span asp-validation-for="Ruc" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Direccion" class="control-label">Dirección</label>
+                                            <input asp-for="Direccion" class="form-control" />
+                                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Horario" class="control-label"></label>
+                                            <input asp-for="Horario" class="form-control" />
+                                            <span asp-validation-for="Horario" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Telefono" class="control-label">Teléfono</label>
+                                            <input asp-for="Telefono" class="form-control" />
+                                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Celular" class="control-label"></label>
+                                            <input asp-for="Celular" class="form-control" />
+                                            <span asp-validation-for="Celular" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Correo" class="control-label"></label>
+                                            <input asp-for="Correo" class="form-control" />
+                                            <span asp-validation-for="Correo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Favicon" class="control-label"></label>
+                                            <input asp-for="Favicon" class="form-control" />
+                                            <span asp-validation-for="Favicon" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="LogoBlanco" class="control-label">Logo Blanco</label>
+                                            <input asp-for="LogoBlanco" class="form-control" />
+                                            <span asp-validation-for="LogoBlanco" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="LogoOscuro" class="control-label">Logo Oscuro</label>
+                                            <input asp-for="LogoOscuro" class="form-control" />
+                                            <span asp-validation-for="LogoOscuro" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="LogoMini" class="control-label">Logo Mini</label>
+                                            <input asp-for="LogoMini" class="form-control" />
+                                            <span asp-validation-for="LogoMini" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="RutaPagWeb" class="control-label">Ruta Pago Web</label>
+                                            <input asp-for="RutaPagWeb" class="form-control" />
+                                            <span asp-validation-for="RutaPagWeb" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+
+                                            <label asp-for="RedesSociales">Visualizar Redes Sociales</label>
+                                            <select asp-for="RedesSociales" class="form-control">
+                                                <option value="true">Si</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                            <span asp-validation-for="RedesSociales" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @*<input type="submit" value="Save" class="btn btn-primary" />*@
+
+                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

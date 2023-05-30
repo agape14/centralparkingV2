@@ -17,11 +17,28 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfPaginascab>>> Get()
+        public async Task<ActionResult<List<TbConfPaginascab>>> Get()
         {
             var paginas = await _dbContext.TbConfPaginascabs.ToListAsync();
             return paginas;
         }
+
+        [HttpGet]
+        [Route("nosotros")]
+        public async Task<ActionResult<TbConfPaginascab>> GetNosotros()
+        {
+            var pagina = await _dbContext.TbConfPaginascabs.FirstOrDefaultAsync();
+            if (pagina == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pagina);
+        }
+
+
+
+    
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfPaginascab>> GetById(int id)
@@ -65,7 +82,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(pagina);
         }
 
         [HttpDelete("{id}")]

@@ -1,0 +1,59 @@
+﻿@model ApiBD.Models.TbTraPuesto
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <h3>¿Estas seguro de eliminar?</h3>
+                    </div>
+                    <dl class="row">
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Titulo)
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @Html.DisplayFor(model => model.Titulo)
+                        </dd>
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Subtitulo)
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @Html.DisplayFor(model => model.Subtitulo)
+                        </dd>
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Requisitos)
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @Html.Raw(Model.Requisitos)
+                        </dd>
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Ruta)
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @Html.DisplayFor(model => model.Ruta)
+                        </dd>
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Ocupado)
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @Html.Raw(Model.Ocupado == 0 ? "Sin Ocupar" : "Ocupado")
+                        </dd>
+                    </dl>
+    
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button>  |
+                        <a class="btn btn-danger" asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

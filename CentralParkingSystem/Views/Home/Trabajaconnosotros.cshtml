@@ -1,0 +1,74 @@
+﻿@model ApiBD.Models.Home.IndexVM;
+
+@{
+    ViewData["Title"] = "Trabaja con Nosotros";
+}
+<!-- Page Header Start -->
+    <div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center">
+            <h1 class="display-4 text-white animated slideInDown mb-4">Trabaja con nosotros</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="~/">Inicio</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Trabaja con nosotros</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Cuerpo page Start -->
+    <div class="container-xxl py-6">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col">
+                    <div class="section_title text-center">
+                        <h1>TODAS LAS OFERTAS</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+             @foreach (var puesto in Model.Puestos)
+            {
+                <div class="accordion_container col-lg-4">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="accordion" id="accordionwork_@puesto.Id">
+                                <div class="accordion-item wow fadeInUp" data-wow-delay="0.1s">
+                                    <h2 class="accordion-header" id="headingwork1">
+                                        <button class="bg-primary accordion-button collapsed text-dark " type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapsework_@puesto.Id"
+                                                aria-expanded="false" aria-controls="collapsework_@puesto.Id">
+                                            @puesto.Titulo
+                                        </button>
+                                    </h2>
+                                    <div id="collapsework_@puesto.Id" class="accordion-collapse collapse bg-light "
+                                         aria-labelledby="headingwork_@puesto.Id" data-bs-parent="#accordionwork_@puesto.Id">
+                                        <div class="accordion-body text-center p-3">
+                                            <h6>
+                                                @puesto.Subtitulo
+                                            </h6>
+                                            @Html.Raw(puesto.Requisitos)
+
+                                           @* <a class="btn btn-lg btn-primary text-dark "
+                                               href="postulacion.html">
+                                                POSTULAR
+                                            </a>*@
+                                            <a href="@Url.Action("Postulacion", "Home", new { idpostulacion = puesto.Id })" class="btn btn-lg btn-primary text-dark">
+                                                POSTULAR
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+                
+            </div>
+        </div>
+    </div>
+    <!-- Cuerpo page End -->

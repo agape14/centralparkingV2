@@ -17,7 +17,7 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfPaginasdet>>> Get()
+        public async Task<ActionResult<List<TbConfPaginasdet>>> Get()
         {
             var paginasdets = await _dbContext.TbConfPaginasdets.ToListAsync();
             return paginasdets;
@@ -65,7 +65,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(paginadet);
         }
 
         [HttpDelete("{id}")]

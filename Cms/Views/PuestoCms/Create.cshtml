@@ -1,0 +1,62 @@
+﻿@model ApiBD.Models.TbTraPuesto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Titulo" class="control-label"></label>
+                                    <input asp-for="Titulo" class="form-control" />
+                                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Subtitulo" class="control-label"></label>
+                                    <input asp-for="Subtitulo" class="form-control" />
+                                    <span asp-validation-for="Subtitulo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Requisitos" class="control-label"></label>
+                                    <textarea asp-for="Requisitos" class="form-control" id="editor"></textarea>
+                                    <span asp-validation-for="Requisitos" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Ruta" class="control-label"></label>
+                                    <input asp-for="Ruta" class="form-control" />
+                                    <span asp-validation-for="Ruta" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#editor').summernote({
+                tabsize: 2,
+                height: 200
+            });
+        });
+    </script>
+}

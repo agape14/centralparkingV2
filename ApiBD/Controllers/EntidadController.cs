@@ -19,11 +19,19 @@ namespace ApiBD.Controllers
 
         // GET: api/entidades
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbConfEntidad>>> Get()
+        public async Task<ActionResult<List<TbConfEntidad>>> Get()
         {
-            var entidades = await _dbContext.TbConfEntidads.ToListAsync();
-            return entidades;
+            var listEntidad = from datos in _dbContext.TbConfEntidads
+                              select datos;
+
+            var entidades = await listEntidad.ToListAsync();
+
+            return Ok(entidades);
         }
+
+       
+
+
 
         // GET: api/entidades/{id}
         [HttpGet("{id}")]
@@ -70,7 +78,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(entidad);
         }
 
         // DELETE: api/entidades/{id}

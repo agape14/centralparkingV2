@@ -2,11 +2,16 @@
 
 namespace ApiBD.Controllers
 {
-    public class HomeController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+
+    public class HomeController : ControllerBase
     {
+
+        [HttpGet("Test")]
         public IActionResult Index()
         {
-            return View();
+            return Ok();
         }
     }
 }

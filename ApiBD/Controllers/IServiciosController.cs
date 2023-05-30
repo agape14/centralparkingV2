@@ -17,10 +17,14 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbIndServiciocab>>> Get()
+        public async Task<ActionResult<List<TbIndServiciocab>>> Get()
         {
-            var servicios = await _dbContext.TbIndServiciocabs.ToListAsync();
-            return servicios;
+            var listIServicios = from datos in this._dbContext.TbIndServiciocabs
+                                 select datos;
+
+            var iServicio = await listIServicios.ToListAsync();
+
+            return Ok(iServicio);
         }
 
         [HttpGet("{id}")]
@@ -31,7 +35,7 @@ namespace ApiBD.Controllers
             {
                 return NotFound();
             }
-            return servicio;
+            return Ok(servicio);
         }
 
         [HttpPost]
@@ -65,7 +69,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(servicio);
         }
 
         [HttpDelete("{id}")]

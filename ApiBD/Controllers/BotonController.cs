@@ -1,6 +1,7 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace ApiBD.Controllers
 {
@@ -15,7 +16,7 @@ namespace ApiBD.Controllers
             _dbContext = dbContext;
         }
 
-
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TbConfBotone>>> Get()
         {
@@ -31,7 +32,7 @@ namespace ApiBD.Controllers
             {
                 return NotFound();
             }
-            return boton;
+            return Ok(boton);
         }
 
         [HttpPost]
@@ -65,7 +66,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(boton);
         }
 
         [HttpDelete("{id}")]

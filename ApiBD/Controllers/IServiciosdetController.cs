@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ApiBD.Controllers
 {
@@ -17,11 +19,48 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbIndServiciodet>>> Get()
+        public async Task<ActionResult<List<TbIndServiciodet>>> Get()
         {
-            var serviciodets = await _dbContext.TbIndServiciodets.ToListAsync();
-            return serviciodets;
+            var listIServiciodets = from datos in this._dbContext.TbIndServiciodets
+                                    select datos;
+            var iServicioDet = await listIServiciodets.ToListAsync();
+
+            return Ok(iServicioDet);
         }
+
+        [HttpGet("filtrarPorCodigo/{codigo}")]
+        public async Task<ActionResult<List<TbIndServiciodet>>> FiltrarPorCodigo(int codigo)
+        {
+            var servicioDetLista = await _dbContext.TbIndServiciodets
+                .Where(p => p.IdCab == codigo)
+                .ToListAsync();
+
+            return Ok(servicioDetLista);
+        }
+
+
+        [HttpGet("Details/{id}/{codigo}")]
+        public async Task<IActionResult> Details(int id, int codigo)
+        {
+            var tbIndServiciodet = await _dbContext.TbIndServiciodets
+                .Include(t => t.IdCabNavigation)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (tbIndServiciodet == null)
+            {
+                return NotFound();
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var serializedObject = JsonSerializer.Serialize(tbIndServiciodet, options);
+
+            return Content(serializedObject, "application/json");
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbIndServiciodet>> GetById(int id)

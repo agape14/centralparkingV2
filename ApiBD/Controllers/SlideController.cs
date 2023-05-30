@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ApiBD.Controllers
 {
@@ -15,35 +17,61 @@ namespace ApiBD.Controllers
             _dbContext = dbContext;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbIndSlidecab>>> Get()
+        public async Task<IActionResult> Get()
         {
-            var slides = await _dbContext.TbIndSlidecabs.ToListAsync();
-            return slides;
+            try
+            {
+                var slides = await _dbContext.TbIndSlidecabs
+                    .Include(i => i.IdBtn1Navigation)
+                    .ToListAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles
+                };
+
+                var json = JsonSerializer.Serialize(slides, options);
+
+                return Content(json, "application/json");
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción y devolver una respuesta de error apropiada
+                return StatusCode(500, "Ocurrió un error en el servidor.");
+            }
         }
 
+
+
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<TbIndSlidecab>> GetById(int id)
+        public async Task<ActionResult<TbIndSlidecab>> GetDetails(uint id)
         {
-            var slide = await _dbContext.TbIndSlidecabs.FindAsync(id);
-            if (slide == null)
+            var tbIndSlidecab = await _dbContext.TbIndSlidecabs.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (tbIndSlidecab == null)
             {
                 return NotFound();
             }
-            return slide;
+
+            return Ok(tbIndSlidecab);
         }
+
 
         [HttpPost]
-        public async Task<ActionResult<TbIndSlidecab>> Create(TbIndSlidecab slide)
+        public async Task<IActionResult> Create(TbIndSlidecab tbIndSlidecab)
         {
-            _dbContext.TbIndSlidecabs.Add(slide);
+            _dbContext.TbIndSlidecabs.Add(tbIndSlidecab);
             await _dbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = slide.Id }, slide);
+
+            // El ID se generará automáticamente en la base de datos y se actualizará en el objeto tbIndSlidecab
+            return Ok(tbIndSlidecab);
         }
 
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, TbIndSlidecab slide)
+        public async Task<IActionResult> Update(uint id, TbIndSlidecab slide)
         {
             if (id != slide.Id)
             {
@@ -65,25 +93,32 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(slide);
         }
 
+
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(uint id)
         {
             var slide = await _dbContext.TbIndSlidecabs.FindAsync(id);
             if (slide == null)
             {
                 return NotFound();
             }
+
             _dbContext.TbIndSlidecabs.Remove(slide);
             await _dbContext.SaveChangesAsync();
+
             return NoContent();
         }
 
-        private bool SlideExists(int id)
+
+
+        private bool SlideExists(uint id)
         {
             return _dbContext.TbIndSlidecabs.Any(e => e.Id == id);
         }
+        
     }
 }

@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Cotizacion de Rentabilización de Terreno";
+}
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <h1 class="display-4 text-white animated slideInDown mb-4">Cotizacion de Rentabilización de Terreno</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="~/">Inicio</a></li>
+                <li class="breadcrumb-item text-primary active" aria-current="page">Cotizacion de Rentabilización de Terreno</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Cuerpo page Start -->
+<div class="container-xxl py-4">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h2>Bienvenido!</h2>
+                    <p>Al sistema de Cotización de Central Parking System. Registra los siguientes datos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp bg-light p-5" data-wow-delay="0.1s" style="min-height: 450px;">
+                <div class="position-relative h-100">
+                    <h1 class="display-6 mb-4">Solicita tu <span class="text-primary">servicio</span></h1>
+                    <p class="mb-4">Deja tus datos y muy pronto nos comunicaremos contigo.</p>
+                    <p>¡Muchas gracias por tu preferencia!</p>
+                    <h5 class=" mb-4 mt-4">LLAMANOS AL NUMERO</h5>
+                    <p class="mb-2"><i class="fa fa-phone me-3 "></i>+511 505 5000</p>
+                    <p class="mb-2">Horario de atención: Lunes a Viernes de 9:00 a.m. a 5:00 p.m.</p>
+                    <h5 class=" mb-4 mt-4">SEDE CENTRAL</h5>
+                    <p class="mb-2">
+                        <i class="fa fa-map-marker-alt me-3"></i>Av. Javier Prado Oeste 1650, San Isidro
+                        -
+                        Lima - Peru
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <form>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <select class="form-control border-0 bg-light mb-4" id="cbxTipoServicio"
+                                    placeholder="Tipo Servicio" disabled>
+                                <option value="0">RENTABILIZACION DE TERRENOS</option>
+                            </select>
+                            <label for="cbxTipoServicio">Tipo de Servicio</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <select name="distrito_administracion" id="distrito_administracion"
+                                    class="form-control border-0 bg-light mb-4" placeholder="Distrito">
+                                <option value="1">Cercado de Lima</option>
+                                <option value="2">Miraflores</option>
+                                <option value="3">Pueblo Libre</option>
+                                <option value="4">San Isidro</option>
+                                <option value="5">Surco</option>
+                            </select>
+                            <label for="distrito_administracion">Distrito</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="text" class="form-control border-0 bg-light mb-4"
+                                   id="direcion_estacionamiento" placeholder="Direccion Estacionamiento">
+                            <label for="direcion_estacionamiento">Direccion Estacionamiento</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="number" class="form-control border-0 bg-light mb-4" id="ruc"
+                                   placeholder="RUC">
+                            <label for="ruc">RUC</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="text" class="form-control border-0 bg-light mb-4" id="razon_social"
+                                   placeholder="Direccion Estacionamiento">
+                            <label for="razon_social">Razon Social</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <input type="text" class="form-control border-0 bg-light mb-4" id="namecontacto"
+                                   placeholder="Datos del Contacto">
+                            <label for="namecontacto">Datos del Contacto</label>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control border-0 bg-light" id="celular"
+                                       placeholder="Celular">
+                                <label for="celular">Celular</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control border-0 bg-light" id="telefono"
+                                       placeholder="Teléfono">
+                                <label for="telefono">Teléfono</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input type="email" class="form-control border-0 bg-light" id="email"
+                                       placeholder="Correo electrónico">
+                                <label for="email">Correo electrónico</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary py-3 px-6 w-50">
+                                <i class="fas fa-check-square"></i>
+                                Registrar mi Solicitud
+                            </button>
+                            <!-- <a class="btn btn-outline-primary py-3 px-5 w-30" href="abonados.html"><i class="fa fa-home"></i> Retornar</a> -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cuerpo page End -->

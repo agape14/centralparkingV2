@@ -1,0 +1,86 @@
+﻿@model ApiBD.Models.TbConfPiepaginadet
+
+@{
+    ViewData["Title"] = "Eliminar Pie pagina";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Configuraciones</a></li>
+        <li class="breadcrumb-item"><a href="/PiePagina">Pie Pagina</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "PiePaginaDet", new { codigo = ViewBag.vPiepaginaId }) ">Detalle</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+    </ol>
+</nav>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <h3>¿Estas seguro de eliminar?</h3>
+                    </div>
+
+
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.PiepaginaId)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.PiepaginaId)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Icono)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Icono)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Titulo)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Titulo)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Ruta)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Ruta)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Imagen)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Imagen)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TipoRuta)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TipoRuta)
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                       @* <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a asp-action="Index">Back to List</a>*@
+
+                        <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Eliminar</button> |
+                        <a class="btn btn-danger" asp-action="Index" asp-route-codigo="@ViewBag.vPiepaginaId"><i class="ti-back-left"></i> Regresar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<h1>Delete</h1>
+
+
+<div>
+    <h4>TbConfPiepaginadet</h4>
+    <hr />
+    
+</div>*@

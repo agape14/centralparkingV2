@@ -1,0 +1,71 @@
+﻿@model ApiBD.Models.Home.IndexVM;
+@{
+    ViewData["Title"] = "Nosotros";
+    var paginaCab = Model.PaginaCab;
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 my-6 mt-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <h1 class="display-4 text-white animated slideInDown mb-4">Nosotros </h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="~/">Inicio</a></li>
+                <li class="breadcrumb-item text-primary active" aria-current="page">Nosotros </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Nosotros  Start -->
+<div class="container-xxl ">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <!-- <h6 class="text-primary text-uppercase mb-2">Nuestro equipo</h6> -->
+            <h1 class="display-6 mb-4">@paginaCab?.Titulo</h1>
+        </div>
+        <div class="row g-0 team-items">
+
+            <h3 class="text"><i class="fa fa-clock   text-primary"></i> @paginaCab?.ReseniaTitulo</h3>
+            <p>
+                @paginaCab?.ReseniaDetalle
+            </p>
+            <div class="row g-2 mb-4 pb-2">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h3><i class="fas fa-map-marker-alt   text-primary mt-4"></i> @paginaCab?.MisionTitulo</h3>
+                    <p>
+                        @paginaCab?.MisionDetalle
+                    </p>
+                    <h3><i class="fas fa-eye   text-primary"></i> @paginaCab?.VisionTitulo</h3>
+                    <p>
+                        @paginaCab?.VisionDetalle
+                    </p>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
+                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@paginaCab?.ImagenMision}")" alt="" style="object-fit: cover;">
+
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
+                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@paginaCab?.ImagenValores}")" alt="" style="object-fit: cover;">
+
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h3><i class="fas fa-magic   text-primary mt-4"></i> @paginaCab?.ValoresTitulo</h3>
+                    <p>
+                        @paginaCab?.ValoresDetalle
+                    </p>
+                    <h3><i class="fas fa-trophy  text-primary"></i> @paginaCab?.ReconocTitulo</h3>
+                    <p>
+                        @paginaCab?.ReconocDetalle
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Nosotros  End -->
