@@ -119,11 +119,11 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(usuario);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(ulong id)
         {
             var usuario = await _dbContext.TbConfUsers.FindAsync(id);
             if (usuario == null)

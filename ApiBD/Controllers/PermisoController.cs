@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ApiBD.Controllers
 {
@@ -15,24 +17,55 @@ namespace ApiBD.Controllers
             _dbContext = dbContext;
         }
 
-
+      
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TbConfPermiso>>> Get()
         {
-            var permisos = await _dbContext.TbConfPermisos.ToListAsync();
-            return permisos;
+            var permiso = _dbContext.TbConfPermisos
+                .Include(t => t.Menu)
+                .Include(t => t.Rol)
+                .AsNoTracking(); // Evita el seguimiento de entidades para mejorar el rendimiento
+
+            var permisoLista = await permiso.ToListAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
+
+            var permisoJson = JsonSerializer.Serialize(permisoLista, options);
+
+            // Retorna la respuesta JSON
+            return Ok(permisoJson);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfPermiso>> GetById(int id)
         {
-            var permiso = await _dbContext.TbConfPermisos.FindAsync(id);
+            var permiso = await _dbContext.TbConfPermisos
+                                .Include(t => t.Menu)
+                                .Include(t => t.Rol)
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(m => m.Id == id);
             if (permiso == null)
             {
                 return NotFound();
             }
-            return permiso;
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
+
+            var permisoJson = JsonSerializer.Serialize(permiso, options);
+
+            // Retorna la respuesta JSON
+            return Content(permisoJson, "application/json");
         }
+
 
         [HttpPost]
         public async Task<ActionResult<TbConfPermiso>> Create(TbConfPermiso permiso)
@@ -65,7 +98,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(permiso);
         }
 
         [HttpDelete("{id}")]

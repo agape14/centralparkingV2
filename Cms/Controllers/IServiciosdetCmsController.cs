@@ -12,12 +12,12 @@ namespace Cms.Controllers
     public class IServiciosdetCmsController : Controller
     {
       
-        private HelperUploadFiles helperUpload;
+     
 
-        public IServiciosdetCmsController(HelperUploadFiles helperUpload)
+        public IServiciosdetCmsController()
         {
            
-            this.helperUpload = helperUpload;
+         
         }
         
         // GET: IServiciosdet
@@ -37,7 +37,7 @@ namespace Cms.Controllers
                           View(servicioDetCmsLista) :
                           Problem("Entity set 'CentralparkingContext.TbIndServiciodets'  is null.");
         }
-        
+        /*
         // GET: IServiciosdet/Details/5
         public async Task<IActionResult> Details(int id, int codigo)
         {

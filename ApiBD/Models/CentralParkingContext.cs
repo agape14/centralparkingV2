@@ -55,6 +55,8 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbConfUser> TbConfUsers { get; set; }
 
+    public virtual DbSet<TbFormTbcnosotro> TbFormTbcnosotros { get; set; }
+
     public virtual DbSet<TbIndCaracteristica> TbIndCaracteristicas { get; set; }
 
     public virtual DbSet<TbIndRedsocial> TbIndRedsocials { get; set; }
@@ -74,7 +76,7 @@ public partial class CentralParkingContext : DbContext
     public virtual DbSet<TbServFormulario> TbServFormularios { get; set; }
 
     public virtual DbSet<TbTraPuesto> TbTraPuestos { get; set; }
-
+    //line 78
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
 
@@ -86,9 +88,14 @@ public partial class CentralParkingContext : DbContext
 
     //    }
     //}
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
     //    => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
 
+    /*
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
+    */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -751,6 +758,54 @@ public partial class CentralParkingContext : DbContext
             entity.HasOne(d => d.Rol).WithMany(p => p.TbConfUsers)
                 .HasForeignKey(d => d.RolId)
                 .HasConstraintName("tb_conf_users_ibfk_1");
+        });
+
+        modelBuilder.Entity<TbFormTbcnosotro>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("tb_form_tbcnosotros");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Apellido)
+                .HasMaxLength(100)
+                .HasColumnName("apellido");
+            entity.Property(e => e.Celular)
+                .HasMaxLength(100)
+                .HasColumnName("celular");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(50)
+                .HasColumnName("correo");
+            entity.Property(e => e.Departamento)
+                .HasMaxLength(100)
+                .HasColumnName("departamento");
+            entity.Property(e => e.Distrito)
+                .HasMaxLength(100)
+                .HasColumnName("distrito");
+            entity.Property(e => e.FechaNacimiento).HasColumnName("fecha_nacimiento");
+            entity.Property(e => e.InformacioAdicional)
+                .HasMaxLength(10000)
+                .HasColumnName("informacio_adicional");
+            entity.Property(e => e.Medio)
+                .HasMaxLength(100)
+                .HasColumnName("medio");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(100)
+                .HasColumnName("nombre");
+            entity.Property(e => e.NumeroDocumento)
+                .HasMaxLength(100)
+                .HasColumnName("numero_documento");
+            entity.Property(e => e.Provincia)
+                .HasMaxLength(100)
+                .HasColumnName("provincia");
+            entity.Property(e => e.Puesto)
+                .HasMaxLength(100)
+                .HasColumnName("puesto");
+            entity.Property(e => e.TipoDocumento)
+                .HasMaxLength(50)
+                .HasColumnName("tipo_documento");
         });
 
         modelBuilder.Entity<TbIndCaracteristica>(entity =>

@@ -1,0 +1,82 @@
+﻿@model ApiBD.Models.TbConfPermiso
+
+@{
+    ViewData["Title"] = "Nuevo Permiso";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Permiso" class="control-label"></label>
+                                            <input asp-for="Permiso" class="form-control" />
+                                            <span asp-validation-for="Permiso" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Descripcion" class="control-label"></label>
+                                            <input asp-for="Descripcion" class="form-control" />
+                                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Menu" class="control-label"></label>
+                                            <select asp-for="MenuId" class ="form-control" asp-items="ViewBag.MenuId"></select>
+                                            <span asp-validation-for="MenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Rol" class="control-label"></label>
+                                            <select asp-for="RolId" class ="form-control" asp-items="ViewBag.RolId"></select>
+                                            <span asp-validation-for="RolId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Estado" class="control-label"></label>
+                                            <select class="form-control" asp-for="Estado" disabled>
+                                                <option value="1">Activo</option>
+                                                <option value="0">Inactivo</option>
+                                            </select>
+                                            <span asp-validation-for="Estado" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Creacion" class="control-label"></label>
+                                            <input asp-for="Creacion" class="form-control" />
+                                            <span asp-validation-for="Creacion" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"></div>                                    
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                        <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

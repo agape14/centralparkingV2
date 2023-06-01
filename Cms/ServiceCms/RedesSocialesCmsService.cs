@@ -1,33 +1,35 @@
 ﻿using ApiBD.Models;
+using System.Net.Http;
 using System.Net;
 using System.Text.Json;
+using System.Text;
 
 namespace Cms.ServiceCms
 {
-    public class UsuarioCmsService
+    public class RedesSocialesCmsService
     {
         private readonly HttpClient _httpClient;
 
-        public UsuarioCmsService(HttpClient httpClient)
+        public RedesSocialesCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<List<TbConfUser>> listarUsuarios()
+        public async Task<List<TbIndRedsocial>> listarRedesSociales()
         {
-            List<TbConfUser> usuarios = new List<TbConfUser>();
+            List<TbIndRedsocial> redesSociales = new List<TbIndRedsocial>();
 
             try
             {
-                var url = "https://localhost:7260/api/usuario";
+                var url = "https://localhost:7260/api/redsocial";
 
                 var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    usuarios = JsonSerializer.Deserialize<List<TbConfUser>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return usuarios;
+                    redesSociales = JsonSerializer.Deserialize<List<TbIndRedsocial>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return redesSociales;
                 }
                 else
                 {
@@ -39,19 +41,19 @@ namespace Cms.ServiceCms
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return usuarios;
+            return redesSociales;
         }
 
-        public async Task<TbConfUser> obtenerUsuarioDetalle(ulong id)
+        public async Task<TbIndRedsocial> obtenerRedSocialDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/redsocial/{id}"; // Reemplaza con la URL correcta de tu API
 
             var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
-                var usuario = await response.Content.ReadFromJsonAsync<TbConfUser>();
-                return usuario;
+                var redSocial = await response.Content.ReadFromJsonAsync<TbIndRedsocial>();
+                return redSocial;
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -64,16 +66,17 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfUser> crearUsuario(TbConfUser tbConfUser)
-        {
-            var url = "https://localhost:7260/api/usuario"; // Reemplaza con la URL correcta de tu API
 
-            var response = await _httpClient.PostAsJsonAsync(url, tbConfUser);
+        public async Task<TbIndRedsocial> crearRedSocial(TbIndRedsocial tbIndRedsocial)
+        {
+            var url = "https://localhost:7260/api/redsocial"; // Reemplaza con la URL correcta de tu API
+
+            var response = await _httpClient.PostAsJsonAsync(url, tbIndRedsocial);
 
             if (response.IsSuccessStatusCode)
             {
-                var crearUsuario = await response.Content.ReadFromJsonAsync<TbConfUser>();
-                return crearUsuario;
+                var crearRedSocial = await response.Content.ReadFromJsonAsync<TbIndRedsocial>();
+                return crearRedSocial;
             }
             else
             {
@@ -82,16 +85,16 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfUser> modificarUsuario(ulong id, TbConfUser tbConfUser)
+        public async Task<TbIndRedsocial> modificarRedSocial(int id, TbIndRedsocial tbIndRedsocial)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/redsocial/{id}"; // Reemplaza con la URL correcta de tu API
 
-            var response = await _httpClient.PutAsJsonAsync(url, tbConfUser);
+            var response = await _httpClient.PutAsJsonAsync(url, tbIndRedsocial);
 
             if (response.IsSuccessStatusCode)
             {
-                var modificarUsuario = await response.Content.ReadFromJsonAsync<TbConfUser>();
-                return modificarUsuario;
+                var modificarRedSocial = await response.Content.ReadFromJsonAsync<TbIndRedsocial>();
+                return modificarRedSocial;
             }
             else
             {
@@ -100,9 +103,9 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<bool> eliminarUsuario(ulong id)
+        public async Task<bool> eliminarRedSocial(int id)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/redsocial/{id}"; // Reemplaza con la URL correcta de tu API
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -120,5 +123,7 @@ namespace Cms.ServiceCms
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
         }
+
+
     }
 }

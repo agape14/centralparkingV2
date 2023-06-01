@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ApiBD.Controllers
 {
@@ -14,6 +16,31 @@ namespace ApiBD.Controllers
         {
             _dbContext = dbContext;
         }
+        
+        [HttpGet]
+        [Route("tipoMenu")]
+        public async Task<ActionResult<List<TbConfTipomenu>>> GetTipoMenu()
+        {
+            var tipoMenuLista = await _dbContext.TbConfTipomenus.ToListAsync();
+
+            return tipoMenuLista;
+         }
+
+        [HttpGet]
+        [Route("menusController")]
+        public async Task<ActionResult<List<TbConfMenu>>> GetMenus()
+        {
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
+
+            var listMenus = await _dbContext.TbConfMenus.Include(t => t.IdtipomenuNavigation).OrderByDescending(t => t.Id).ToListAsync();
+            return new JsonResult(listMenus, options);
+        }
+
+
 
 
         [HttpGet]
@@ -43,7 +70,7 @@ namespace ApiBD.Controllers
 
         }
 
-
+        /*
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfMenu>> GetById(int id)
         {
@@ -54,6 +81,30 @@ namespace ApiBD.Controllers
             }
             return menu;
         }
+        */
+        
+        [HttpGet("{id}")]
+       
+
+        public async Task<ActionResult<TbConfMenu>> GetById(int id)
+        {
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
+
+
+            var menu = await _dbContext.TbConfMenus
+                            .Include(t => t.IdtipomenuNavigation)
+                            .FirstOrDefaultAsync(m => m.Id == id); 
+            if (menu == null)
+            {
+                return NotFound();
+            }
+            return new JsonResult(menu, options);
+        }
+        
 
         [HttpPost]
         public async Task<ActionResult<TbConfMenu>> Create(TbConfMenu menu)

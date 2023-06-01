@@ -69,7 +69,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(redsocial);
         }
 
         [HttpDelete("{id}")]

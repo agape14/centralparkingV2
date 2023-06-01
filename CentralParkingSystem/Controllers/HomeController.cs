@@ -1,13 +1,10 @@
 ﻿using ApiBD.Models.Home;
-using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CentralParkingSystem.Services;
 using CentralParkingSystem.Models;
-using System.Collections.Generic;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -96,7 +93,7 @@ public class HomeController : Controller
         return View(model);
 
     }
-
+    /*
     public async Task<IActionResult> ObtenerCaracteristicasTest()
     {
         // como no tienes inyeccion de dependencia, lo hare de esta manera
@@ -106,7 +103,7 @@ public class HomeController : Controller
 
         return View();
     }
-
+    */
     public IActionResult Privacy()
     {
         return View();

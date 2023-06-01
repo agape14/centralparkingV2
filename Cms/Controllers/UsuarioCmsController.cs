@@ -87,7 +87,7 @@ namespace Cms.Controllers
            ViewData["RolId"] = new SelectList(rolLista, "Id", "Rol", tbConfUser.RolId);
            return View(tbConfUser);
        }
-        /*
+        
        // POST: Usuario/Edit/5
        // To protect from overposting attacks, enable the specific properties you want to bind to.
        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -95,7 +95,10 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(ulong id, [Bind("Id,Name,Email,Username,Password,EmailVerifiedAt,TwoFactorSecret,TwoFactorRecoveryCodes,TwoFactorConfirmedAt,RememberToken,CurrentTeamId,ProfilePhotoPath,CreatedAt,UpdatedAt,Active,Apaterno,Amaterno,Dni,RolId")] TbConfUser tbConfUser)
        {
-           if (id != tbConfUser.Id)
+            var usuario = new UsuarioCmsService(new HttpClient());
+            var rol = new RolCmsService(new HttpClient());
+            var rolLista = await rol.listarRoles();
+            if (id != tbConfUser.Id)
            {
                return NotFound();
            }
@@ -104,37 +107,33 @@ namespace Cms.Controllers
            {
                try
                {
-                   _context.Update(tbConfUser);
-                   await _context.SaveChangesAsync();
+
+                    await usuario.modificarUsuario(id, tbConfUser);
                }
                catch (DbUpdateConcurrencyException)
                {
-                   if (!TbConfUserExists(tbConfUser.Id))
-                   {
+                  
                        return NotFound();
-                   }
-                   else
-                   {
-                       throw;
-                   }
+                  
                }
                return RedirectToAction(nameof(Index));
            }
-           ViewData["RolId"] = new SelectList(_context.TbConfRoles, "Id", "Id", tbConfUser.RolId);
+           ViewData["RolId"] = new SelectList(rolLista, "Id", "Id", tbConfUser.RolId);
            return View(tbConfUser);
        }
 
        // GET: Usuario/Delete/5
-       public async Task<IActionResult> Delete(ulong? id)
-       {
-           if (id == null || _context.TbConfUsers == null)
+       public async Task<IActionResult> Delete(ulong id)
+        {
+            var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await usuario.listarUsuarios();
+
+            if (id == 0 || usuarioLista == null)
            {
                return NotFound();
            }
 
-           var tbConfUser = await _context.TbConfUsers
-               .Include(t => t.Rol)
-               .FirstOrDefaultAsync(m => m.Id == id);
+            var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
            if (tbConfUser == null)
            {
                return NotFound();
@@ -148,19 +147,22 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(ulong id)
        {
-           if (_context.TbConfUsers == null)
+            var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await usuario.listarUsuarios();
+
+            if (usuarioLista == null)
            {
                return Problem("Entity set 'CentralparkingContext.TbConfUsers'  is null.");
            }
-           var tbConfUser = await _context.TbConfUsers.FindAsync(id);
+           var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
            if (tbConfUser != null)
            {
-               _context.TbConfUsers.Remove(tbConfUser);
+               await usuario.eliminarUsuario(id);
            }
 
-           await _context.SaveChangesAsync();
+         
            return RedirectToAction(nameof(Index));
        }
-       */
+       
     }
 }
