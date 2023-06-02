@@ -1,19 +1,11 @@
 using ApiBD.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
-//builder.Services.AddDbContext<CentralParkingContext>(optionsAction: _ =>
-//{
-//    _.UseMySql(connectionString: "server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
-//});
-
-//builder.Services.AddDbContext<CentralParkingContext>(options => options.UseMySql(configuration.GetConnectionString(nameof(BooksContext))));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<CentralParkingContext>();
 

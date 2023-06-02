@@ -154,11 +154,6 @@ namespace Cms.Controllers
             
             return RedirectToAction(nameof(Index));
         }
-        /*
-        private bool TbIndServiciocabExists(int id)
-        {
-            return (_context.TbIndServiciocabs?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        */
+        
     }
 }

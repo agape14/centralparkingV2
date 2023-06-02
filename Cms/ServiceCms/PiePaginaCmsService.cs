@@ -44,7 +44,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> obtenerPiePaginaCabsDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/piepagina/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/piepagina/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> crearPiePaginaCab(TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var url = "https://localhost:7260/api/piepagina"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/piepagina"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPiepaginacab);
 
@@ -84,7 +84,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> modificarPiePaginaCab(int id, TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var url = $"https://localhost:7260/api/piepagina/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/piepagina/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPiepaginacab);
 
@@ -102,7 +102,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPiePaginaCab(int id)
         {
-            var url = $"https://localhost:7260/api/piepagina/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/piepagina/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

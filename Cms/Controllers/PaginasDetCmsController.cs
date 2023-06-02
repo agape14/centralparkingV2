@@ -149,11 +149,6 @@ namespace Cms.Controllers
            return RedirectToAction(nameof(Index));
        }
 
-       /*
-       private bool TbConfPaginasdetExists(int id)
-       {
-           return (_context.TbConfPaginasdets?.Any(e => e.Id == id)).GetValueOrDefault();
-       }
-       */
+       
     }
 }

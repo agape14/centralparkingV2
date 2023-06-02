@@ -56,7 +56,7 @@ namespace Cms.ServiceCms
                 return pagina;
             }
 
-            // Manejar otros códigos de estado de respuesta según tus necesidades
+            
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 return null;
@@ -67,7 +67,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> crearPagina(TbConfPaginascab tbConfPaginascab)
         {
-            var url = "https://localhost:7260/api/paginas"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/paginas"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginascab);
 
@@ -86,7 +86,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> modificarPagina(int id, TbConfPaginascab tbConfPaginascab)
         {
-            var url = $"https://localhost:7260/api/paginas/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/paginas/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginascab);
 
@@ -104,7 +104,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPagina(int id)
         {
-            var url = $"https://localhost:7260/api/paginas/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/paginas/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

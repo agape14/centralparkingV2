@@ -177,11 +177,6 @@ namespace Cms.Controllers
          
             return RedirectToAction(nameof(Index));
         }
-        /*
-        private bool TbIndSlidecabExists(uint id)
-        {
-            return (_context.TbIndSlidecabs?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-         */
+        
     }
 }

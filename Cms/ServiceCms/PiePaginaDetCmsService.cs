@@ -1,34 +1,33 @@
 ﻿using ApiBD.Models;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
+using System.Text;
 
 namespace Cms.ServiceCms
 {
-    public class ConfBotonesCmsService
+    public class PiePaginaDetCmsService
     {
         private readonly HttpClient _httpClient;
-        public ConfBotonesCmsService(HttpClient httpClient)
+        public PiePaginaDetCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<List<TbConfBotone>> listarBotones()
+        public async Task<List<TbConfPiepaginadet>> listarPiePaginaDetPorCodigoId(int id)
         {
-            List<TbConfBotone> botones = new List<TbConfBotone>();
+            List<TbConfPiepaginadet> lista = new List<TbConfPiepaginadet>();
 
             try
             {
-                var url = "https://localhost:7260/api/botones";
+                var url = $"https://localhost:7260/api/piepaginadet/piePaginaDetId/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    botones = JsonSerializer.Deserialize<List<TbConfBotone>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return botones;
+                    lista = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return lista;
                 }
                 else
                 {
@@ -40,12 +39,41 @@ namespace Cms.ServiceCms
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return botones;
+            return lista;
         }
 
-        public async Task<TbConfBotone> obtenerBotonDetalle(int id)
+        public async Task<List<TbConfPiepaginadet>> listarPiePaginaDet()
         {
-            var url = $"https://localhost:7260/api/botones/{id}"; 
+            List<TbConfPiepaginadet> lista = new List<TbConfPiepaginadet>();
+
+            try
+            {
+                var url = "https://localhost:7260/api/piepaginadet";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    lista = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return lista;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return lista;
+        }
+
+        public async Task<TbConfPiepaginadet> obtenerPiePaginaDetDetalle(int id)
+        {
+            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
 
             try
             {
@@ -53,8 +81,8 @@ namespace Cms.ServiceCms
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var boton = await response.Content.ReadFromJsonAsync<TbConfBotone>();
-                    return boton;
+                    var piePaginaDet = await response.Content.ReadFromJsonAsync<TbConfPiepaginadet>();
+                    return piePaginaDet;
                 }
                 else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -79,19 +107,19 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfBotone> crearBoton(TbConfBotone boton)
+        public async Task<TbConfPiepaginadet> crearPiePaginaDet(TbConfPiepaginadet piePaginaDet)
         {
-            var url = "https://localhost:7260/api/botones"; 
+            var url = "https://localhost:7260/api/piepaginadet"; 
 
             try
             {
-                var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
+                var jsonContent = new StringContent(JsonSerializer.Serialize(piePaginaDet), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(url, jsonContent);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var createdBoton = await response.Content.ReadFromJsonAsync<TbConfBotone>();
-                    return createdBoton;
+                    var crearPiePaginaDet = await response.Content.ReadFromJsonAsync<TbConfPiepaginadet>();
+                    return crearPiePaginaDet;
                 }
                 else
                 {
@@ -113,9 +141,9 @@ namespace Cms.ServiceCms
         }
 
 
-        public async Task<bool> eliminarBoton(int id)
+        public async Task<bool> eliminarPiePaginaDet(int id)
         {
-            var url = $"https://localhost:7260/api/botones/{id}";
+            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -134,17 +162,17 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfBotone> modificarBoton(int id, TbConfBotone boton)
+        public async Task<TbConfPiepaginadet> modificarPiePaginaDet(int id, TbConfPiepaginadet boton)
         {
-            var url = $"https://localhost:7260/api/botones/{id}"; 
+            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
-                var updatedBoton = await response.Content.ReadFromJsonAsync<TbConfBotone>();
-                return updatedBoton;
+                var updatedPiePaginaDet = await response.Content.ReadFromJsonAsync<TbConfPiepaginadet>();
+                return updatedPiePaginaDet;
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest)
             {
@@ -160,6 +188,5 @@ namespace Cms.ServiceCms
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
         }
-
     }
 }

@@ -154,11 +154,6 @@ namespace Cms.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        /*
-        private bool TbTraPuestoExists(int id)
-        {
-            return (_context.TbTraPuestos?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        */
+        
     }
 }

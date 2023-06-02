@@ -20,22 +20,22 @@ namespace Cms.ServiceCms
 
         public async Task<List<TbIndServiciodet>> filtrarPorCodigo(int codigo)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/filtrarPorCodigo/{codigo}"; // Reemplaza con la URL correcta de tu API REST
+            var url = $"https://localhost:7260/api/serviciosdet/filtrarPorCodigo/{codigo}"; 
 
-            // Envía la solicitud HTTP GET para obtener la lista de servicio detalles filtrada por código
+            
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
-            // Verifica si la respuesta es exitosa
+            
             if (response.IsSuccessStatusCode)
             {
-                // Deserializa el contenido de la respuesta a una lista de objetos TbIndServiciodet
+                
                 var servicioDetalles = await response.Content.ReadFromJsonAsync<List<TbIndServiciodet>>();
 
                 return servicioDetalles;
             }
             else
             {
-                // Ocurrió un error inesperado
+                
                 var errorContent = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Error al obtener los detalles de servicio. Código de estado: {response.StatusCode}, {errorContent}");
             }
@@ -93,6 +93,67 @@ namespace Cms.ServiceCms
         }
 
 
+        public async Task<bool> eliminarServicioDet(int id)
+        {
+            var url = $"https://localhost:7260/api/serviciosdet/{id}"; // Reemplaza con la URL correcta de tu API
+
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+
+        public async Task<TbIndServiciodet> obtenerServicioDeEspecificoDetalle(int id)
+        {
+            var url = $"https://localhost:7260/api/serviciosdet/{id}"; 
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var servicioDet = await response.Content.ReadFromJsonAsync<TbIndServiciodet>();
+                return servicioDet;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("La característica no fue encontrada.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+        public async Task<TbIndServiciodet> modificarServicioDet(int id, TbIndServiciodet tbIndServiciodet)
+        {
+            var url = $"https://localhost:7260/api/serviciosdet/{id}"; 
+
+            var response = await _httpClient.PutAsJsonAsync(url, tbIndServiciodet);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var modificarServicioDet = await response.Content.ReadFromJsonAsync<TbIndServiciodet>();
+                return modificarServicioDet;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
 
     }
 }

@@ -20,11 +20,21 @@ namespace ApiBD.Controllers
         public async Task<ActionResult<List<TbConfPiepaginadet>>> Get()
         {
 
-            var listPieDet = from datos in this._dbContext.TbConfPiepaginadets
+            var listPieDet = from datos in _dbContext.TbConfPiepaginadets
                              select datos;
             var pieDet = await listPieDet.ToListAsync();
 
-            return Ok(pieDet);
+            return pieDet;
+        }
+
+        [HttpGet]
+        [Route("piePaginaDetId/{codigo}")]
+        public async Task<ActionResult<List<TbConfPiepaginadet>>> GetId(int codigo)
+        {
+
+            var listPieDet = await _dbContext.TbConfPiepaginadets.Where(p => p.PiepaginaId == codigo).ToListAsync();
+
+            return listPieDet;
         }
 
 
@@ -70,7 +80,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(piepaginadet);
         }
 
         [HttpDelete("{id}")]

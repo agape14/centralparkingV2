@@ -150,12 +150,7 @@ namespace Cms.Controllers
          
            return RedirectToAction(nameof(Index));
        }
-        /*
-       private bool TbConfBotoneExists(int id)
-       {
-           return (_context.TbConfBotones?.Any(e => e.Id == id)).GetValueOrDefault();
-       }
-       */
+        
 
     }
 }

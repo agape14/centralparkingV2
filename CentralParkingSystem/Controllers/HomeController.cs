@@ -10,12 +10,7 @@ namespace CentralParkingSystem.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-   
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+    
 
     public async Task<IActionResult> Index()
     {
@@ -93,17 +88,6 @@ public class HomeController : Controller
         return View(model);
 
     }
-    /*
-    public async Task<IActionResult> ObtenerCaracteristicasTest()
-    {
-        // como no tienes inyeccion de dependencia, lo hare de esta manera
-        // con inyeccion de de pendencia este codigo es innecesario
-        var instancia = new CaracteristicasService(new HttpClient());
-        var caracteristicasLista = await instancia.ListarCaracteristicas();
-
-        return View();
-    }
-    */
     public IActionResult Privacy()
     {
         return View();

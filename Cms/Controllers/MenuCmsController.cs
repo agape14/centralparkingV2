@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using CentralParkingSystem.Services;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,8 +9,9 @@ namespace Cms.Controllers
 {
     public class MenuCmsController : Controller
     {
-        ApiBD.Models.CentralParkingContext contexto = new CentralParkingContext();
-        // GET: Menu
+        
+      
+        // GET: Menu ok
         public async Task<IActionResult> Index()
         {
             
@@ -20,7 +22,7 @@ namespace Cms.Controllers
         }
 
         
-        // GET: Menu/Details/5
+        // GET: Menu/Details/5 ok
         public async Task<IActionResult> Details(int id)
         {
             var menu = new MenuCmsService(new HttpClient());
@@ -42,41 +44,52 @@ namespace Cms.Controllers
         }
 
         
-        // GET: Menu/Create
+        // GET: Menu/Create ok
         public async Task<IActionResult> Create()
         {
+            var menuCentralParking = new MenusService(new HttpClient());
             var menu = new MenuCmsService(new HttpClient());
             var tipoMenuLista = await menu.listarTipoMenu();
 
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion");
 
-            var items = contexto.TbConfMenus.Where(item => item.Padre == 0 && item.Estado == 1).Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Nombre }).ToList();
-            items.Insert(0, new SelectListItem { Text = "Seleccione un elemento", Value = "0" });
-            ViewData["Padre"] = new SelectList(items, "Value", "Text");
+            var items = await menuCentralParking.ListarMenus();
+            var selectListItems = items.Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = t.Nombre
+            }).ToList();
+
+            selectListItems.Insert(0, new SelectListItem { Text = "Seleccione un elemento", Value = "0" });
+            ViewData["Padre"] = new SelectList(selectListItems, "Value", "Text");
 
             return View();
         }
-        /*
-        // POST: Menu/Create
+        
+        // POST: Menu/Create ok
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado")] TbConfMenu tbConfMenu)
         {
+            var menu = new MenuCmsService(new HttpClient());
+            var tipoMenuLista = await menu.listarTipoMenu();
+
             if (ModelState.IsValid)
             {
-                _context.Add(tbConfMenu);
-                await _context.SaveChangesAsync();
+
+                await menu.crearMenu(tbConfMenu);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idtipomenu"] = new SelectList(_context.TbConfTipomenus, "Id", "Opcion", tbConfMenu.Idtipomenu);
+            ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
             return View(tbConfMenu);
         }
-         */
-        // GET: Menu/Edit/5
+      
+        // GET: Menu/Edit/5 ok
         public async Task<IActionResult> Edit(int id)
         {
+            var menuCentralParking = new MenusService(new HttpClient());
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
             var tipoMenuLista = await menu.listarTipoMenu();
@@ -93,14 +106,20 @@ namespace Cms.Controllers
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
 
-            var items = contexto.TbConfMenus.Where(item => item.Padre == 0 && item.Estado == 1).Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Nombre }).ToList();
-            items.Insert(0, new SelectListItem { Text = "Seleccione un elemento", Value = "0" });
-            ViewData["Padre"] = new SelectList(items, "Value", "Text");
+            var items = await menuCentralParking.ListarMenus();
+            var selectListItems = items.Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = t.Nombre
+            }).ToList();
+
+            selectListItems.Insert(0, new SelectListItem { Text = "Seleccione un elemento", Value = "0" });
+            ViewData["Padre"] = new SelectList(selectListItems, "Value", "Text");
 
             return View(tbConfMenu);
         }
 
-        // POST: Menu/Edit/5
+        // POST: Menu/Edit/5 ok
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -134,8 +153,8 @@ namespace Cms.Controllers
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Id", tbConfMenu.Idtipomenu);
             return View(tbConfMenu);
         }
-        
-        // GET: Menu/Delete/5
+         
+        // GET: Menu/Delete/5 ok
         public async Task<IActionResult> Delete(int id)
         {
             var menu = new MenuCmsService(new HttpClient());
@@ -155,7 +174,7 @@ namespace Cms.Controllers
             return View(tbConfMenu);
         }
        
-        // POST: Menu/Delete/5
+        // POST: Menu/Delete/5 ok
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -176,6 +195,7 @@ namespace Cms.Controllers
            
             return RedirectToAction(nameof(Index));
         }
-     
+          
+
     }
 }

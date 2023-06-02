@@ -33,10 +33,10 @@ namespace Cms.ServiceCms
                     {
                         Console.WriteLine($"Id: {permiso.Id}, Permiso: {permiso.Permiso}");
 
-                        // Acceder a la propiedad Menu
+                        
                         Console.WriteLine($"Menu Id: {permiso.Menu.Id}, Nombre: {permiso.Menu.Nombre}");
 
-                        // Acceder a la propiedad Rol
+                   
                         Console.WriteLine($"Rol Id: {permiso.Rol.Id}, Rol: {permiso.Rol.Rol}");
 
                         Console.WriteLine("---");
@@ -60,7 +60,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> obtenerPermisoDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/permiso/{id}"; 
 
             try
             {
@@ -96,7 +96,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> crearPermiso(TbConfPermiso tbConfPermiso)
         {
-            var url = "https://localhost:7260/api/permiso"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/permiso"; 
 
             try
             {
@@ -130,7 +130,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPermiso(int id)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/permiso/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -151,7 +151,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> modificarPermiso(int id, TbConfPermiso tbConfPermiso)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/permiso/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfPermiso), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

@@ -1,5 +1,6 @@
 using ApiBD.Models;
 using Cms.Helpers;
+using Cms.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddScoped<CentralParkingContext>();
 builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();
 builder.Services.AddSession();
+builder.Services.AddSingleton<PathProvider>();
+builder.Services.AddSingleton<HelperUploadFiles>();
 
 
 var app = builder.Build();

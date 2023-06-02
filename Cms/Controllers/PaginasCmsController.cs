@@ -152,11 +152,6 @@ namespace Cms.Controllers
        
           return RedirectToAction(nameof(Index));
       }
-    /*
-      private bool TbConfPaginascabExists(int id)
-      {
-          return (_context.TbConfPaginascabs?.Any(e => e.Id == id)).GetValueOrDefault();
-      }
-      */
+    
     }
 }

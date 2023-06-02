@@ -104,7 +104,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(serviciodet);
         }
 
         [HttpDelete("{id}")]

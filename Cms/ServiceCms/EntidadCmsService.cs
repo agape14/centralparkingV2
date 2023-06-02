@@ -44,7 +44,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> obtenerEntidadDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/entidades/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/entidades/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> crearEntidad(TbConfEntidad tbConfEntidad)
         {
-            var url = "https://localhost:7260/api/entidades"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/entidades"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfEntidad);
 
@@ -84,7 +84,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> modificarEntidad(int id, TbConfEntidad tbConfEntidad)
         {
-            var url = $"https://localhost:7260/api/entidades/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/entidades/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfEntidad);
 
@@ -102,7 +102,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarEntidad(int id)
         {
-            var url = $"https://localhost:7260/api/entidades/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/entidades/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

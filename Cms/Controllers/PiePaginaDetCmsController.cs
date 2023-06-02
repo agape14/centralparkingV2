@@ -1,44 +1,53 @@
 ﻿using ApiBD.Models;
+using CentralParkingSystem.Services;
 using Cms.Helpers;
+using Cms.Providers;
+using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace Cms.Controllers
 {
     public class PiePaginaDetCmsController : Controller
     {
-        private HelperUploadFiles helperUpload;
+        private HelperUploadFiles _helperUpload;
 
         public PiePaginaDetCmsController(HelperUploadFiles helperUpload)
         {
-          
-            this.helperUpload = helperUpload;
+            _helperUpload = helperUpload;
         }
-        /*
+
         // GET: PiePaginaDet
-        public async Task<IActionResult> Index(int? codigo)
+        public async Task<IActionResult> Index(int codigo)
         {
-            if (codigo == null || _context.TbConfPiepaginadets == null)
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+            var piePaginaDetPorId = await piePaginaDet.listarPiePaginaDetPorCodigoId(codigo);
+
+            if (codigo == 0 || piePaginaDetLista == null)
             {
                 return NotFound();
             }
             ViewData["vPiepaginaId"] = codigo;
-            return _context.TbConfPiepaginadets != null ?
-                          View(await _context.TbConfPiepaginadets.Where(p => p.PiepaginaId == codigo).ToListAsync()) :
+            return piePaginaDetLista != null ?
+                          View(piePaginaDetPorId) :
                           Problem("Entity set 'CentralparkingContext.TbConfPiepaginadets'  is null.");
         }
 
         // GET: PiePaginaDet/Details/5
-        public async Task<IActionResult> Details(int? id, int? codigo)
+        public async Task<IActionResult> Details(int id, int codigo)
         {
-            if (id == null || _context.TbConfPiepaginadets == null)
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+
+            if (id == 0 || piePaginaDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginadet = await _context.TbConfPiepaginadets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
             if (tbConfPiepaginadet == null)
             {
                 return NotFound();
@@ -46,145 +55,159 @@ namespace Cms.Controllers
             ViewData["vPiepaginaId"] = codigo;
             return View(tbConfPiepaginadet);
         }
-
+        
         // GET: PiePaginaDet/Create
-        public IActionResult Create(int? codigo)
+        public async Task<IActionResult> Create(int codigo)
         {
+            var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
+            var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
             ViewData["vPiepaginaId"] = codigo;
-            ViewData["PiepaginaId"] = new SelectList(_context.TbConfPiepaginacabs, "Id", "Titulo", codigo);
+            ViewData["PiepaginaId"] = new SelectList(piePaginaCabsLista, "Id", "Titulo", codigo);
             return View();
         }
-
-        // POST: PiePaginaDet/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
+        
+       // POST: PiePaginaDet/Create
+       // To protect from overposting attacks, enable the specific properties you want to bind to.
+       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       [HttpPost]
+       [ValidateAntiForgeryToken]
+       public async Task<IActionResult> Create([Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
         {
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+
+            
             if (ModelState.IsValid)
-            {
-                var file = Request.Form.Files.FirstOrDefault();
+           {
+               var file = Request.Form.Files.FirstOrDefault();
 
-                if (file != null)
-                {
-                    string nombreImagen = file.FileName;
-                    string path = "";
-                    path = await this.helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                    tbConfPiepaginadet.Imagen = "/images/" + nombreImagen;
-                }
+               if (file != null)
+               {
+                   string nombreImagen = file.FileName;
+                   string path = "";
+                
+                   path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                   tbConfPiepaginadet.Imagen = "/images/" + nombreImagen;
+               }
 
-                _context.Add(tbConfPiepaginadet);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "PiePaginaDet", new { codigo = tbConfPiepaginadet.PiepaginaId });
-                //return RedirectToAction(nameof("Index"), nameof("PiePaginaDet"), new { codigo = tbConfPiepaginadet.PiepaginaId });
-                //return RedirectToAction(nameof(Index? tbConfPiepaginadet.PiepaginaId));
-            }
-            return View(tbConfPiepaginadet);
-        }
 
-        // GET: PiePaginaDet/Edit/5
-        public async Task<IActionResult> Edit(int? id, int? codigo)
-        {
-            if (id == null || _context.TbConfPiepaginadets == null)
-            {
-                return NotFound();
-            }
+                await piePaginaDet.crearPiePaginaDet(tbConfPiepaginadet);
+               return RedirectToAction("Index", "PiePaginaDetCms", new { codigo = tbConfPiepaginadet.PiepaginaId });
+              
+           }
+           return View(tbConfPiepaginadet);
+       }
 
-            var tbConfPiepaginadet = await _context.TbConfPiepaginadets.FindAsync(id);
-            if (tbConfPiepaginadet == null)
-            {
-                return NotFound();
-            }
-            ViewData["vPiepaginaId"] = codigo;
-            ViewData["PiepaginaId"] = new SelectList(_context.TbConfPiepaginacabs, "Id", "Titulo", codigo);
-            return View(tbConfPiepaginadet);
-        }
+       // GET: PiePaginaDet/Edit/5
+       public async Task<IActionResult> Edit(int id, int codigo)
+       {
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
 
-        // POST: PiePaginaDet/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
-        {
+            var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
+            var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
+
+            if (id == 0 || piePaginaDetLista == null)
+           {
+               return NotFound();
+           }
+
+           var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+           if (tbConfPiepaginadet == null)
+           {
+               return NotFound();
+           }
+           ViewData["vPiepaginaId"] = codigo;
+           ViewData["PiepaginaId"] = new SelectList(piePaginaCabsLista, "Id", "Titulo", codigo);
+           return View(tbConfPiepaginadet);
+       }
+        
+       // POST: PiePaginaDet/Edit/5
+       // To protect from overposting attacks, enable the specific properties you want to bind to.
+       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       [HttpPost]
+       [ValidateAntiForgeryToken]
+       public async Task<IActionResult> Edit(int id, [Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
+       {
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+
             if (id != tbConfPiepaginadet.Id)
-            {
-                return NotFound();
-            }
+           {
+               return NotFound();
+           }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var file = Request.Form.Files.FirstOrDefault();
+           if (ModelState.IsValid)
+           {
+               try
+               {
+                   var file = Request.Form.Files.FirstOrDefault();
 
-                    if (file != null)
-                    {
-                        string nombreImagen = file.FileName;
-                        string path = "";
-                        path = await this.helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                        tbConfPiepaginadet.Imagen = "/images/" + nombreImagen;
-                    }
+                   if (file != null)
+                   {
+                       string nombreImagen = file.FileName;
+                       string path = "";
+                       path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                       tbConfPiepaginadet.Imagen = "/images/" + nombreImagen;
+                   }
 
-                    _context.Update(tbConfPiepaginadet);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TbConfPiepaginadetExists(tbConfPiepaginadet.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index", "PiePaginaDet", new { codigo = tbConfPiepaginadet.PiepaginaId });
-                //return RedirectToAction(nameof(Index));
-            }
-            return View(tbConfPiepaginadet);
-        }
 
-        // GET: PiePaginaDet/Delete/5
-        public async Task<IActionResult> Delete(int? id, int? codigo)
-        {
-            if (id == null || _context.TbConfPiepaginadets == null)
-            {
-                return NotFound();
-            }
+                    await piePaginaDet.modificarPiePaginaDet(id, tbConfPiepaginadet);
+               }
+               catch (DbUpdateConcurrencyException)
+               {
+                   
+                       return NotFound();
+                  
+               }
+               return RedirectToAction("Index", "PiePaginaDetCms", new { codigo = tbConfPiepaginadet.PiepaginaId });
+           
+           }
+           return View(tbConfPiepaginadet);
+       }
+        
+       // GET: PiePaginaDet/Delete/5
+       public async Task<IActionResult> Delete(int id, int codigo)
+       {
 
-            var tbConfPiepaginadet = await _context.TbConfPiepaginadets
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tbConfPiepaginadet == null)
-            {
-                return NotFound();
-            }
-            ViewData["vPiepaginaId"] = codigo;
-            return View(tbConfPiepaginadet);
-        }
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
 
-        // POST: PiePaginaDet/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.TbConfPiepaginadets == null)
-            {
-                return Problem("Entity set 'CentralparkingContext.TbConfPiepaginadets'  is null.");
-            }
-            var tbConfPiepaginadet = await _context.TbConfPiepaginadets.FindAsync(id);
-            var piepaginaid = tbConfPiepaginadet.PiepaginaId;
-            if (tbConfPiepaginadet != null)
-            {
-                _context.TbConfPiepaginadets.Remove(tbConfPiepaginadet);
-            }
+            if (id == 0 || piePaginaDetLista == null)
+           {
+               return NotFound();
+           }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "PiePaginaDet", new { codigo = piepaginaid });
-            //return RedirectToAction(nameof(Index));
-        }
-        */
+            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+           if (tbConfPiepaginadet == null)
+           {
+               return NotFound();
+           }
+           ViewData["vPiepaginaId"] = codigo;
+           return View(tbConfPiepaginadet);
+       }
+
+       // POST: PiePaginaDet/Delete/5
+       [HttpPost, ActionName("Delete")]
+       [ValidateAntiForgeryToken]
+       public async Task<IActionResult> DeleteConfirmed(int id)
+       {
+            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+
+            if (piePaginaDetLista == null)
+           {
+               return Problem("Entity set 'CentralparkingContext.TbConfPiepaginadets'  is null.");
+           }
+           var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+           var piepaginaid = tbConfPiepaginadet.PiepaginaId;
+           if (tbConfPiepaginadet != null)
+           {
+                await piePaginaDet.eliminarPiePaginaDet(id);
+           }
+
+          
+           return RedirectToAction("Index", "PiePaginaDetCms", new { codigo = piepaginaid });
+        
+       }
+       
     }
 }

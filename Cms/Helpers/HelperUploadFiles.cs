@@ -11,6 +11,8 @@ namespace Cms.Helpers
     public class HelperUploadFiles
     {
         private PathProvider pathProvider;
+
+       
         public HelperUploadFiles(PathProvider pathProvider)
         {
             this.pathProvider = pathProvider;

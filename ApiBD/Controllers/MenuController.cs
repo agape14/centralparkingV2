@@ -137,7 +137,7 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(menu);
         }
 
         [HttpDelete("{id}")]

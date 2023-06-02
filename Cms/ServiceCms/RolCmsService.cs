@@ -44,7 +44,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> obtenerRolDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/rol/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/rol/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> crearRol(TbConfRole tbConfRole)
         {
-            var url = "https://localhost:7260/api/rol"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/rol"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfRole);
 
@@ -85,7 +85,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> modificarRol(int id, TbConfRole tbConfRole)
         {
-            var url = $"https://localhost:7260/api/rol/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/rol/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfRole);
 
@@ -103,7 +103,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarRol(int id)
         {
-            var url = $"https://localhost:7260/api/rol/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/rol/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

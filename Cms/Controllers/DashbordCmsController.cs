@@ -30,7 +30,7 @@ namespace Cms.Controllers
                 {
                     HttpContext.Session.SetString("Usuario", usuario.Username);
                     ViewData["result"] = "1";
-                    //return View();
+              
                     return RedirectToAction("Inicio", "DashbordCms");
                 }
                 else

@@ -156,11 +156,6 @@ namespace Cms.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        /*
-        private bool TbIndCaracteristicaExists(uint id)
-        {
-            return (_context.TbIndCaracteristicas?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        */
+        
     }
 }

@@ -44,7 +44,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> obtenerUsuarioDetalle(ulong id)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/usuario/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> crearUsuario(TbConfUser tbConfUser)
         {
-            var url = "https://localhost:7260/api/usuario"; // Reemplaza con la URL correcta de tu API
+            var url = "https://localhost:7260/api/usuario"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfUser);
 
@@ -84,7 +84,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> modificarUsuario(ulong id, TbConfUser tbConfUser)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/usuario/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfUser);
 
@@ -102,7 +102,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarUsuario(ulong id)
         {
-            var url = $"https://localhost:7260/api/usuario/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"https://localhost:7260/api/usuario/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

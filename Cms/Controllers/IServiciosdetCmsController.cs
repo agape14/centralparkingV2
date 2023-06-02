@@ -11,13 +11,11 @@ namespace Cms.Controllers
 {
     public class IServiciosdetCmsController : Controller
     {
-      
-     
+        private readonly HelperUploadFiles _helperUpload;
 
-        public IServiciosdetCmsController()
+        public IServiciosdetCmsController(HelperUploadFiles helperUpload)
         {
-           
-         
+                _helperUpload = helperUpload;
         }
         
         // GET: IServiciosdet
@@ -37,7 +35,7 @@ namespace Cms.Controllers
                           View(servicioDetCmsLista) :
                           Problem("Entity set 'CentralparkingContext.TbIndServiciodets'  is null.");
         }
-        /*
+        
         // GET: IServiciosdet/Details/5
         public async Task<IActionResult> Details(int id, int codigo)
         {
@@ -82,6 +80,8 @@ namespace Cms.Controllers
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
             var servicioDet = new IServiciodetCmsService(new HttpClient());
 
+         
+
             if (ModelState.IsValid)
             {
                 var file = Request.Form.Files.FirstOrDefault();
@@ -90,34 +90,42 @@ namespace Cms.Controllers
                 {
                     string nombreImagen = file.FileName;
                     string path = "";
-                    path = await this.helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                    path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
                     tbIndServiciodet.Imagen = "/images/" + nombreImagen;
                 }
 
 
                 await servicioDet.crearServicioDet(tbIndServiciodet);
                 return RedirectToAction("Index", "IserviciosdetCms", new { codigo = tbIndServiciodet.IdCab });
-                //return RedirectToAction(nameof(Index));
+         
             }
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             return View(tbIndServiciodet);
         }
-        /*
+        
         // GET: IServiciosdet/Edit/5
-        public async Task<IActionResult> Edit(int? id, int? codigo)
+        public async Task<IActionResult> Edit(int id, int codigo)
         {
-            if (id == null || _context.TbIndServiciodets == null)
+            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDetLista = await servicioDet.ListarServiciosdets();
+            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+
+            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCabLista = await servicioCab.ListarServiciosCabs();
+
+
+            if (id == 0 || servicioDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciodet = await _context.TbIndServiciodets.FindAsync(id);
+            var tbIndServiciodet = await servicioDetCms.obtenerServicioDeEspecificoDetalle(id);
             if (tbIndServiciodet == null)
             {
                 return NotFound();
             }
             ViewData["vServicioId"] = codigo;
-            ViewData["IdCab"] = new SelectList(_context.TbIndServiciocabs, "Id", "TituloGrande", tbIndServiciodet.IdCab);
+            ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             return View(tbIndServiciodet);
         }
 
@@ -128,6 +136,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdCab,Icono,Titulo,Detalle,Ruta,Imagen")] TbIndServiciodet tbIndServiciodet)
         {
+            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+
+            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCabLista = await servicioCab.ListarServiciosCabs();
+
             if (id != tbIndServiciodet.Id)
             {
                 return NotFound();
@@ -143,41 +156,38 @@ namespace Cms.Controllers
                     {
                         string nombreImagen = file.FileName;
                         string path = "";
-                        path = await this.helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                        path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
                         tbIndServiciodet.Imagen = "/images/" + nombreImagen;
                     }
-                    _context.Update(tbIndServiciodet);
-                    await _context.SaveChangesAsync();
+                    
+                    await servicioDetCms.modificarServicioDet(id,tbIndServiciodet) ;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TbIndServiciodetExists(tbIndServiciodet.Id))
-                    {
+                    
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                   
                 }
-                return RedirectToAction("Index", "Iserviciosdet", new { codigo = tbIndServiciodet.IdCab });
-                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "IserviciosdetCms", new { codigo = tbIndServiciodet.IdCab });
+              
             }
-            ViewData["IdCab"] = new SelectList(_context.TbIndServiciocabs, "Id", "TituloGrande", tbIndServiciodet.IdCab);
+            ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             return View(tbIndServiciodet);
         }
 
         // GET: IServiciosdet/Delete/5
-        public async Task<IActionResult> Delete(int? id, int? codigo)
+        public async Task<IActionResult> Delete(int id, int codigo)
         {
-            if (id == null || _context.TbIndServiciodets == null)
+            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDetLista = await servicioDet.ListarServiciosdets();
+            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+
+            if (id == 0 || servicioDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciodet = await _context.TbIndServiciodets
-                .Include(t => t.IdCabNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tbIndServiciodet = await servicioDetCms.obtenerServicioDetDetalle(id, codigo);
             if (tbIndServiciodet == null)
             {
                 return NotFound();
@@ -191,26 +201,26 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TbIndServiciodets == null)
+            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDetLista = await servicioDet.ListarServiciosdets();
+            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+
+            if (servicioDetLista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbIndServiciodets'  is null.");
             }
-            var tbIndServiciodet = await _context.TbIndServiciodets.FindAsync(id);
+            var tbIndServiciodet = await servicioDetCms.obtenerServicioDeEspecificoDetalle(id);
             var servicioid = tbIndServiciodet.IdCab;
             if (tbIndServiciodet != null)
             {
-                _context.TbIndServiciodets.Remove(tbIndServiciodet);
+                await servicioDetCms.eliminarServicioDet(id);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Iserviciosdet", new { codigo = servicioid });
-            //return RedirectToAction(nameof(Index));
+            
+            return RedirectToAction("Index", "IserviciosdetCms", new { codigo = servicioid });
+         
         }
 
-        private bool TbIndServiciodetExists(int id)
-        {
-            return (_context.TbIndServiciodets?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        */
+       
     }
 }

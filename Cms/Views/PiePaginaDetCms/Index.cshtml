@@ -22,7 +22,7 @@
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Listado de pie pagina</h4>
                         @*<a asp-action="Create/@ViewBag.vPiepaginaId" class="btn btn-primary "><i class="ti-plus"></i> Nuevo</a>*@
-                        <a class="btn btn-primary " href="@Url.Action("Create", "PiePaginaDet", new { codigo = ViewBag.vPiepaginaId })" >
+                        <a class="btn btn-primary " href="@Url.Action("Create", "PiePaginaDetCms", new { codigo = ViewBag.vPiepaginaId })" >
                             <i class="ti-plus"></i>  Nuevo
                         </a>
                     </div>
@@ -89,7 +89,7 @@
                                 }
                             </tbody>
                         </table>
-                        <a asp-controller="PiePagina" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                        <a asp-controller="PiePaginaCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
                     </div>
                 </div>
             </div>
