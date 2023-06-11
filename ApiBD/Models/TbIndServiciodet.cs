@@ -20,4 +20,8 @@ public partial class TbIndServiciodet
     public string Imagen { get; set; }
 
     public virtual TbIndServiciocab IdCabNavigation { get; set; }
+
+    public virtual ICollection<TbFormContactano> TbFormContactanos { get; set; } = new List<TbFormContactano>();
+
+    public virtual ICollection<TbFormServicio> TbFormServicios { get; set; } = new List<TbFormServicio>();
 }

@@ -1,0 +1,80 @@
+﻿using ApiBD.Models;
+using System.Net;
+using System.Text.Json;
+
+namespace CentralParkingSystem.Services
+{
+    public class ServicioDetalleService
+    {
+        private readonly HttpClient _httpClient;
+        public ServicioDetalleService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<List<TbServDetalle>> listar()
+        {
+            List<TbServDetalle> servicios = new List<TbServDetalle>();
+
+            try
+            {
+                var url = "https://localhost:7260/api/servicioDetalle";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    servicios = JsonSerializer.Deserialize<List<TbServDetalle>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return servicios;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return servicios;
+        }
+
+        public async Task<TbServDetalle> obtenerServicioDetalle(int id)
+        {
+            var url = $"https://localhost:7260/api/servicioDetalle/{id}";
+
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var servicio = await response.Content.ReadFromJsonAsync<TbServDetalle>();
+                    return servicio;
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new Exception("El botón no fue encontrado.");
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+                    throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                throw new Exception("Error en la solicitud HTTP", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener el botón: {ex.Message}");
+                throw;
+            }
+        }
+    }
+}

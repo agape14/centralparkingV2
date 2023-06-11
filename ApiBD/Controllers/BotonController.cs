@@ -1,7 +1,6 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 
 namespace ApiBD.Controllers
 {
@@ -88,3 +87,4 @@ namespace ApiBD.Controllers
         }
     }
 }
+    

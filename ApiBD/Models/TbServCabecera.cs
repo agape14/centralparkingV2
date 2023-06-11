@@ -20,7 +20,7 @@ public partial class TbServCabecera
     /// <summary>
     /// true:Esta en el menu, false: No esta en el menu
     /// </summary>
-    public byte[] IsMenu { get; set; }
+    public int IsMenu { get; set; }
 
     public virtual TbConfBotone IdBtnConoceNavigation { get; set; }
 

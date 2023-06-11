@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ApiBD.Models.TbFormContactano;
+
+@{
     ViewData["Title"] = "Contactanos";
 }
 <!-- Page Header Start -->
@@ -30,43 +32,41 @@
                 <h6 class="text-primary text-uppercase mb-2">Contáctanos</h6>
                 <h1 class="display-6 mb-4">Si tiene alguna consulta, contáctenos</h1>
                 <p class="mb-4">¿Tienes problemas? Encuentra la respuesta a tu pregunta aquí. ¡No dudes en contactarnos!.</p>
-                <form>
+                <form asp-action="Contactanos">
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="form-floating">
-                                <select class="form-control border-0 bg-light" id="cbxTipoServicio"
+                                <select class="form-control border-0 bg-light" id="cbxTipoServicio" asp-for="TipoServicio"
                                         placeholder="Tipo Servicio">
                                     <option value="0">Seleccione Tipo de Servicio</option>
                                     <option value="1">ADMINISTRACIÓN DE ESTACIONAMIENTOS</option>
-                                    <option value="2">ABONADOS</option>
-                                    <option value="3">PREVENCIÓN</option>
-                                    <option value="4">VALET PARKING</option>
-                                    <option value="5">EVENTOS</option>
+                                    <option value="2">GESTION DE ABONADOS</option>
+                                    <option value="3">OTROS SERVICIOS</option>
                                 </select>
                                 <label for="cbxTipoServicio">Tipo de Servicio</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres">
+                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres" asp-for="Nombre"> 
                                 <label for="name">Nombres</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico">
+                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico" asp-for="CorreoElectronico">
                                 <label for="email">Correo electrónico</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto">
+                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto" asp-for="Asunto">
                                 <label for="subject">Asunto</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px"></textarea>
+                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px" asp-for="Mensaje"></textarea>
                                 <label for="message">Mensaje</label>
                             </div>
                         </div>

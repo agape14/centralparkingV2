@@ -2,6 +2,7 @@
 
 namespace ApiBD.Controllers
 {
+    /*
     [ApiController]
     [Route("api/[controller]")]
 
@@ -13,5 +14,5 @@ namespace ApiBD.Controllers
         {
             return Ok();
         }
-    }
+    }*/
 }

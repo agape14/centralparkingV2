@@ -5,6 +5,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using CentralParkingSystem.Services;
 using CentralParkingSystem.Models;
+using ApiBD.Models;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -112,8 +115,12 @@ public class HomeController : Controller
     }
 
     // ============================ Administracion de estacionamiento ============================
-    public IActionResult Adminestacionamiento()
+    public async Task<IActionResult> Adminestacionamiento(int id)
     {
+        /*
+        var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
+        var servicio =await adminiestacionamiento.obtenerServicioDetalle(id);
+        */
         return View();
     }
 
@@ -123,8 +130,10 @@ public class HomeController : Controller
     }
 
     // ============================ Abonados ============================
-    public IActionResult Abonados()
+    public async Task<IActionResult> Abonados(int id)
     {
+        //var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
+        //var servicio = await adminiestacionamiento.obtenerServicioDetalle(id);
         return View();
     }
     public IActionResult Cotizacionabonados()
@@ -133,9 +142,11 @@ public class HomeController : Controller
     }
 
     // ============================ Otros servicios ============================
-    public IActionResult Otrosservicios()
+    public async Task<IActionResult> Otrosservicios()
     {
-        return View();
+        var otrosServicios = new ServicioCabeceraService(new HttpClient());
+        var servicios = await otrosServicios.ListarServicios();
+        return View(servicios);
     }
     //----------------------------------------
     public IActionResult ValetParking()
@@ -179,6 +190,24 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Contactanos([Bind("Id,Nombre,CorreoElectronico,Asunto,Mensaje,TipoServicio")] TbFormContactano tbFormContactano)
+    {
+        
+        var contacto = new ContactanoService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = tbFormContactano.Mensaje;
+            await contacto.crearContactoRegistro(tbFormContactano);
+            enviarEmail(tbFormContactano.CorreoElectronico,mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormContactano);
+    }
     // ============================ Trabaja con Nosotros ============================
     public async Task<IActionResult> Trabajaconnosotros()
     {
@@ -195,14 +224,101 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    // POST: Postulacion/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Postulacion([Bind("Id,TipoDocumento,Nombre,Apellido,FechaNacimiento,CorreoElectronico,Departamento,Provincia,Distrito,Puesto,InformacionAdicional,NumeroDocumento,Celular,Medio")] TbFormTbcnosotro tbFormTbcnosotro)
+    {
+        var postulacion = new PostulacionService(new HttpClient());
+        
+        if (ModelState.IsValid)
+        {
+            string mensaje= "Su solicitud de postulación ah sido registrada";
+            await postulacion.crearPostulacion(tbFormTbcnosotro);
+            enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormTbcnosotro);
+    }
+
     // ============================ Proveedores ============================ 
     public IActionResult Proveedores()
     {
         return View();
     }
+    
+    /*
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Proveedores(TbProvRegistro tbProvRegistro)
+    {
+       // var proveedor = new ProveedorService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Su solicitud de postulación ah sido registrada";
+            //await proveedor.crearProveedor(tbProvRegistro);
+            enviarEmail(tbProvRegistro., mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbProvRegistro);
+
+    }
+    */
     // ============================ Hoja Reclamaciones ============================ 
     public IActionResult HojaReclamaciones()
     {
         return View();
     }
+
+
+    private void enviarEmail(string correoDestinatario,string mensaje)
+    {
+
+        string server = "smtp.gmail.com";
+        int port = 465;
+        string correo = "centralparking153@gmail.com";
+        string pass = "mwabukzuumewdbhn";
+
+
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Remitente", correo));
+        message.To.Add(new MailboxAddress("Destinatario", correoDestinatario));
+        message.Subject = "Agencia CentralParking Perú";
+
+        var bodyBuilder = new BodyBuilder();
+        bodyBuilder.TextBody = mensaje;
+
+        message.Body = bodyBuilder.ToMessageBody();
+
+        using (var client = new SmtpClient())
+        {
+            try
+            {
+                client.Connect(server,port, true);
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                client.Authenticate(correo,pass);
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                // Registrar un mensaje de error o lanzar una excepción o ambos.
+                Console.WriteLine("Ocurrió un error al enviar el correo electrónico: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                client.Disconnect(true);
+                client.Dispose();
+            }
+        }
+    }
+
+
+
 }
