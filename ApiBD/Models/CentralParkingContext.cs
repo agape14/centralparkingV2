@@ -57,6 +57,8 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbFormContactano> TbFormContactanos { get; set; }
 
+    public virtual DbSet<TbFormProveedore> TbFormProveedores { get; set; }
+
     public virtual DbSet<TbFormServicio> TbFormServicios { get; set; }
 
     public virtual DbSet<TbFormTbcnosotro> TbFormTbcnosotros { get; set; }
@@ -85,6 +87,7 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbTraPuesto> TbTraPuestos { get; set; }
 
+    //**************IMPORTANTEEE
     //line 78
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
@@ -98,7 +101,8 @@ public partial class CentralParkingContext : DbContext
     //    }
     //}
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    //    => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
+    //    => optionsBui
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -794,6 +798,147 @@ public partial class CentralParkingContext : DbContext
             entity.HasOne(d => d.TipoServicioNavigation).WithMany(p => p.TbFormContactanos)
                 .HasForeignKey(d => d.TipoServicio)
                 .HasConstraintName("FK_FormContactanos_IndServicioDet");
+        });
+
+        modelBuilder.Entity<TbFormProveedore>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("tb_form_proveedores");
+
+            entity.HasIndex(e => e.CodBanco, "FK_codBanco");
+
+            entity.HasIndex(e => e.TiempoPago, "FK_tiempoPago");
+
+            entity.HasIndex(e => e.TipoDocElectronicoRemite, "FK_tipoDocElectronico");
+
+            entity.HasIndex(e => e.TipoMonedaCompra, "FK_tipoMonedaCompra");
+
+            entity.Property(e => e.AfectoDetraccionIgv)
+                .HasColumnType("int(11)")
+                .HasColumnName("afectoDetraccionIGV");
+            entity.Property(e => e.AfectoRenta4taCat)
+                .HasColumnType("int(11)")
+                .HasColumnName("afectoRenta4taCat");
+            entity.Property(e => e.AfectoRetencionIgv)
+                .HasColumnType("int(11)")
+                .HasColumnName("afectoRetencionIGV");
+            entity.Property(e => e.Cci)
+                .HasMaxLength(255)
+                .HasColumnName("CCI");
+            entity.Property(e => e.CodBanco)
+                .HasColumnType("int(11)")
+                .HasColumnName("codBanco");
+            entity.Property(e => e.ComercialCargo)
+                .HasMaxLength(255)
+                .HasColumnName("comercial_cargo");
+            entity.Property(e => e.ComercialCelular)
+                .HasMaxLength(255)
+                .HasColumnName("comercial_celular");
+            entity.Property(e => e.ComercialEmail)
+                .HasMaxLength(255)
+                .HasColumnName("comercial_email");
+            entity.Property(e => e.ComercialNombre)
+                .HasMaxLength(255)
+                .HasColumnName("comercial_nombre");
+            entity.Property(e => e.ComercialTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("comercial_telefono");
+            entity.Property(e => e.ComprobanteExonera)
+                .HasMaxLength(255)
+                .HasColumnName("comprobanteExonera");
+            entity.Property(e => e.ContactoCobranzaCargo)
+                .HasMaxLength(255)
+                .HasColumnName("contactoCobranza_cargo");
+            entity.Property(e => e.ContactoCobranzaCelular)
+                .HasMaxLength(255)
+                .HasColumnName("contactoCobranza_celular");
+            entity.Property(e => e.ContactoCobranzaEmail)
+                .HasMaxLength(255)
+                .HasColumnName("contactoCobranza_email");
+            entity.Property(e => e.ContactoCobranzaNombre)
+                .HasMaxLength(255)
+                .HasColumnName("contactoCobranza_nombre");
+            entity.Property(e => e.ContactoCobranzaTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("contactoCobranza_telefono");
+            entity.Property(e => e.CuentaBancariaNumerocuenta)
+                .HasMaxLength(255)
+                .HasColumnName("cuentaBancaria_numerocuenta");
+            entity.Property(e => e.CuentaBancariaTitulo)
+                .HasMaxLength(255)
+                .HasColumnName("cuentaBancaria_titulo");
+            entity.Property(e => e.ExoneradoRenta4taCat)
+                .HasColumnType("int(11)")
+                .HasColumnName("exoneradoRenta4taCat");
+            entity.Property(e => e.Fecha)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha");
+            entity.Property(e => e.FiscalCodigopostal)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_codigopostal");
+            entity.Property(e => e.FiscalDireccion)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_direccion");
+            entity.Property(e => e.FiscalDistrito)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_distrito");
+            entity.Property(e => e.FiscalDni)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_dni");
+            entity.Property(e => e.FiscalFax)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_fax");
+            entity.Property(e => e.FiscalNombre)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_nombre");
+            entity.Property(e => e.FiscalRubro)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_rubro");
+            entity.Property(e => e.FiscalRut)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_rut");
+            entity.Property(e => e.FiscalTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("fiscal_telefono");
+            entity.Property(e => e.FiscalTipopersona)
+                .HasColumnType("int(11)")
+                .HasColumnName("fiscal_tipopersona");
+            entity.Property(e => e.OtroTiempoPago)
+                .HasMaxLength(255)
+                .HasColumnName("otroTiempoPago");
+            entity.Property(e => e.PorcentajeDetraccion)
+                .HasColumnType("int(11)")
+                .HasColumnName("porcentajeDetraccion");
+            entity.Property(e => e.SolicitadoPor)
+                .HasMaxLength(255)
+                .HasColumnName("solicitadoPor");
+            entity.Property(e => e.TiempoPago)
+                .HasColumnType("int(11)")
+                .HasColumnName("tiempoPago");
+            entity.Property(e => e.TipoDocElectronicoRemite)
+                .HasColumnType("int(11)")
+                .HasColumnName("tipoDocElectronicoRemite");
+            entity.Property(e => e.TipoMonedaCompra)
+                .HasColumnType("int(11)")
+                .HasColumnName("tipoMonedaCompra");
+
+            entity.HasOne(d => d.CodBancoNavigation).WithMany()
+                .HasForeignKey(d => d.CodBanco)
+                .HasConstraintName("FK_codBanco");
+
+            entity.HasOne(d => d.TiempoPagoNavigation).WithMany()
+                .HasForeignKey(d => d.TiempoPago)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tiempoPago");
+
+            entity.HasOne(d => d.TipoDocElectronicoRemiteNavigation).WithMany()
+                .HasForeignKey(d => d.TipoDocElectronicoRemite)
+                .HasConstraintName("FK_tipoDocElectronico");
+
+            entity.HasOne(d => d.TipoMonedaCompraNavigation).WithMany()
+                .HasForeignKey(d => d.TipoMonedaCompra)
+                .HasConstraintName("FK_tipoMonedaCompra");
         });
 
         modelBuilder.Entity<TbFormServicio>(entity =>
