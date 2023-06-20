@@ -8,6 +8,7 @@ using CentralParkingSystem.Models;
 using ApiBD.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
+using CentralParkingSystem.DTOs;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -115,13 +116,30 @@ public class HomeController : Controller
     }
 
     // ============================ Administracion de estacionamiento ============================
-    public async Task<IActionResult> Adminestacionamiento(int id)
+    public async Task<IActionResult> Adminestacionamiento()
     {
-        /*
+        int contador = 1;
+        ServicioDetalleDtos objeto = new ServicioDetalleDtos();
+        
         var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
-        var servicio =await adminiestacionamiento.obtenerServicioDetalle(id);
-        */
-        return View();
+        var servicio = await adminiestacionamiento.obtenerServicioDetalle(1);
+        foreach (var valor in servicio)
+        {
+            if (contador == 1)
+            {
+                objeto.titulo = "ADMINISTRACIÓN DE ESTACIONAMIENTO";
+                objeto.subtitulo1 = valor.Subtitulo;
+                objeto.descripcion1 = valor.Descripcion;
+                contador++;
+            }
+            else
+            {
+                objeto.subtitulo2 = valor.Subtitulo;
+                objeto.descripcion2 = valor.Descripcion;
+            }
+
+        }
+        return View(objeto);
     }
 
     public IActionResult Cotizacionadministracion()
@@ -130,11 +148,29 @@ public class HomeController : Controller
     }
 
     // ============================ Abonados ============================
-    public async Task<IActionResult> Abonados(int id)
+    public async Task<IActionResult> Abonados()
     {
-        //var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
-        //var servicio = await adminiestacionamiento.obtenerServicioDetalle(id);
-        return View();
+        int contador = 1;
+        ServicioDetalleDtos objeto = new ServicioDetalleDtos();
+        var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
+        var servicio = await adminiestacionamiento.obtenerServicioDetalle(1);
+        foreach (var valor in servicio)
+        {
+            if (contador == 1)
+            {
+                objeto.titulo = "GESTIÓN DE ABONADOS";
+                objeto.subtitulo1 = valor.Subtitulo;
+                objeto.descripcion1 = valor.Descripcion;
+                contador++;
+            }
+            else
+            {
+                objeto.subtitulo2 = valor.Subtitulo;
+                objeto.descripcion2 = valor.Descripcion;
+            }
+            
+        }
+        return View(objeto);
     }
     public IActionResult Cotizacionabonados()
     {
@@ -200,7 +236,7 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            string mensaje = tbFormContactano.Mensaje;
+            string mensaje = "Recibimos su solicitud llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearContactoRegistro(tbFormContactano);
             enviarEmail(tbFormContactano.CorreoElectronico,mensaje);
 
@@ -222,7 +258,18 @@ public class HomeController : Controller
 
     public IActionResult Postulacion(int idpostulacion)
     {
-        return View();
+        TbFormTbcnosotro form = new TbFormTbcnosotro();
+        if (idpostulacion == 1)
+        {
+            form.Puesto = "Agente de prevención";
+        }else if(idpostulacion==2){
+            form.Puesto = "Valet Parking"  ;
+        }
+        else
+        {
+            form.Puesto = "Agente Servicio" ;
+        }
+        return View(form);
     }
 
     // POST: Postulacion/Create
@@ -236,7 +283,7 @@ public class HomeController : Controller
         
         if (ModelState.IsValid)
         {
-            string mensaje= "Su solicitud de postulación ah sido registrada";
+            string mensaje= $"Su solicitud de postulación para, {tbFormTbcnosotro.Puesto} ah sido registrada";
             await postulacion.crearPostulacion(tbFormTbcnosotro);
             enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje);
 

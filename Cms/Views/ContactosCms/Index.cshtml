@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ApiBD.Models.TbFormContactano>
+
+@{
+    ViewData["Title"] = "Contactos Registrados";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Contactos que solicitan nuestro servicio</h4>
+                        @*<a asp-action="Create/@ViewBag.vPiepaginaId" class="btn btn-primary "><i class="ti-plus"></i> Nuevo</a>*@
+                        <a class="btn btn-primary " href="@Url.Action("Create", "ContactosCms", new { codigo = ViewBag.vServicioId })">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TipoServicio)
+                                    </th>
+                                  
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Nombre)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mensaje)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CorreoElectronico)
+                                    </th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TipoServicio)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Mensaje)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                                        </td>
+                                     
+                                        <td>
+                                            @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                                            <a asp-action="Edit" asp-route-id="@item.Id" asp-route-codigo="@ViewBag.vServicioId" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" asp-route-codigo="@ViewBag.vServicioId" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" asp-route-codigo="@ViewBag.vServicioId" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                          
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a asp-controller="ContactosCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

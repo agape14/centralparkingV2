@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CentralParkingSystem.DTOs.ServicioDetalleDtos;
+
+@{
     ViewData["Title"] = "Abonados";
 }
 
@@ -20,11 +22,11 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <h6 class="text-primary text-uppercase mb-2">GESTIÓN DE ABONADOS</h6>
-                <h1 class="display-6 mb-4">¿Qué es?</h1>
-                <p class="mb-4">Es una suscripción para poder tener un espacio donde estacionar en un espacio específico de una localidad específica, la cual puede ser contratada por un mes como mínimo.</p>
-                <h1 class="display-6 mb-4">¿Dónde usarlo?</h1>
-                <p class="mb-4">Puede ser usado en edificios, universidades, colegios, empresas, hoteles, playas de estacionamiento privadas, centros comerciales y/ o cualquier espacio que cuente con espacios para rentar.</p>
+                <h6 class="text-primary text-uppercase mb-2">@Model.titulo</h6>
+                <h1 class="display-6 mb-4">@Model.subtitulo1</h1>
+                <p class="mb-4">@Model.descripcion1</p>
+                <h1 class="display-6 mb-4">@Model.subtitulo2</h1>
+                <p class="mb-4">@Model.descripcion2</p>
                 <form>
                     <div class="row g-3">
                         <div class="col-12">

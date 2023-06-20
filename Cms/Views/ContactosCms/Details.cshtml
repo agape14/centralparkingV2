@@ -1,0 +1,54 @@
+﻿@model ApiBD.Models.TbFormContactano
+
+@{
+    ViewData["Title"] = "Contacto";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TipoServicio)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TipoServicio)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Nombre)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Mensaje)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Mensaje)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CorreoElectronico)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CorreoElectronico)
+                        </dd>
+                     
+                    </dl>
+                    <div>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id" asp-route-codigo="@ViewBag.vServicioId"><i class="ti-save"></i> Editar</a> |
+                        <a class="btn btn-danger" asp-action="Index" asp-route-codigo="@ViewBag.vServicioId"><i class="ti-back-left"></i> Regresar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

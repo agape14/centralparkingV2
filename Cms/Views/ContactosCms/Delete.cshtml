@@ -1,0 +1,76 @@
+﻿@model ApiBD.Models.TbFormContactano
+
+@{
+    ViewData["Title"] = "Eliminar Contacto ";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"] </h4>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="Delete">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="TipoServicio" class="control-label"></label>
+                                            <input asp-for="TipoServicio" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Nombre" class="control-label"></label>
+                                            <input asp-for="Nombre" class="form-control" />
+                                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Asunto" class="control-label"></label>
+                                            <input asp-for="Asunto" class="form-control" />
+                                            <span asp-validation-for="Asunto" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Mensaje" class="control-label"></label>
+                                            <textarea asp-for="Mensaje" class="form-control" rows="4" cols="50" resize="both"></textarea>
+                                            <span asp-validation-for="Mensaje" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="CorreoElectronico" class="control-label"></label>
+                                            <input asp-for="CorreoElectronico" class="form-control" />
+                                            <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    @*<input type="submit" value="Save" class="btn btn-primary" />*@
+
+                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button>
+                                    <a class="btn btn-danger" asp-action="Index" asp-route-codigo="@ViewBag.vServicioId"><i class="ti-back-left"></i> Regresar</a>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

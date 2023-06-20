@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CentralParkingSystem.DTOs.ServicioDetalleDtos;
+@{
     ViewData["Title"] = "Administracion de Estacionamiento";
 }
 <!-- Page Header Start -->
@@ -19,11 +20,11 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <h6 class="text-primary text-uppercase mb-2">ADMINISTRACIÓN DE ESTACIONAMIENTO</h6>
-                <h1 class="display-6 mb-4">¿Qué es?</h1>
-                <p class="mb-4">Es un servicio integral donde se garantiza el diseño e implementación de esquemas operativos que controlen y administren eficientemente el flujo vehicular de la playa de estacionamiento, estableciendo políticas tarifarias para el cobro del servicio.</p>
-                <h1 class="display-6 mb-4">¿Dónde usarlo?</h1>
-                <p class="mb-4">Puede ser usado en estadios, teatros, edificios, universidades, colegios, empresas, hoteles, playas de estacionamiento privadas, centros comerciales y/ o cualquier espacio que cuente con un estacionamiento para administrar.</p>
+                <h6 class="text-primary text-uppercase mb-2">@Model.titulo</h6>
+                <h1 class="display-6 mb-4">@Model.subtitulo1</h1>
+                <p class="mb-4">@Model.descripcion1</p>
+                <h1 class="display-6 mb-4">@Model.subtitulo2</h1>
+                <p class="mb-4">@Model.descripcion2/p>
                 <form>
                     <div class="row g-3">
                         <div class="col-12">

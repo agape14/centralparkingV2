@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ApiBD.Models.TbIndServiciocab>
+﻿@model IEnumerable<ApiBD.Models.TbServDetalle>
 
 @{
     ViewData["Title"] = "Servicios Inicio";
@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">@ViewData["Title"]</h4>
-                        <a class="btn btn-primary " href="/IServiciosCms/Create">
+                        <a class="btn btn-primary " href="/ServicioDetalleCms/Create">
                             <i class="ti-plus"></i>  Nuevo
                         </a>
                     </div>
@@ -21,22 +21,13 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TituloGrande)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.TituloPeque)
+                                        @Html.DisplayNameFor(model => model.Subtitulo)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Descripcion)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.ImagenGrande)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.ImagenPeque)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Ruta)
+                                        @Html.DisplayNameFor(model => model.IdBtnSolicitalo)
                                     </th>
                                     <th></th>
                                 </tr>
@@ -46,22 +37,13 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TituloGrande)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TituloPeque)
+                                            @Html.DisplayFor(modelItem => item.Subtitulo)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Descripcion)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ImagenGrande)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ImagenPeque)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ruta)
+                                            @Html.DisplayFor(modelItem => item.IdBtnSolicitalo)
                                         </td>
                                         <td>
                                             @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -70,19 +52,18 @@
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
                                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
                                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
-                                            <a href="@Url.Action("Index", "IserviciosdetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
+                        <a asp-controller="ServicioCabeceraCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 
 

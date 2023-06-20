@@ -1,0 +1,73 @@
+﻿@model ApiBD.Models.TbServCabecera
+
+@{
+    ViewData["Title"] = "Cabecera Servicio";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="/IServicios">Servicios</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "IServiciosdet", new { codigo = ViewBag.vServicioId }) ">Detalle</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+
+    </ol>
+</nav>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Titulo)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Titulo)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.DescCorto)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.DescCorto)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.IdBtnSolicitar)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.IdBtnSolicitar)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.IdBtnConoce)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.IdBtnConoce)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Imagen)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Imagen)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.IsMenu)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.IsMenu)
+                        </dd>
+                    </dl>
+                    <div>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id" asp-route-codigo="@ViewBag.vServicioId"><i class="ti-save"></i> Editar</a> |
+                        <a class="btn btn-danger" asp-action="Index" asp-route-codigo="@ViewBag.vServicioId"><i class="ti-back-left"></i> Regresar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

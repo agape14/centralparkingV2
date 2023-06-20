@@ -2,32 +2,31 @@
 using System.Net;
 using System.Text.Json;
 
-namespace CentralParkingSystem.Services
+namespace Cms.ServiceCms
 {
-    public class ContactanoService
+    public class ServicioCabeceraCmsService
     {
         private readonly HttpClient _httpClient;
-
-        public ContactanoService(HttpClient httpClient)
+        public ServicioCabeceraCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<List<TbFormContactano>> ListarContactos()
+        public async Task<List<TbServCabecera>> listarServiciosCabecera()
         {
-            List<TbFormContactano> contactos = new List<TbFormContactano>();
+            List<TbServCabecera> servicioCabecera = new List<TbServCabecera>();
 
             try
             {
-                var url = "https://localhost:7260/api/contactanos";
+                var url = "https://localhost:7260/api/servicioCabecera/cms";
 
                 var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    contactos = JsonSerializer.Deserialize<List<TbFormContactano>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return contactos;
+                    servicioCabecera = JsonSerializer.Deserialize<List<TbServCabecera>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return servicioCabecera;
                 }
                 else
                 {
@@ -39,23 +38,23 @@ namespace CentralParkingSystem.Services
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return contactos;
+            return servicioCabecera;
         }
 
-        public async Task<TbFormContactano> obtenerContactoDetalle(int id)
+        public async Task<TbServCabecera> obtenerServicioCabecera(int id)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
-                var contacto = await response.Content.ReadFromJsonAsync<TbFormContactano>();
-                return contacto;
+                var servicio = await response.Content.ReadFromJsonAsync<TbServCabecera>();
+                return servicio;
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new Exception("La característica no fue encontrada.");
+                throw new Exception("El servicio no fue encontrado.");
             }
             else
             {
@@ -64,16 +63,16 @@ namespace CentralParkingSystem.Services
             }
         }
 
-        public async Task<TbFormContactano> crearContactoRegistro(TbFormContactano tbFormContactano)
+        public async Task<TbServCabecera> crearServicioCabecera(TbServCabecera tbServCabecera)
         {
-            var url = "https://localhost:7260/api/contactanos";
+            var url = "https://localhost:7260/api/servicioCabecera";
 
-            var response = await _httpClient.PostAsJsonAsync(url, tbFormContactano);
+            var response = await _httpClient.PostAsJsonAsync(url, tbServCabecera);
 
             if (response.IsSuccessStatusCode)
             {
-                var contacto = await response.Content.ReadFromJsonAsync<TbFormContactano>();
-                return contacto;
+                var createdServicio = await response.Content.ReadFromJsonAsync<TbServCabecera>();
+                return createdServicio;
             }
             else
             {
@@ -82,16 +81,16 @@ namespace CentralParkingSystem.Services
             }
         }
 
-        public async Task<TbFormContactano> modificarContacto(int id, TbFormContactano tbFormContactano)
+        public async Task<TbServCabecera> modificarServicioCabecera(int id, TbServCabecera tbServCabecera)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
 
-            var response = await _httpClient.PutAsJsonAsync(url, tbFormContactano);
+            var response = await _httpClient.PutAsJsonAsync(url, tbServCabecera);
 
             if (response.IsSuccessStatusCode)
             {
-                var updatedContacto = await response.Content.ReadFromJsonAsync<TbFormContactano>();
-                return updatedContacto;
+                var modificarServicioCabecera = await response.Content.ReadFromJsonAsync<TbServCabecera>();
+                return modificarServicioCabecera;
             }
             else
             {
@@ -100,9 +99,9 @@ namespace CentralParkingSystem.Services
             }
         }
 
-        public async Task<bool> eliminarContacto(int id)
+        public async Task<bool> eliminarServicioCabecera(int id)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -120,6 +119,6 @@ namespace CentralParkingSystem.Services
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
         }
+
     }
 }
-
