@@ -7,6 +7,8 @@ public partial class TbConfModalcab
 {
     public int Id { get; set; }
 
+    public int? IdDetallePie { get; set; }
+
     public string Titulo { get; set; }
 
     public string BtnRuta { get; set; }

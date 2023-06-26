@@ -9,6 +9,7 @@ using ApiBD.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
 using CentralParkingSystem.DTOs;
+using System.Diagnostics.Contracts;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -96,7 +97,36 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ParkingCard(TbFormParkingcard tbFormParkingcard)
+    {
+        var servicio = new ParkingCardService(new HttpClient());
+        if (ModelState.IsValid)
+        {
+         
+            try
+            {
+                string mensaje = "Notificamos que hemos registrado su solicitud en parkingcardvip.";
+                tbFormParkingcard.FecRegistro = DateTime.Now;
+                tbFormParkingcard.Notificado = 1;
+                await servicio.crearParkingCardRegistro(tbFormParkingcard);
+                enviarEmail(tbFormParkingcard.Correo, mensaje);
+               
+            }catch (Exception ex)
+            {
+                // Registrar un mensaje de error o lanzar una excepción o ambos.
+                Console.WriteLine("Ocurrió un error al enviar el correo electrónico: " + ex.Message);
+                throw;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View(tbFormParkingcard);
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -298,25 +328,25 @@ public class HomeController : Controller
         return View();
     }
     
-    /*
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Proveedores(TbProvRegistro tbProvRegistro)
+    public async Task<IActionResult> Proveedores(TbFormProveedore tbFormProveedore)
     {
-       // var proveedor = new ProveedorService(new HttpClient());
+        var proveedor = new ProveedorService(new HttpClient());
 
         if (ModelState.IsValid)
         {
-            string mensaje = "Su solicitud de postulación ah sido registrada";
-            //await proveedor.crearProveedor(tbProvRegistro);
-            enviarEmail(tbProvRegistro., mensaje);
+           // string mensaje = "Su solicitud de postulación ah sido registrada";
+            await proveedor.crearProveedorRegistro(tbFormProveedore);
+         //   enviarEmail(tbFormProveedore., mensaje);
 
             return RedirectToAction("Index", "Home");
         }
-        return View(tbProvRegistro);
+        return View(tbFormProveedore);
 
     }
-    */
+    
     // ============================ Hoja Reclamaciones ============================ 
     public IActionResult HojaReclamaciones()
     {

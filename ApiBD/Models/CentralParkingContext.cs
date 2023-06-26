@@ -57,6 +57,8 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbFormContactano> TbFormContactanos { get; set; }
 
+    public virtual DbSet<TbFormParkingcard> TbFormParkingcards { get; set; }
+
     public virtual DbSet<TbFormProveedore> TbFormProveedores { get; set; }
 
     public virtual DbSet<TbFormServicio> TbFormServicios { get; set; }
@@ -87,22 +89,8 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbTraPuesto> TbTraPuestos { get; set; }
 
-    //**************IMPORTANTEEE
-    //line 78
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
-
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    if (!optionsBuilder.IsConfigured)
-    //    {
-
-    //    }
-    //}
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    //    => optionsBui
-
+     => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -291,6 +279,9 @@ public partial class CentralParkingContext : DbContext
             entity.Property(e => e.Estado)
                 .HasColumnType("int(11)")
                 .HasColumnName("estado");
+            entity.Property(e => e.IdDetallePie)
+                .HasColumnType("int(11)")
+                .HasColumnName("idDetallePie");
             entity.Property(e => e.Titulo)
                 .HasMaxLength(250)
                 .HasColumnName("titulo");
@@ -800,145 +791,169 @@ public partial class CentralParkingContext : DbContext
                 .HasConstraintName("FK_FormContactanos_IndServicioDet");
         });
 
+        modelBuilder.Entity<TbFormParkingcard>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("tb_form_parkingcard")
+                .HasCharSet("utf8")
+                .UseCollation("utf8_general_ci");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CodSeguridad)
+                .HasMaxLength(20)
+                .IsFixedLength()
+                .HasComment("codigo de seguridad aleatorio que genera el sistema de 20 caracteres")
+                .HasColumnName("codSeguridad");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(180)
+                .HasComment("correo del usuario")
+                .HasColumnName("correo");
+            entity.Property(e => e.Dni)
+                .HasMaxLength(8)
+                .IsFixedLength()
+                .HasComment("dni del usuario")
+                .HasColumnName("dni");
+            entity.Property(e => e.FecRegistro)
+                .HasComment("fecha actual de registro")
+                .HasColumnType("datetime")
+                .HasColumnName("fecRegistro");
+            entity.Property(e => e.Notificado)
+                .HasComment("valida si esta notificacion fue verificado")
+                .HasColumnType("int(11)")
+                .HasColumnName("notificado");
+        });
+
         modelBuilder.Entity<TbFormProveedore>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("tb_form_proveedores");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasIndex(e => e.CodBanco, "FK_codBanco");
+            entity.ToTable("tb_form_proveedores");
 
-            entity.HasIndex(e => e.TiempoPago, "FK_tiempoPago");
+            entity.HasIndex(e => e.CodCuentaBancaria, "FK_tipoBanco");
 
-            entity.HasIndex(e => e.TipoDocElectronicoRemite, "FK_tipoDocElectronico");
-
-            entity.HasIndex(e => e.TipoMonedaCompra, "FK_tipoMonedaCompra");
-
-            entity.Property(e => e.AfectoDetraccionIgv)
+            entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
-                .HasColumnName("afectoDetraccionIGV");
-            entity.Property(e => e.AfectoRenta4taCat)
+                .HasColumnName("id");
+            entity.Property(e => e.AfectoDetraccionDeIgv).HasColumnName("afectoDetraccionDeIGV");
+            entity.Property(e => e.AfectoRetencionDeIgv).HasColumnName("afectoRetencionDeIGV");
+            entity.Property(e => e.CcCargo)
+                .HasMaxLength(255)
+                .HasColumnName("cc_cargo");
+            entity.Property(e => e.CcCelular)
+                .HasMaxLength(255)
+                .HasColumnName("cc_celular");
+            entity.Property(e => e.CcEmail)
+                .HasMaxLength(255)
+                .HasColumnName("cc_email");
+            entity.Property(e => e.CcNombre)
+                .HasMaxLength(255)
+                .HasColumnName("cc_nombre");
+            entity.Property(e => e.CcTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("cc_telefono");
+            entity.Property(e => e.CcobranzaCargo)
+                .HasMaxLength(255)
+                .HasColumnName("ccobranza_cargo");
+            entity.Property(e => e.CcobranzaCelular)
+                .HasMaxLength(255)
+                .HasColumnName("ccobranza_celular");
+            entity.Property(e => e.CcobranzaEmail)
+                .HasMaxLength(255)
+                .HasColumnName("ccobranza_email");
+            entity.Property(e => e.CcobranzaNombre)
+                .HasMaxLength(255)
+                .HasColumnName("ccobranza_nombre");
+            entity.Property(e => e.CcobranzaTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("ccobranza_telefono");
+            entity.Property(e => e.CodCuentaBancaria)
                 .HasColumnType("int(11)")
-                .HasColumnName("afectoRenta4taCat");
-            entity.Property(e => e.AfectoRetencionIgv)
+                .HasColumnName("codCuentaBancaria");
+            entity.Property(e => e.ComprobanteExoneracion)
+                .HasMaxLength(255)
+                .HasColumnName("comprobanteExoneracion");
+            entity.Property(e => e.CuentaBancaria)
+                .HasMaxLength(255)
+                .HasColumnName("cuentaBancaria");
+            entity.Property(e => e.CuentaBancariaCci)
+                .HasMaxLength(255)
+                .HasColumnName("cuentaBancariaCCI");
+            entity.Property(e => e.CuentaBancariaTitular)
+                .HasMaxLength(255)
+                .HasColumnName("cuentaBancariaTitular");
+            entity.Property(e => e.DatosCompraAmbas).HasColumnName("datosCompraAmbas");
+            entity.Property(e => e.DatosCompraDolares).HasColumnName("datosCompraDolares");
+            entity.Property(e => e.DatosCompraSoles).HasColumnName("datosCompraSoles");
+            entity.Property(e => e.FCodigoPostal)
+                .HasMaxLength(255)
+                .HasColumnName("f_codigoPostal");
+            entity.Property(e => e.FDireccion)
+                .HasMaxLength(255)
+                .HasColumnName("f_direccion");
+            entity.Property(e => e.FDistrito)
+                .HasMaxLength(255)
+                .HasColumnName("f_distrito");
+            entity.Property(e => e.FDni)
+                .HasMaxLength(255)
+                .HasColumnName("f_dni");
+            entity.Property(e => e.FFax)
+                .HasMaxLength(255)
+                .HasColumnName("f_fax");
+            entity.Property(e => e.FNombre)
+                .HasMaxLength(255)
+                .HasColumnName("f_nombre");
+            entity.Property(e => e.FRubro)
+                .HasMaxLength(255)
+                .HasColumnName("f_rubro");
+            entity.Property(e => e.FRuc)
+                .HasMaxLength(255)
+                .HasColumnName("f_ruc");
+            entity.Property(e => e.FTelefono)
+                .HasMaxLength(255)
+                .HasColumnName("f_telefono");
+            entity.Property(e => e.FTipoPersona)
                 .HasColumnType("int(11)")
-                .HasColumnName("afectoRetencionIGV");
-            entity.Property(e => e.Cci)
-                .HasMaxLength(255)
-                .HasColumnName("CCI");
-            entity.Property(e => e.CodBanco)
-                .HasColumnType("int(11)")
-                .HasColumnName("codBanco");
-            entity.Property(e => e.ComercialCargo)
-                .HasMaxLength(255)
-                .HasColumnName("comercial_cargo");
-            entity.Property(e => e.ComercialCelular)
-                .HasMaxLength(255)
-                .HasColumnName("comercial_celular");
-            entity.Property(e => e.ComercialEmail)
-                .HasMaxLength(255)
-                .HasColumnName("comercial_email");
-            entity.Property(e => e.ComercialNombre)
-                .HasMaxLength(255)
-                .HasColumnName("comercial_nombre");
-            entity.Property(e => e.ComercialTelefono)
-                .HasMaxLength(255)
-                .HasColumnName("comercial_telefono");
-            entity.Property(e => e.ComprobanteExonera)
-                .HasMaxLength(255)
-                .HasColumnName("comprobanteExonera");
-            entity.Property(e => e.ContactoCobranzaCargo)
-                .HasMaxLength(255)
-                .HasColumnName("contactoCobranza_cargo");
-            entity.Property(e => e.ContactoCobranzaCelular)
-                .HasMaxLength(255)
-                .HasColumnName("contactoCobranza_celular");
-            entity.Property(e => e.ContactoCobranzaEmail)
-                .HasMaxLength(255)
-                .HasColumnName("contactoCobranza_email");
-            entity.Property(e => e.ContactoCobranzaNombre)
-                .HasMaxLength(255)
-                .HasColumnName("contactoCobranza_nombre");
-            entity.Property(e => e.ContactoCobranzaTelefono)
-                .HasMaxLength(255)
-                .HasColumnName("contactoCobranza_telefono");
-            entity.Property(e => e.CuentaBancariaNumerocuenta)
-                .HasMaxLength(255)
-                .HasColumnName("cuentaBancaria_numerocuenta");
-            entity.Property(e => e.CuentaBancariaTitulo)
-                .HasMaxLength(255)
-                .HasColumnName("cuentaBancaria_titulo");
-            entity.Property(e => e.ExoneradoRenta4taCat)
-                .HasColumnType("int(11)")
-                .HasColumnName("exoneradoRenta4taCat");
+                .HasColumnName("f_tipoPersona");
             entity.Property(e => e.Fecha)
                 .HasColumnType("datetime")
                 .HasColumnName("fecha");
-            entity.Property(e => e.FiscalCodigopostal)
+            entity.Property(e => e.InformacionPagoProveedor30dias).HasColumnName("informacionPagoProveedor30dias");
+            entity.Property(e => e.InformacionPagoProveedor60dias).HasColumnName("informacionPagoProveedor60dias");
+            entity.Property(e => e.InformacionPagoProveedorEfectivo).HasColumnName("informacionPagoProveedorEfectivo");
+            entity.Property(e => e.InformacionPagoProveedorOtros)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_codigopostal");
-            entity.Property(e => e.FiscalDireccion)
+                .HasColumnName("informacionPagoProveedorOtros");
+            entity.Property(e => e.InformacionPagoProveedorTranferenciaBancaria).HasColumnName("informacionPagoProveedorTranferenciaBancaria");
+            entity.Property(e => e.PorcentajeDetraccion).HasColumnName("porcentajeDetraccion");
+            entity.Property(e => e.RlCargo)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_direccion");
-            entity.Property(e => e.FiscalDistrito)
+                .HasColumnName("rl_cargo");
+            entity.Property(e => e.RlCelular)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_distrito");
-            entity.Property(e => e.FiscalDni)
+                .HasColumnName("rl_celular");
+            entity.Property(e => e.RlEmail)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_dni");
-            entity.Property(e => e.FiscalFax)
+                .HasColumnName("rl_email");
+            entity.Property(e => e.RlNombre)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_fax");
-            entity.Property(e => e.FiscalNombre)
+                .HasColumnName("rl_nombre");
+            entity.Property(e => e.RlTelefono)
                 .HasMaxLength(255)
-                .HasColumnName("fiscal_nombre");
-            entity.Property(e => e.FiscalRubro)
-                .HasMaxLength(255)
-                .HasColumnName("fiscal_rubro");
-            entity.Property(e => e.FiscalRut)
-                .HasMaxLength(255)
-                .HasColumnName("fiscal_rut");
-            entity.Property(e => e.FiscalTelefono)
-                .HasMaxLength(255)
-                .HasColumnName("fiscal_telefono");
-            entity.Property(e => e.FiscalTipopersona)
-                .HasColumnType("int(11)")
-                .HasColumnName("fiscal_tipopersona");
-            entity.Property(e => e.OtroTiempoPago)
-                .HasMaxLength(255)
-                .HasColumnName("otroTiempoPago");
-            entity.Property(e => e.PorcentajeDetraccion)
-                .HasColumnType("int(11)")
-                .HasColumnName("porcentajeDetraccion");
+                .HasColumnName("rl_telefono");
             entity.Property(e => e.SolicitadoPor)
                 .HasMaxLength(255)
                 .HasColumnName("solicitadoPor");
-            entity.Property(e => e.TiempoPago)
-                .HasColumnType("int(11)")
-                .HasColumnName("tiempoPago");
-            entity.Property(e => e.TipoDocElectronicoRemite)
-                .HasColumnType("int(11)")
-                .HasColumnName("tipoDocElectronicoRemite");
-            entity.Property(e => e.TipoMonedaCompra)
-                .HasColumnType("int(11)")
-                .HasColumnName("tipoMonedaCompra");
+            entity.Property(e => e.TipoDocumentoFactura).HasColumnName("tipoDocumentoFactura");
+            entity.Property(e => e.TipoDocumentoOtros).HasColumnName("tipoDocumentoOtros");
+            entity.Property(e => e.TipoDocumentoReciboHonorarios).HasColumnName("tipoDocumentoReciboHonorarios");
 
-            entity.HasOne(d => d.CodBancoNavigation).WithMany()
-                .HasForeignKey(d => d.CodBanco)
-                .HasConstraintName("FK_codBanco");
-
-            entity.HasOne(d => d.TiempoPagoNavigation).WithMany()
-                .HasForeignKey(d => d.TiempoPago)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tiempoPago");
-
-            entity.HasOne(d => d.TipoDocElectronicoRemiteNavigation).WithMany()
-                .HasForeignKey(d => d.TipoDocElectronicoRemite)
-                .HasConstraintName("FK_tipoDocElectronico");
-
-            entity.HasOne(d => d.TipoMonedaCompraNavigation).WithMany()
-                .HasForeignKey(d => d.TipoMonedaCompra)
-                .HasConstraintName("FK_tipoMonedaCompra");
+            entity.HasOne(d => d.CodCuentaBancariaNavigation).WithMany(p => p.TbFormProveedores)
+                .HasForeignKey(d => d.CodCuentaBancaria)
+                .HasConstraintName("FK_tipoBanco");
         });
 
         modelBuilder.Entity<TbFormServicio>(entity =>

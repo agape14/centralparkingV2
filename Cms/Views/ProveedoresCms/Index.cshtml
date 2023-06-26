@@ -1,0 +1,160 @@
+﻿@model IEnumerable<ApiBD.Models.TbFormProveedore>;
+
+
+@{
+    ViewData["Title"] = "Listado de Proveedores";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <a class="btn btn-primary " href="/ProveedoresCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Fecha)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SolicitadoPor)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FRuc)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FDni)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FNombre)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FDireccion)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FDistrito)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FTelefono)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FRubro)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FTipoPersona)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FCodigoPostal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FFax)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CcNombre)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CcCargo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CcCelular)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CcTelefono)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CcEmail)
+                                    </th>
+                                  
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Fecha)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SolicitadoPor)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FRuc)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FDni)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FNombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FDireccion)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FDistrito)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FTelefono)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FRubro)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FTipoPersona)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FCodigoPostal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FFax)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CcNombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CcCargo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CcCelular)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CcTelefono)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CcEmail)
+                                        </td>
+                                   
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a asp-controller="ProveedoresCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

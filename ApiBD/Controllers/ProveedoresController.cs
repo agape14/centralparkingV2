@@ -17,16 +17,16 @@ namespace ApiBD.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TbProvRegistro>>> Get()
+        public async Task<ActionResult<IEnumerable<TbFormProveedore>>> Get()
         {
-            var proveedores = await _dbContext.TbProvRegistros.ToListAsync();
+            var proveedores = await _dbContext.TbFormProveedores.ToListAsync();
             return proveedores;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TbProvRegistro>> GetById(int id)
+        public async Task<ActionResult<TbFormProveedore>> GetById(int id)
         {
-            var proveedor = await _dbContext.TbProvRegistros.FindAsync(id);
+            var proveedor = await _dbContext.TbFormProveedores.FindAsync(id);
             if (proveedor == null)
             {
                 return NotFound();
@@ -35,15 +35,15 @@ namespace ApiBD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TbProvRegistro>> Create(TbProvRegistro proveedor)
+        public async Task<ActionResult<TbFormProveedore>> Create(TbFormProveedore proveedor)
         {
-            _dbContext.TbProvRegistros.Add(proveedor);
+            _dbContext.TbFormProveedores.Add(proveedor);
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = proveedor.Id }, proveedor);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, TbProvRegistro proveedor)
+        public async Task<IActionResult> Update(int id, TbFormProveedore proveedor)
         {
             if (id != proveedor.Id)
             {
@@ -65,25 +65,25 @@ namespace ApiBD.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok(proveedor);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var proveedor = await _dbContext.TbProvRegistros.FindAsync(id);
+            var proveedor = await _dbContext.TbFormProveedores.FindAsync(id);
             if (proveedor == null)
             {
                 return NotFound();
             }
-            _dbContext.TbProvRegistros.Remove(proveedor);
+            _dbContext.TbFormProveedores.Remove(proveedor);
             await _dbContext.SaveChangesAsync();
             return NoContent();
         }
 
         private bool ProveedorExists(int id)
         {
-            return _dbContext.TbProvRegistros.Any(e => e.Id == id);
+            return _dbContext.TbFormProveedores.Any(e => e.Id == id);
         }
     }
 }

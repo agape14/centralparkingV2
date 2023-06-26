@@ -5,83 +5,103 @@ namespace ApiBD.Models;
 
 public partial class TbFormProveedore
 {
-    public DateTime Fecha { get; set; }
+    public int Id { get; set; }
+
+    public DateTime? Fecha { get; set; }
 
     public string SolicitadoPor { get; set; }
 
-    public string FiscalRut { get; set; }
+    public string FRuc { get; set; }
 
-    public string FiscalDni { get; set; }
+    public string FDni { get; set; }
 
-    public string FiscalNombre { get; set; }
+    public string FNombre { get; set; }
 
-    public string FiscalDireccion { get; set; }
+    public string FDireccion { get; set; }
 
-    public string FiscalDistrito { get; set; }
+    public string FDistrito { get; set; }
 
-    public string FiscalTelefono { get; set; }
+    public string FTelefono { get; set; }
 
-    public string FiscalRubro { get; set; }
+    public string FRubro { get; set; }
 
-    public int? FiscalTipopersona { get; set; }
+    public int? FTipoPersona { get; set; }
 
-    public string FiscalCodigopostal { get; set; }
+    public string FCodigoPostal { get; set; }
 
-    public string FiscalFax { get; set; }
+    public string FFax { get; set; }
 
-    public string ComercialNombre { get; set; }
+    public string RlNombre { get; set; }
 
-    public string ComercialCargo { get; set; }
+    public string RlCargo { get; set; }
 
-    public string ComercialCelular { get; set; }
+    public string RlCelular { get; set; }
 
-    public string ComercialTelefono { get; set; }
+    public string RlTelefono { get; set; }
 
-    public string ComercialEmail { get; set; }
+    public string RlEmail { get; set; }
 
-    public int? AfectoRetencionIgv { get; set; }
+    public string CcNombre { get; set; }
 
-    public int? AfectoDetraccionIgv { get; set; }
+    public string CcCargo { get; set; }
 
-    public int? PorcentajeDetraccion { get; set; }
+    public string CcCelular { get; set; }
 
-    public int? AfectoRenta4taCat { get; set; }
+    public string CcTelefono { get; set; }
 
-    public int? ExoneradoRenta4taCat { get; set; }
+    public string CcEmail { get; set; }
 
-    public string ComprobanteExonera { get; set; }
+    public bool? AfectoRetencionDeIgv { get; set; }
 
-    public int? TipoDocElectronicoRemite { get; set; }
+    public bool? AfectoDetraccionDeIgv { get; set; }
 
-    public int? TipoMonedaCompra { get; set; }
+    public double? PorcentajeDetraccion { get; set; }
 
-    public int TiempoPago { get; set; }
+    public bool? AfectoRentade4taCategoría { get; set; }
 
-    public string OtroTiempoPago { get; set; }
+    public bool? Exoneradorenta4ta { get; set; }
 
-    public string ContactoCobranzaNombre { get; set; }
+    public string ComprobanteExoneracion { get; set; }
 
-    public string ContactoCobranzaCargo { get; set; }
+    public bool? TipoDocumentoFactura { get; set; }
 
-    public string ContactoCobranzaCelular { get; set; }
+    public bool? TipoDocumentoReciboHonorarios { get; set; }
 
-    public string ContactoCobranzaTelefono { get; set; }
+    public bool? TipoDocumentoOtros { get; set; }
 
-    public string ContactoCobranzaEmail { get; set; }
+    public bool? DatosCompraSoles { get; set; }
 
-    public int? CodBanco { get; set; }
+    public bool? DatosCompraDolares { get; set; }
 
-    public string CuentaBancariaTitulo { get; set; }
+    public bool? DatosCompraAmbas { get; set; }
 
-    public string CuentaBancariaNumerocuenta { get; set; }
+    public bool? InformacionPagoProveedor30dias { get; set; }
 
-    public string Cci { get; set; }
+    public bool? InformacionPagoProveedor60dias { get; set; }
 
-    public virtual TbConfBanco CodBancoNavigation { get; set; }
+    public bool? InformacionPagoProveedorEfectivo { get; set; }
 
-    public virtual TbConfTimepago TiempoPagoNavigation { get; set; }
+    public bool? InformacionPagoProveedorTranferenciaBancaria { get; set; }
 
-    public virtual TbConfDocelectronico TipoDocElectronicoRemiteNavigation { get; set; }
+    public string InformacionPagoProveedorOtros { get; set; }
 
-    public virtual TbConfMonedum TipoMonedaCompraNavigation { get; set; }
+    public string CcobranzaNombre { get; set; }
+
+    public string CcobranzaCargo { get; set; }
+
+    public string CcobranzaCelular { get; set; }
+
+    public string CcobranzaTelefono { get; set; }
+
+    public string CcobranzaEmail { get; set; }
+
+    public int? CodCuentaBancaria { get; set; }
+
+    public string CuentaBancaria { get; set; }
+
+    public string CuentaBancariaTitular { get; set; }
+
+    public string CuentaBancariaCci { get; set; }
+
+    public virtual TbConfBanco CodCuentaBancariaNavigation { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ApiBD.Models.TbFormProveedore;
+@{
     ViewData["Title"] = "Proveedores";
 }
 <!-- Page Header Start -->
@@ -46,8 +47,7 @@
                                 Fecha
                             </label>
                             <div class="col-sm-3">
-                                <input class="form-control" id="txtFechaActual" name="txtFechaActual" type="date" value="">
-                                </input>
+                                <input asp-for="Fecha" class="form-control" type="date" value="" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -55,8 +55,7 @@
                                 Solicitado por
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="txtSolicitado" placeholder="Ingrese sus nombres completos..." type="text">
-                                </input>
+                                <input asp-for="SolicitadoPor" class="form-control"  placeholder="Ingrese sus nombres completos..." type="text" />
                             </div>
                         </div>
                         <fieldset class=" border p-2 mb-2">
@@ -68,18 +67,18 @@
                                     RUC
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtRuc" placeholder="RUC" type="number">
-                                    </input>
+                                    <input asp-for="FRuc" class="form-control"  placeholder="RUC" type="text" />
+                                   
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="cbxTipoPersona">
                                     Tipo Persona
                                 </label>
                                 <div class="col-sm-4">
-                                    <select class="form-control" id="cbxTipoPersona" placeholder="Tipo Persona">
-                                        <option value="NATURAL">
+                                    <select class="form-control" asp-for="FTipoPersona" placeholder="Tipo Persona">
+                                        <option value=1>
                                             NATURAL
                                         </option>
-                                        <option value="JURIDICA">
+                                        <option value=2>
                                             JURIDICA
                                         </option>
                                     </select>
@@ -90,8 +89,8 @@
                                     DNI
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtDni" placeholder="DNI" type="text">
-                                    </input>
+                                    <input asp-for="FDni" class="form-control"  placeholder="DNI" type="text" />
+                            
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -99,8 +98,8 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="txtNombresRazonSocial" placeholder="Nombres o Razon Social..." type="text">
-                                    </input>
+                                    <input asp-for="FNombre" class="form-control"  placeholder="Nombres o Razon Social..." type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -108,8 +107,8 @@
                                     Direccion
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="txtDireccion" placeholder="Direccion..." type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="FDireccion" placeholder="Direccion..." type="text" />
+
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -117,7 +116,7 @@
                                     Distrito
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="cbxDistrito" placeholder="Distrito">
+                                    <select class="form-control" asp-for="FDistrito" placeholder="Distrito">
                                         <option value="LIMA">
                                             LIMA
                                         </option>
@@ -127,8 +126,8 @@
                                     Cod. Postal
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtCodPostal" placeholder="Cod. Postal" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="FCodigoPostal" placeholder="Cod. Postal" type="text" />
+                                   
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -136,15 +135,15 @@
                                     Telefono
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtTelefono" placeholder="Telefono" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="FTelefono" placeholder="Telefono" type="text" />
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtFax">
                                     Fax
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtFax" placeholder="Fax" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="FFax" placeholder="Fax" type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -152,8 +151,8 @@
                                     Rubro
                                 </label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" id="cbxRubro" placeholder="Departamento">
-                                        <option value="1">
+                                    <select class="form-control" asp-for="FRubro" placeholder="Departamento">
+                                        <option value="Tecnología de la información">
                                             Tecnología de la información
                                         </option>
                                     </select>
@@ -169,8 +168,8 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="RlNombre" placeholder="Nombres Completos..." type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -178,15 +177,15 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="RlCargo" placeholder="Cargo" type="text" />
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="RlTelefono" placeholder="Telefono" type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -194,15 +193,15 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="RlCelular" placeholder="Telf" type="text" />
+                                
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
-                                    </input>
+                                    <input class="form-control" asp-for="RlEmail" placeholder="Email" type="email" />
+                                    
                                 </div>
                             </div>
                         </fieldset>
@@ -215,8 +214,8 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CcNombre" placeholder="Nombres Completos..." type="text" />
+                                   
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -224,15 +223,15 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CcCargo" placeholder="Cargo" type="text" />
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="CcTelefono" placeholder="Telefono" type="text">
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -240,18 +239,19 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="CcCelular" placeholder="Telf" type="text" />
+                                 
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
-                                    </input>
+                                    <input class="form-control" asp-for="CcEmail" placeholder="Email" type="email" />
+                                    
                                 </div>
                             </div>
                         </fieldset>
+                        <!--
                         <fieldset class=" border p-2 mb-2">
                             <legend class="float-none w-auto p-2">
                                 Tipo de retencion y/o detraccion, en facturas
@@ -260,16 +260,16 @@
                                 <div class="col-sm-5">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="AfectoRetencionDeIgv"  checked >
                                             Afecto a Retencion de IGV
-                                            </input>
+                                           
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="AfectoDetraccionDeIgv" checked />
                                             Afecto a Detraccion de IGV
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                 </div>
@@ -277,8 +277,8 @@
                                     % de Detraccion
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtPorcentaje" type="number" value="">
-                                    </input>
+                                    <input class="form-control" asp-for="PorcentajeDetraccion" type="number"  />
+                                   
                                 </div>
                             </div>
                         </fieldset>
@@ -290,16 +290,16 @@
                                 <div class="col-sm-5">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="AfectoRentade4taCategoría" checked />
                                             Afecto Renta de 4ta. Categoría
-                                            </input>
+                                          
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="Exoneradorenta4ta" checked>
                                             Exonerado renta 4ta.
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                 </div>
@@ -307,8 +307,8 @@
                                     Comprobante Exoneracion N°
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtPorcentaje" type="text" value="">
-                                    </input>
+                                    <input class="form-control" asp-for="ComprobanteExoneracion" type="text"  />
+                                    
                                 </div>
                             </div>
                         </fieldset>
@@ -320,23 +320,25 @@
                                 <div class="col-sm-10">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="TipoDocumentoFactura" checked />
                                             Factura
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="TipoDocumentoReciboHonorarios" checked />
                                             Recibo por Honorarios
-                                            </input>
+                                          
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="TipoDocumentoOtros" id="checkboxTipoDocumentoOtros" />
+
+
                                             Otros
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                 </div>
@@ -351,22 +353,19 @@
                                     Soles
                                 </label>
                                 <div class="col-sm-2">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    </input>
+                                    <input class="form-check-input" asp-for="DatosCompraSoles" checked />
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="txtDolares">
                                     Dolares
                                 </label>
                                 <div class="col-sm-2">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    </input>
+                                    <input class="form-check-input" asp-for="DatosCompraDolares" checked />
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="txtAmbas">
                                     Ambas
                                 </label>
                                 <div class="col-sm-2 ">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    </input>
+                                    <input class="form-check-input" asp-for="DatosCompraAmbas" checked />
                                 </div>
                             </div>
                         </fieldset>
@@ -378,16 +377,16 @@
                                 <div class="col-sm-5">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="InformacionPagoProveedor30dias" checked />
                                             30 Dias
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="InformacionPagoProveedor60dias" checked />
                                             60 Dias
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                     <div class="form-group row mb-2">
@@ -395,29 +394,30 @@
                                             Otros
                                         </label>
                                         <div class="col-sm-5">
-                                            <input class="form-control" id="txtEmail" placeholder="Otros" type="text">
-                                            </input>
+                                            <input class="form-control" asp-for="InformacionPagoProveedorOtros" placeholder="Otros" type="text" />
+                                            
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="InformacionPagoProveedorEfectivo" checked />
                                             Efectivo
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" asp-for="InformacionPagoProveedorTranferenciaBancaria" checked />
                                             Transferencia Bancaria
-                                            </input>
+                                            
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
+                        -->
                         <fieldset class=" border p-2 mb-2">
                             <legend class="float-none w-auto p-2">
                                 CONTACTO COBRANZAS
@@ -427,8 +427,8 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="txtNombresRL" placeholder="Nombres Completos..." type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CcobranzaNombre" placeholder="Nombres Completos..." type="text">
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -436,15 +436,15 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtCargo" name="txtCargo" placeholder="Cargo" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CcobranzaCargo" placeholder="Cargo" type="text">
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtTelefonorl" name="txtTelefonorl" placeholder="Telefono" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="CcobranzaTelefono" placeholder="Telefono" type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -452,15 +452,15 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="Telf" placeholder="Telf" type="number">
-                                    </input>
+                                    <input class="form-control" asp-for="CcobranzaCelular" placeholder="Telf" type="text" />
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtEmail" placeholder="Email" type="email">
-                                    </input>
+                                    <input class="form-control" asp-for="CcobranzaEmail" placeholder="Email" type="email" />
+                                    
                                 </div>
                             </div>
                         </fieldset>
@@ -473,7 +473,7 @@
                                     Banco
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="cbxBanco" placeholder="Banco">
+                                    <select class="form-control" asp-for="CodCuentaBancaria" placeholder="Banco">
                                         <option value="1">
                                             Interbank
                                         </option>
@@ -486,8 +486,8 @@
                                     Titular
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtTitular" name="txtTitular" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CuentaBancariaTitular" type="text" />
+                                    
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
@@ -495,15 +495,14 @@
                                     Cuenta
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" id="txtCuenta" name="txtCuenta" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CuentaBancaria" type="text" />
+                                    
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtCCI">
                                     CCI
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="txtCCI" name="txtCCI" type="text">
-                                    </input>
+                                    <input class="form-control" asp-for="CuentaBancariaCci" type="text" />
                                 </div>
                             </div>
                         </fieldset>
