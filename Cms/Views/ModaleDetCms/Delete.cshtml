@@ -1,0 +1,59 @@
+﻿@model ApiBD.Models.TbConfModaldet
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    @ViewData["codigo"]
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <h3>¿Estas seguro de eliminar?</h3>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Id)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Id)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Titulo)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Titulo)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Descripcion)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Descripcion)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Link)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Link)
+                        </dd>
+                        
+
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button>  |
+                        <a asp-controller="ModaleCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+
+                     
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

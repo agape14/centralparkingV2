@@ -57,6 +57,8 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbFormContactano> TbFormContactanos { get; set; }
 
+    public virtual DbSet<TbFormHojareclamacione> TbFormHojareclamaciones { get; set; }
+
     public virtual DbSet<TbFormParkingcard> TbFormParkingcards { get; set; }
 
     public virtual DbSet<TbFormProveedore> TbFormProveedores { get; set; }
@@ -89,8 +91,10 @@ public partial class CentralParkingContext : DbContext
 
     public virtual DbSet<TbTraPuesto> TbTraPuestos { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-     => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
+    => optionsBuilder.UseMySql("server=localhost;port=3310;user=root;password=admin;database=centralparking", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -302,6 +306,9 @@ public partial class CentralParkingContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasColumnType("text")
                 .HasColumnName("descripcion");
+            entity.Property(e => e.Link)
+                .HasColumnType("text")
+                .HasColumnName("link");
             entity.Property(e => e.ModalcabId)
                 .HasColumnType("int(11)")
                 .HasColumnName("modalcab_id");
@@ -789,6 +796,68 @@ public partial class CentralParkingContext : DbContext
             entity.HasOne(d => d.TipoServicioNavigation).WithMany(p => p.TbFormContactanos)
                 .HasForeignKey(d => d.TipoServicio)
                 .HasConstraintName("FK_FormContactanos_IndServicioDet");
+        });
+
+        modelBuilder.Entity<TbFormHojareclamacione>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("tb_form_hojareclamaciones");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Apellido)
+                .HasMaxLength(255)
+                .HasColumnName("apellido");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(255)
+                .HasColumnName("correo");
+            entity.Property(e => e.Departamento)
+                .HasMaxLength(255)
+                .HasColumnName("departamento");
+            entity.Property(e => e.Detalle)
+                .HasMaxLength(400)
+                .HasColumnName("detalle");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(255)
+                .HasColumnName("direccion");
+            entity.Property(e => e.Distrito)
+                .HasMaxLength(255)
+                .HasColumnName("distrito");
+            entity.Property(e => e.Estacionamiento)
+                .HasMaxLength(255)
+                .HasColumnName("estacionamiento");
+            entity.Property(e => e.Fecha)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha");
+            entity.Property(e => e.Fechaindicente)
+                .HasColumnType("datetime")
+                .HasColumnName("fechaindicente");
+            entity.Property(e => e.Menordeedad)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("menordeedad");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(255)
+                .HasColumnName("nombre");
+            entity.Property(e => e.Numerodocumento)
+                .HasMaxLength(255)
+                .HasColumnName("numerodocumento");
+            entity.Property(e => e.Provincia)
+                .HasMaxLength(255)
+                .HasColumnName("provincia");
+            entity.Property(e => e.Reclamo)
+                .HasMaxLength(255)
+                .HasColumnName("reclamo");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(255)
+                .HasColumnName("telefono");
+            entity.Property(e => e.Tipodocumento)
+                .HasMaxLength(255)
+                .HasColumnName("tipodocumento");
+            entity.Property(e => e.Tiposervicio)
+                .HasMaxLength(255)
+                .HasColumnName("tiposervicio");
         });
 
         modelBuilder.Entity<TbFormParkingcard>(entity =>

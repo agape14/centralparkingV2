@@ -1,8 +1,9 @@
-﻿@model IEnumerable<ApiBD.Models.TbConfPiepaginadet>;
+﻿@model IEnumerable<ApiBD.Models.TbConfModaldet>;
 
 @{
     ViewData["Title"] = "Listado";
     Layout = "~/Views/Shared/_Layout2.cshtml";
+    @ViewData["codigo"]
 }
 
 <div class="content-wrapper">
@@ -22,17 +23,24 @@
                             <thead>
                                 <tr>
                                     <th>
+                                        @Html.DisplayNameFor(model => model.Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ModalcabId)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(model => model.Titulo)
                                     </th>
+
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Ruta)
+                                        @Html.DisplayNameFor(model => model.Descripcion)
                                     </th>
 
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TipoRuta)
+                                        @Html.DisplayNameFor(model => model.Link)
                                     </th>
 
-                                  
+
 
 
                                     <th></th>
@@ -43,18 +51,23 @@
                                 {
                                     <tr>
                                         <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ModalcabId)
+                                        </td>
+                                        <td>
                                             @Html.DisplayFor(modelItem => item.Titulo)
                                         </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ruta)
-                                        </td>
 
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TipoRuta)
+                                            @Html.DisplayFor(modelItem => item.Descripcion)
                                         </td>
 
-                                      
 
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Link)
+                                        </td>
 
 
 
@@ -62,17 +75,15 @@
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
                                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
                                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
-                                            @if (item.TipoRuta == 2)
-                                            {
-                                                <a href="@Url.Action("Index", "ModaleDetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
-                                            }
+                                      
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
-                        <a asp-controller="ModaleCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
-                    </div>
+                        <a asp-controller="ModaleCms" asp-action="Index"  class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+
+                        </div>
 
                 </div>
             </div>

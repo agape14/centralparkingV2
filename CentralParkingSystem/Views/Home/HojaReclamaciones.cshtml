@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ApiBD.Models.TbFormHojareclamacione;
+@{
     ViewData["Title"] = "Hoja Reclamaciones";
 }
 <!-- Page Header Start -->
@@ -18,7 +19,7 @@
 <div class="container-xxl border border-secondary py-6 bg-light">
     <div class="container">
         <div class="row">
-            <form>
+            <form asp-action="HojaReclamaciones">
                 <h3>Hoja de Reclamación</h3>
                 <p class="textRegistraReclamo">
                     Conforme a lo establecido en código de la Protección y Defensa del
@@ -37,21 +38,21 @@
                         </div>
                     </div>
                 </div>
+               
                 <div style="width: 100%; text-align: left; margin-top: 3px;">
                     <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
                         Fecha:
                     </div>
                     <div style="float: left; width: 55%; height: 22px;" class="p_normal">
-                        12/03/2023
+                        @DateTime.Now.Date.ToString("dd/MM/yyyy")
                     </div>
                 </div>
                 <div style="width: 100%; text-align: left; margin-top: 3px; overflow: auto;">
                     <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
                         Fecha del Incidente:
                     </div>
-                    <div style="float: left; width: 40%">
-                        <input class="form-control mb-2" id="txtFechaIncidente" maxlength="0" class="text-input hasDatepicker" style="font-size: 80%;
-                           font-size: 12px;" type="text">
+                    <div style="float: left; width: 30%;" class="p_normal">
+                        <input type="date" asp-for="Fechaindicente" class="form-control date-picker" />
                     </div>
                     <div style="float: left; width: 5%">
                         <span style="font-size: 11px; color: red"></span>
@@ -64,6 +65,7 @@
                     <div style="float: left; width: 40%" class="selectWrapper">
                         <select id="IdTienda" name="IdTienda">
                             <option>--Seleccione--</option>
+                            <option value="Perú">--Perú--</option>
                         </select>
                     </div>
                     <div style="float: left; width: 5%">
@@ -75,7 +77,7 @@
                         Nombre(s):
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtNombres" maxlength="100" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
+                        <input class="form-control mb-2" asp-for="Nombre" maxlength="100" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
                     </div>
                     <div style="float: left; width: 5%">
                         <span style="font-size: 11px; color: red"></span>
@@ -86,7 +88,7 @@
                         Apellidos:
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtApellidos" maxlength="200" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
+                        <input class="form-control mb-2" asp-for="Apellido" maxlength="200" onkeypress="return jsSoloLetrasKeyPress()" class="text-input" style="font-size: 80%; width: 100%; " type="text">
                     </div>
                     <div style="float: left; width: 5%">
                         <span style="font-size: 11px; color: red"></span>
@@ -97,7 +99,7 @@
                         Correo:
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtCorreo" maxlength="200" class="text-input" style="font-size: 80%; width: 100%;
+                        <input class="form-control mb-2" asp-for="Correo" maxlength="200" class="text-input" style="font-size: 80%; width: 100%;
                             " type="text">
                     </div>
                     <div style="float: left; width: 5%">
@@ -109,7 +111,7 @@
                         Teléfono:
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtTelefono" maxlength="9" class="text-input" style="font-size: 80%;
+                        <input class="form-control mb-2" asp-for="Telefono" maxlength="9" class="text-input" style="font-size: 80%;
                             width: 100%; " type="text" onkeyup="return validaSoloNumerico('txtTelefono',this)">
                     </div>
                 </div>
@@ -118,7 +120,7 @@
                         Tipo de Documento:
                     </div>
                     <div style="float: left; width: 40%" class="selectWrapper">
-                        <select id="IdTipoDoc" class="form-control mb-2" name="IdDistrito" onchange="changeValue(this);">
+                        <select asp-for="Tipodocumento" class="form-control mb-2"  onchange="changeValue(this);">
                             <option value="0">--Seleccione--</option>
                             <option value="1" selected="selected">DNI</option>
                             <option value="3">CE</option>
@@ -133,7 +135,7 @@
                         Num de Documento:
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtNroDocumento" maxlength="8" class="text-input" style="font-size: 80%;
+                        <input class="form-control mb-2" asp-for="Numerodocumento" maxlength="8" class="text-input" style="font-size: 80%;
                             width: 100%; " type="text">
                     </div>
                     <div style="float: left; width: 5%">
@@ -144,14 +146,17 @@
                     <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
                         Menor de edad:
                     </div>
+                    <!--
                     <div style="float: left; width: 10%">
                         <p style="text-align: left;" class="p_normal">
-                            <input name="apoderado" id="tipApoderado" value="false" type="checkbox" onclick="habilitarApoderado();">
+                            <input asp-for="Menordeedad"  type="checkbox" value="0" checked />
+                            
                             <label class="labelPropio" for="tipApoderado">
                                 <span></span>
                             </label>
                         </p>
                     </div>
+                    -->
 
                 </div>
                 <div id="divApoderado" style="display: none;">
@@ -173,14 +178,14 @@
                         <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
                         </div>
                         <div style="float: left; width: 55%">
-                            <input class="form-control mb-2" id="txtDirApoderado" maxlength="100" class="text-input" placeholder="Dirección de uno de los padres o representante del consumidor." style="font-size: 80%; height: 24px; font-size: 11px;">
+                            <input class="form-control mb-2"  class="text-input" placeholder="Dirección de uno de los padres o representante del consumidor." style="font-size: 80%; height: 24px; font-size: 11px;">
                         </div>
                     </div>
                     <div style="width: 100%; text-align: left">
                         <div style="float: left; width: 35%; padding-right: 10px; text-align: right;" class="p_normal">
                         </div>
                         <div style="float: left; width: 55%">
-                            <input class="form-control mb-2" id="txtCorreoApoderado" maxlength="100" class="text-input" style="font-size: 80%;
+                            <input class="form-control mb-2" asp-for="Correo" maxlength="100" class="text-input" style="font-size: 80%;
                                 width: 100%; height: 24px; font-size: 11px;" type="text" placeholder="Correo de uno de los padres o representante del consumidor.">
                         </div>
                         <div style="float: left; width: 5%">
@@ -193,7 +198,7 @@
                         Departamento:
                     </div>
                     <div style="float: left; width: 40%" class="selectWrapper">
-                        <select id="IdDepartamento" name="IdDepartamento" class="form-control mb-2">
+                        <select id="IdDepartamento" asp-for="Departamento" class="form-control mb-2">
                             <option value="0">--Seleccione--</option>
                             <option value="1">AMAZONAS</option>
                             <option value="2">ANCASH</option>
@@ -232,8 +237,9 @@
                         Provincia:
                     </div>
                     <div style="float: left; width: 40%" class="selectWrapper">
-                        <select id="IdProvincia" name="IdProvincia" class="form-control mb-2">
+                        <select asp-for="Provincia" class="form-control mb-2">
                             <option>--Seleccione--</option>
+                            <option value="Perú">--Perú--</option>
                         </select>
                     </div>
                     <div style="float: left; width: 5%">
@@ -247,8 +253,9 @@
                         Distrito:
                     </div>
                     <div style="float: left; width: 40%" class="selectWrapper">
-                        <select id="IdDistrito" name="IdDistrito" class="form-control mb-2">
+                        <select asp-for="Distrito" class="form-control mb-2">
                             <option>--Seleccione--</option>
+                            <option value="Perú">--Perú--</option>
                         </select>
                     </div>
                     <div style="float: left; width: 5%">
@@ -260,7 +267,7 @@
                         Dirección:
                     </div>
                     <div style="float: left; width: 55%">
-                        <input class="form-control mb-2" id="txtDireccion" maxlength="400" class="text-input" style="font-size: 80%;
+                        <input class="form-control mb-2" asp-for="Direccion" maxlength="400" class="text-input" style="font-size: 80%;
                             width: 100%; " type="text">
                     </div>
                     <div style="float: left; width: 5%">
@@ -292,7 +299,7 @@
                         Reclamaciones:
                     </div>
                     <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
-                        <select name="" id="" class="form-control">
+                        <select asp-for="Reclamo" class="form-control">
                             <option>Reclamo</option>
                             <option>Queja</option>
                         </select>
@@ -305,7 +312,7 @@
                         Tipo:
                     </div>
                     <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
-                        <select name="" id="" class="form-control">
+                        <select asp-for="Tiposervicio" class="form-control">
                             <option>Servicio</option>
                         </select>
                     </div>
@@ -317,7 +324,7 @@
                         Estacionamiento:
                     </div>
                     <div style="width: 54%;  float: left; overflow: auto;" class="mb-2">
-                        <select name="" id="" class="form-control">
+                        <select asp-for="Estacionamiento" class="form-control">
                             <option>Hotel Sheraton</option>
                             <option>Hotel Pullman Miraflores</option>
                             <option>Clinica Stella Maris</option>
@@ -337,7 +344,7 @@
                         Detalle:
                     </div>
                     <div style="float: left; width: 54%">
-                        <textarea rows="4" cols="4" maxlength="4000" id="txtDetalle" class="text-input" style="
+                        <textarea asp-for="Detalle" rows="4" cols="4" maxlength="4000" id="txtDetalle" class="text-input" style="
                             width: 100%; height: 120px; font-size: 12px;"></textarea>
                         <span style="font-size: 11px;">&nbsp;Máximo permitido 4000 caracteres.</span>
                     </div>
@@ -346,10 +353,11 @@
                 </div>
 
                 <center>
-                    <div style="width: 80%;  margin-bottom: 20px;">
-                        <input class="btn btn-primary" id="btnReclamo" value="Enviar" class="btnOrdenarMnu" style="width: 50%;
-                            vertical-align: middle;" onclick="RegistrarReclamo()" type="button">
-                    </div>
+                  
+                        <div style="width: 80%; margin-bottom: 20px;">
+                            <input type="submit" value="Enviar" class="btn btn-primary" style="width: 50%; vertical-align: middle;" />
+                        </div>
+                   
                 </center>
                 <div style="width: 90%;display: inline-block;text-align: justify;padding-left: 10%;">
                     <span style="font-size: 11px;">(*)IMPORTANTE:</span>
@@ -401,3 +409,4 @@
     </div>
 </div>
 <!-- Cuerpo page End -->
+

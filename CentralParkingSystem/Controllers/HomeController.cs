@@ -353,6 +353,26 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> HojaReclamaciones(TbFormHojareclamacione tbFormHojareclamacione)
+    {
+        tbFormHojareclamacione.Fecha = DateTime.Now;
+        var servicio = new HojaReclamacioneService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+           
+            string mensaje = "Su solicitud de reclamación ah sido registrada con éxito";
+            await servicio.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
+            enviarEmail(tbFormHojareclamacione.Correo, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormHojareclamacione);
+
+    }
+
 
     private void enviarEmail(string correoDestinatario,string mensaje)
     {

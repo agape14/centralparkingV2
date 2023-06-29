@@ -1,0 +1,106 @@
+﻿@model IEnumerable<ApiBD.Models.TbFormHojareclamacione>;
+
+
+@{
+    ViewData["Title"] = "Listado Hoja Reclamaciones";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <a class="btn btn-primary " href="/HojaReclamacionCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Fechaindicente)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Nombre)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Apellido)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Correo)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Telefono)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Provincia)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Reclamo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Detalle)
+                                    </th>
+                                  
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Fechaindicente)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Apellido)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Correo)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Telefono)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Provincia)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Reclamo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Detalle)
+                                        </td>
+                                       
+
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
