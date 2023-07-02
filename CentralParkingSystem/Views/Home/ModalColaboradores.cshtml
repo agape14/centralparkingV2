@@ -1,35 +1,39 @@
-﻿<div class="modal fade" id="modal_colaboradores" tabindex="-1" aria-labelledby="modalColaboradores" aria-hidden="true">
+﻿@model CentralParkingSystem.ViewModel.ModalCombinadoCabDet;
+
+<div class="modal fade" id="modal_colaboradores" tabindex="-1" aria-labelledby="modalColaboradores" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content rounded-1">
             <div class="modal-header ">
-                <h3 class="modal-title" id="modalColaboradores">Colaboradores</h3>
+                <h3 class="modal-title" id="modalColaboradores">"@Model.modalCab.Titulo"</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-lg-12">
                         <div class="accordion" id="accordionColaborador">
-                            <a class="btn btn-dark btn-outline-light btn-lg mb-2" target="_blank" href="https://centralparking.ecotek.pe/">Boletas</a>
+                            <!--  <a class="btn btn-dark btn-outline-light btn-lg mb-2" target="_blank" href="https://centralparking.ecotek.pe/">Boletas</a>-->
                             <div class="accordion-item wow fadeInUp" data-wow-delay="0.2s">
                                 <h2 class="accordion-header" id="headingColab2">
                                     <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#collapseColab21"
                                             aria-expanded="false" aria-controls="collapseColab21">
-                                        Capacitacion
+                                            Capacitación
                                     </button>
                                 </h2>
                                 <div id="collapseColab21" class="accordion-collapse collapse"
                                      aria-labelledby="headingColab2" data-bs-parent="#accordionColaborador">
                                     <div class="accordion-body">
                                         <p>
-                                            <a class="btn btn-link me-3" href="https://www.youtube.com/watch?v=3VROhqXiwO8" target="_blank">
-                                                <i class="fab fa-youtube me-1"></i>
-                                                Capacitacion 1
-                                            </a>
-                                            <a class="btn btn-link me-3" href="https://www.youtube.com/watch?v=3VROhqXiwO8" target="_blank">
-                                                <i class="fab fa-youtube me-1"></i>
-                                                Capacitacion 2
-                                            </a>
+                                            @foreach (var item in Model.listModalDet)
+                                            {
+                                                @item.Titulo
+                                                <a class="btn btn-link me-3" href="@item.Link" target="_blank">
+                                                    <i class="fab fa-youtube me-1"></i>
+                                                    @item.Link
+                                                </a>
+                                                <br />
+
+                                            }
                                         </p>
                                     </div>
                                 </div>
