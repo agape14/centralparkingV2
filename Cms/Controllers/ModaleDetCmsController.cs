@@ -52,18 +52,18 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TbConfModalcab tbConfModalcab)
+        public async Task<IActionResult> Create(TbConfModaldet tbConfModaldet)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleDetalleService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await servicio.crearModalCabRegistro(tbConfModalcab);
+                await servicio.crearModalDetRegistro(tbConfModaldet);
                 return RedirectToAction("Index", "ModaleCms");
 
 
             }
-            return View(tbConfModalcab);
+            return View(tbConfModaldet);
         }
 
         // GET: TbTraPuesto/Edit/5
@@ -95,7 +95,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, TbConfModaldet tbConfModaldet)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(id);
+           
 
 
             if (id != tbConfModaldet.Id)
@@ -127,9 +127,9 @@ namespace Cms.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(id);
+         
 
-            if (id == 0 || lista == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -149,12 +149,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(id);
-
-            if (lista == null)
-            {
-                return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
-            }
+           
             var modal = await servicio.obtenerModalDetalle(id);
             if (modal != null)
             {

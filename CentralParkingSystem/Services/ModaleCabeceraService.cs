@@ -93,6 +93,28 @@ namespace CentralParkingSystem.Services
             }
         }
 
+        public async Task<TbConfModalcab> obtenerModalCabeceraDetalleFijo(int id)
+        {
+            var url = $"https://localhost:7260/api/modalcabecera/obtenerCabeceraFija/{id}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var modal = await response.Content.ReadFromJsonAsync<TbConfModalcab>();
+                return modal;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("La característica no fue encontrada.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
         public async Task<TbConfModalcab> crearModalCabRegistro(TbConfModalcab tbConfModalcab)
         {
             var url = "https://localhost:7260/api/modalcabecera";

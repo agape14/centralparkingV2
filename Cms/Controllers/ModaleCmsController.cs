@@ -24,12 +24,13 @@ namespace Cms.Controllers
             var servicio = new ModaleCabeceraService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
 
+
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalle(id);
+            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -74,7 +75,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalle(id);
+            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -92,9 +93,10 @@ namespace Cms.Controllers
         {
             var servicio = new ModaleCabeceraService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
+            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
+            id = modal.Id;
 
-
-            if (id != tbConfModalcab.Id)
+            if ( id != tbConfModalcab.Id)
             {
                 return NotFound();
             }
@@ -128,7 +130,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalle(id);
+            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -149,8 +151,8 @@ namespace Cms.Controllers
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var modal = await servicio.obtenerModalCabeceraDetalle(id);
-            if (modal != null)
+            
+            if (lista != null)
             {
                 await servicio.eliminarModalCab(id);
             }

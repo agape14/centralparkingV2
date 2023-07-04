@@ -45,6 +45,17 @@ namespace ApiBD.Controllers
             return modalcabera;
         }
 
+        [HttpGet("obtenerCabeceraFija/{id}")]
+        public async Task<ActionResult<TbConfModalcab>> GetById2(int id)
+        {
+            var modalcabera = await _dbContext.TbConfModalcabs.FirstOrDefaultAsync(x=>x.IdDetallePie==id);
+            if (modalcabera == null)
+            {
+                return NotFound();
+            }
+            return modalcabera;
+        }
+
         [HttpPost]
         public async Task<ActionResult<TbConfModalcab>> Create(TbConfModalcab tbConfModalcab)
         {
