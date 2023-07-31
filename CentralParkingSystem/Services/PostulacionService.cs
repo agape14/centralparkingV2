@@ -15,7 +15,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormTbcnosotro> crearPostulacion(TbFormTbcnosotro tbFormTbcnosotro)
         {
-            var url = "https://localhost:7260/api/postulacion";
+            var url = "http://localhost:82/api/postulacion";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormTbcnosotro);
 

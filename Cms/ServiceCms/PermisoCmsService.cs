@@ -19,7 +19,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/permiso";
+                var url = "http://localhost:82/api/permiso";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -60,7 +60,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> obtenerPermisoDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}"; 
+            var url = $"http://localhost:82/api/permiso/{id}"; 
 
             try
             {
@@ -96,7 +96,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> crearPermiso(TbConfPermiso tbConfPermiso)
         {
-            var url = "https://localhost:7260/api/permiso"; 
+            var url = "http://localhost:82/api/permiso"; 
 
             try
             {
@@ -130,7 +130,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPermiso(int id)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}";
+            var url = $"http://localhost:82/api/permiso/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -151,7 +151,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> modificarPermiso(int id, TbConfPermiso tbConfPermiso)
         {
-            var url = $"https://localhost:7260/api/permiso/{id}"; 
+            var url = $"http://localhost:82/api/permiso/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfPermiso), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

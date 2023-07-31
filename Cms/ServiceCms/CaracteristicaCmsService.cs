@@ -16,7 +16,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndCaracteristica> obtenerCaracteristicaDetalle(uint id)
         {
-            var url = $"https://localhost:7260/api/caracteristica/{id}"; 
+            var url = $"http://localhost:82/api/caracteristica/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -39,7 +39,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndCaracteristica> crearCaracteristica(TbIndCaracteristica caracteristica)
         {
-            var url = "https://localhost:7260/api/caracteristica"; 
+            var url = "http://localhost:82/api/caracteristica"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, caracteristica);
 
@@ -57,7 +57,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndCaracteristica> modificarCaracteristica(uint id, TbIndCaracteristica caracteristica)
         {
-            var url = $"https://localhost:7260/api/caracteristica/{id}"; 
+            var url = $"http://localhost:82/api/caracteristica/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, caracteristica);
 
@@ -75,7 +75,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarCaracteristica(uint id)
         {
-            var url = $"https://localhost:7260/api/caracteristica/{id}"; 
+            var url = $"http://localhost:82/api/caracteristica/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

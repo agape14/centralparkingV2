@@ -19,7 +19,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/puesto";
+                var url = "http://localhost:82/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +44,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> obtenerPuestoDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/puesto/{id}"; 
+            var url = $"http://localhost:82/api/puesto/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> crearPuesto(TbTraPuesto tbTraPuesto)
         {
-            var url = "https://localhost:7260/api/puesto"; 
+            var url = "http://localhost:82/api/puesto"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbTraPuesto);
 
@@ -84,7 +84,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> modificarPuesto(int id, TbTraPuesto tbTraPuesto)
         {
-            var url = $"https://localhost:7260/api/puesto/{id}"; 
+            var url = $"http://localhost:82/api/puesto/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbTraPuesto);
 
@@ -102,7 +102,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPuesto(int id)
         {
-            var url = $"https://localhost:7260/api/puesto/{id}"; 
+            var url = $"http://localhost:82/api/puesto/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

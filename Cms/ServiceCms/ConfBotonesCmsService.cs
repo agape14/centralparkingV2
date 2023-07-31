@@ -20,7 +20,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/botones";
+                var url = "http://localhost:82/api/botones";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -45,7 +45,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> obtenerBotonDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/botones/{id}"; 
+            var url = $"http://localhost:82/api/botones/{id}"; 
 
             try
             {
@@ -81,7 +81,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> crearBoton(TbConfBotone boton)
         {
-            var url = "https://localhost:7260/api/botones"; 
+            var url = "http://localhost:82/api/botones"; 
 
             try
             {
@@ -115,7 +115,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarBoton(int id)
         {
-            var url = $"https://localhost:7260/api/botones/{id}";
+            var url = $"http://localhost:82/api/botones/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -136,7 +136,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> modificarBoton(int id, TbConfBotone boton)
         {
-            var url = $"https://localhost:7260/api/botones/{id}"; 
+            var url = $"http://localhost:82/api/botones/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

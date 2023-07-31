@@ -18,7 +18,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/servicioCabecera/cms";
+                var url = "http://localhost:82/api/servicioCabecera/cms";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -43,7 +43,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> obtenerServicioCabecera(int id)
         {
-            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
+            var url = $"http://localhost:82/api/servicioCabecera/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -65,7 +65,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> crearServicioCabecera(TbServCabecera tbServCabecera)
         {
-            var url = "https://localhost:7260/api/servicioCabecera";
+            var url = "http://localhost:82/api/servicioCabecera";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServCabecera);
 
@@ -83,7 +83,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> modificarServicioCabecera(int id, TbServCabecera tbServCabecera)
         {
-            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
+            var url = $"http://localhost:82/api/servicioCabecera/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbServCabecera);
 
@@ -101,7 +101,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarServicioCabecera(int id)
         {
-            var url = $"https://localhost:7260/api/servicioCabecera/{id}";
+            var url = $"http://localhost:82/api/servicioCabecera/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

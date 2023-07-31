@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/contactanos";
+                var url = "http://localhost:82/api/contactanos";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +44,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormContactano> obtenerContactoDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"http://localhost:82/api/contactanos/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormContactano> crearContactoRegistro(TbFormContactano tbFormContactano)
         {
-            var url = "https://localhost:7260/api/contactanos";
+            var url = "http://localhost:82/api/contactanos";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormContactano);
 
@@ -84,7 +84,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormContactano> modificarContacto(int id, TbFormContactano tbFormContactano)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"http://localhost:82/api/contactanos/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormContactano);
 
@@ -102,7 +102,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarContacto(int id)
         {
-            var url = $"https://localhost:7260/api/contactanos/{id}";
+            var url = $"http://localhost:82/api/contactanos/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

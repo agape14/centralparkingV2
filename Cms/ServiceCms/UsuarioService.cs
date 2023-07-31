@@ -21,7 +21,7 @@ namespace Cms.Service
 
             try
             {
-                var url = "https://localhost:7260/api/usuario/validacionUser";
+                var url = "http://localhost:82/api/usuario/validacionUser";
 
             
 

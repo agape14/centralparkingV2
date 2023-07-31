@@ -21,7 +21,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/redsocial";
+                var url = "http://localhost:82/api/redsocial";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -46,7 +46,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> obtenerRedSocialDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/redsocial/{id}"; 
+            var url = $"http://localhost:82/api/redsocial/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -69,7 +69,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> crearRedSocial(TbIndRedsocial tbIndRedsocial)
         {
-            var url = "https://localhost:7260/api/redsocial"; 
+            var url = "http://localhost:82/api/redsocial"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbIndRedsocial);
 
@@ -87,7 +87,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> modificarRedSocial(int id, TbIndRedsocial tbIndRedsocial)
         {
-            var url = $"https://localhost:7260/api/redsocial/{id}";
+            var url = $"http://localhost:82/api/redsocial/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbIndRedsocial);
 
@@ -105,7 +105,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarRedSocial(int id)
         {
-            var url = $"https://localhost:7260/api/redsocial/{id}";
+            var url = $"http://localhost:82/api/redsocial/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
