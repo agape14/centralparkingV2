@@ -19,8 +19,8 @@ if (app.Environment.IsProduction())
 {
     
     app.UseSwagger();
-    app.UseSwaggerUI();
-    
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIBD"); });
+
 }
 
 app.UseHttpsRedirection();

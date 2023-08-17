@@ -13,6 +13,7 @@ namespace CentralParkingSystem.Services
             _httpClient = httpClient;
         }
 
+
         public async Task<List<TbConfPiepaginadet>> listarEntrada()
         {
             List<TbConfPiepaginadet> lista = new List<TbConfPiepaginadet>();
