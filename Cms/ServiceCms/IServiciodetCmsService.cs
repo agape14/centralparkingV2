@@ -20,7 +20,7 @@ namespace Cms.ServiceCms
 
         public async Task<List<TbIndServiciodet>> filtrarPorCodigo(int codigo)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/filtrarPorCodigo/{codigo}"; 
+            var url = $"http://localhost:82/api/serviciosdet/filtrarPorCodigo/{codigo}"; 
 
             
             HttpResponseMessage response = await _httpClient.GetAsync(url);
@@ -47,7 +47,7 @@ namespace Cms.ServiceCms
        
         public async Task<TbIndServiciodet> obtenerServicioDetDetalle(int id, int codigo)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/Details/{id}/{codigo}";
+            var url = $"http://localhost:82/api/serviciosdet/Details/{id}/{codigo}";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
@@ -71,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<ActionResult<TbIndServiciodet>> crearServicioDet(TbIndServiciodet serviciodet)
         {
-            var url = "https://localhost:7260/api/serviciosdet";
+            var url = "http://localhost:82/api/serviciosdet";
 
             var serializedObject = JsonSerializer.Serialize(serviciodet);
             var content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
@@ -95,7 +95,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarServicioDet(int id)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"http://localhost:82/api/serviciosdet/{id}"; // Reemplaza con la URL correcta de tu API
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -117,7 +117,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciodet> obtenerServicioDeEspecificoDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/{id}"; 
+            var url = $"http://localhost:82/api/serviciosdet/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -139,7 +139,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciodet> modificarServicioDet(int id, TbIndServiciodet tbIndServiciodet)
         {
-            var url = $"https://localhost:7260/api/serviciosdet/{id}"; 
+            var url = $"http://localhost:82/api/serviciosdet/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbIndServiciodet);
 

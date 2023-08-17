@@ -21,7 +21,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = $"https://localhost:7260/api/modaldetalle/detalle/{id}";
+                var url = $"http://localhost:82/api/modaldetalle/detalle/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -46,7 +46,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> obtenerModalDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/modaldetalle/{id}";
+            var url = $"http://localhost:82/api/modaldetalle/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -68,7 +68,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> crearModalDetRegistro(TbConfModaldet tbConfModaldet)
         {
-            var url = "https://localhost:7260/api/modaldetalle";
+            var url = "http://localhost:82/api/modaldetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfModaldet);
 
@@ -86,7 +86,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> modificarModalDet(int id, TbConfModaldet tbConfModaldet)
         {
-            var url = $"https://localhost:7260/api/modaldetalle/{id}";
+            var url = $"http://localhost:82/api/modaldetalle/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfModaldet);
 
@@ -104,7 +104,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarModalDet(int id)
         {
-            var url = $"https://localhost:7260/api/modaldetalle/{id}";
+            var url = $"http://localhost:82/api/modaldetalle/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

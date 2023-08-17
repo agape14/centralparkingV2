@@ -20,7 +20,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/caracteristica";
+                var url = "http://localhost:82/api/caracteristica";
 
                 var response = await _httpClient.GetAsync(url);
 

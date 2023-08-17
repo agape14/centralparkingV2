@@ -22,7 +22,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"https://localhost:7260/api/slide/{id}";
+                var url = $"http://localhost:82/api/slide/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -48,7 +48,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> CreateSlide(TbIndSlidecab tbIndSlidecab)
         {
-            var url = "https://localhost:7260/api/slide"; 
+            var url = "http://localhost:82/api/slide"; 
 
             try
             {
@@ -76,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> DeleteSlide(uint id)
         {
-            var url = $"https://localhost:7260/api/slide/{id}"; 
+            var url = $"http://localhost:82/api/slide/{id}"; 
 
             try
             {
@@ -100,7 +100,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> UpdateSlide(uint id, TbIndSlidecab slide)
         {
-            var url = $"https://localhost:7260/api/slide/{id}"; 
+            var url = $"http://localhost:82/api/slide/{id}"; 
 
             try
             {

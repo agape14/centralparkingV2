@@ -18,7 +18,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/servicioCabecera";
+                var url = "http://localhost:82/api/servicioCabecera";
 
                 var response = await _httpClient.GetAsync(url);
 

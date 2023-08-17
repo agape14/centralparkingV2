@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/parkingcard";
+                var url = "http://localhost:82/api/parkingcard";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +44,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> obtenerParkingCardDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/parkingcard/{id}";
+            var url = $"http://localhost:82/api/parkingcard/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> crearParkingCardRegistro(TbFormParkingcard tbFormParkingcard)
         {
-            var url = "https://localhost:7260/api/parkingcard";
+            var url = "http://localhost:82/api/parkingcard";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormParkingcard);
 
@@ -84,7 +84,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> modificarParkingCard(int id, TbFormParkingcard tbFormParkingcard)
         {
-            var url = $"https://localhost:7260/api/parkingcard/{id}";
+            var url = $"http://localhost:82/api/parkingcard/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormParkingcard);
 
@@ -102,7 +102,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarParkingCard(int id)
         {
-            var url = $"https://localhost:7260/api/parkingcard/{id}";
+            var url = $"http://localhost:82/api/parkingcard/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

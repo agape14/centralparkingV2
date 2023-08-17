@@ -1,6 +1,4 @@
 using ApiBD.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +12,21 @@ builder.Services.AddScoped<CentralParkingContext>();
 
 var app = builder.Build();
 
+
 // Configure el pipeline de solicitud HTTP
-if (app.Environment.IsDevelopment())
+
+if (app.Environment.IsProduction())
 {
+    
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIBD"); });
+
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

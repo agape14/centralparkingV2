@@ -24,7 +24,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/puesto";
+                var url = "http://localhost:82/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 

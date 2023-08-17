@@ -23,7 +23,7 @@ builder.Services.AddSingleton<HelperUploadFiles>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -35,8 +35,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-app.UseSession();
+//app.UseAuthorization();
+//app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=DashbordCms}/{action=Index}/{id?}");

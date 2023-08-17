@@ -22,7 +22,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/piepagina";
+                var url = "http://localhost:82/api/piepagina";
 
                 var response = await _httpClient.GetAsync(url);
 

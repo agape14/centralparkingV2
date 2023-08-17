@@ -17,7 +17,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciocab> obtenerServicioDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/servicios/{id}"; 
+            var url = $"http://localhost:82/api/servicios/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -40,7 +40,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciocab>  crearServicio(TbIndServiciocab servicio)
         {
-            var url = "https://localhost:7260/api/servicios";
+            var url = "http://localhost:82/api/servicios";
 
             
             var json = JsonSerializer.Serialize(servicio);
@@ -66,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciocab> editarServicio(int id, TbIndServiciocab servicio)
         {
-            var url = $"https://localhost:7260/api/servicios/{id}"; 
+            var url = $"http://localhost:82/api/servicios/{id}"; 
 
          
             var json = JsonSerializer.Serialize(servicio);
@@ -101,7 +101,7 @@ namespace Cms.ServiceCms
 
         public async Task eliminarServicio(int id)
         {
-            var url = $"https://localhost:7260/api/servicios/{id}"; 
+            var url = $"http://localhost:82/api/servicios/{id}"; 
 
            
             HttpResponseMessage response = await _httpClient.DeleteAsync(url);
