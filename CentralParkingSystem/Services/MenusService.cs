@@ -22,7 +22,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/menu";
+                var url = "http://localhost:82/api/menu";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -51,7 +51,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/menu/subMenus";
+                var url = "http://localhost:82/api/menu/subMenus";
 
                 var response = await _httpClient.GetAsync(url);
 

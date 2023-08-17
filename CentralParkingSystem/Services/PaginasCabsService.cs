@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/paginas/nosotros";
+                var url = "http://localhost:82/api/paginas/nosotros";
 
                 var response = await _httpClient.GetAsync(url);
 

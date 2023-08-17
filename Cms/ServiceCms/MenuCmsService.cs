@@ -22,7 +22,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/menu/tipoMenu";
+                var url = "http://localhost:82/api/menu/tipoMenu";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -51,7 +51,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/menu/menusController";
+                var url = "http://localhost:82/api/menu/menusController";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> obtenerMenuDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/menu/{id}"; 
+            var url = $"http://localhost:82/api/menu/{id}"; 
 
             try
             {
@@ -112,7 +112,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> crearMenu(TbConfMenu tbConfMenu)
         {
-            var url = "https://localhost:7260/api/menu"; 
+            var url = "http://localhost:82/api/menu"; 
 
             try
             {
@@ -146,7 +146,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarMenu(int id)
         {
-            var url = $"https://localhost:7260/api/menu/{id}"; 
+            var url = $"http://localhost:82/api/menu/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -167,7 +167,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> modificarMenu(int id, TbConfMenu tbConfMenu)
         {
-            var url = $"https://localhost:7260/api/menu/{id}"; 
+            var url = $"http://localhost:82/api/menu/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfMenu), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

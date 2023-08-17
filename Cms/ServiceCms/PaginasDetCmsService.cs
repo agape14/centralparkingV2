@@ -20,7 +20,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/paginasdet";
+                var url = "http://localhost:82/api/paginasdet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -45,7 +45,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> obtenerPaginaDetDetalle(int id)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7260/api/paginasdet/{id}");
+            var response = await _httpClient.GetAsync($"http://localhost:82/api/paginasdet/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -65,7 +65,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> crearPaginaDet(TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = "https://localhost:7260/api/paginasdet";
+            var url = "http://localhost:82/api/paginasdet";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginasdet);
 
@@ -83,7 +83,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> modificarPaginaDet(int id, TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = $"https://localhost:7260/api/paginasdet/{id}"; 
+            var url = $"http://localhost:82/api/paginasdet/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginasdet);
 
@@ -101,7 +101,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPaginaDet(int id)
         {
-            var url = $"https://localhost:7260/api/paginasdet/{id}"; 
+            var url = $"http://localhost:82/api/paginasdet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

@@ -18,7 +18,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/servicioDetalle";
+                var url = "http://localhost:82/api/servicioDetalle";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -43,7 +43,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<List<TbServDetalle>> obtenerServicioDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/servicioDetalle/{id}";
+            var url = $"http://localhost:82/api/servicioDetalle/{id}";
 
             try
             {
@@ -80,7 +80,7 @@ namespace CentralParkingSystem.Services
 
             public async Task<TbServDetalle> obtenerServicioEspecifico(int id)
             {
-                var url = $"https://localhost:7260/api/servicioDetalle/serviciodetalle/{id}";
+                var url = $"http://localhost:82/api/servicioDetalle/serviciodetalle/{id}";
 
                 try
                 {
@@ -116,7 +116,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbServDetalle> crearServicioDetalle(TbServDetalle tbServDetalle)
         {
-            var url = "https://localhost:7260/api/servicioDetalle";
+            var url = "http://localhost:82/api/servicioDetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServDetalle);
 
@@ -134,7 +134,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbServDetalle> modificarServicioDetalle(int id, TbServDetalle tbServDetalle)
         {
-            var url = $"https://localhost:7260/api/servicioDetalle/{id}";
+            var url = $"http://localhost:82/api/servicioDetalle/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbServDetalle);
 
@@ -152,7 +152,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarServicioDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/servicioDetalle/{id}";
+            var url = $"http://localhost:82/api/servicioDetalle/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

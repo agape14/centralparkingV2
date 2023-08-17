@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/hojareclamaciones";
+                var url = "http://localhost:82/api/hojareclamaciones";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +44,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> obtenerHojaReclamacionesDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/hojareclamaciones/{id}";
+            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> crearHojaReclamacioneRegistro(TbFormHojareclamacione tbFormHojareclamacione)
         {
-            var url = "https://localhost:7260/api/hojareclamaciones";
+            var url = "http://localhost:82/api/hojareclamaciones";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormHojareclamacione);
 
@@ -84,7 +84,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> modificarHojaReclamacion(int id, TbFormHojareclamacione tbFormHojareclamacione)
         {
-            var url = $"https://localhost:7260/api/hojareclamaciones/{id}";
+            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormHojareclamacione);
 
@@ -102,7 +102,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarHojaReclamacion(int id)
         {
-            var url = $"https://localhost:7260/api/hojareclamaciones/{id}";
+            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

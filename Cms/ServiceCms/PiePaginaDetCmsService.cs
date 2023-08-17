@@ -19,7 +19,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"https://localhost:7260/api/piepaginadet/piePaginaDetId/{id}";
+                var url = $"http://localhost:82/api/piepaginadet/piePaginaDetId/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -48,7 +48,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/piepaginadet";
+                var url = "http://localhost:82/api/piepaginadet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -73,7 +73,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> obtenerPiePaginaDetDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
+            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
 
             try
             {
@@ -109,7 +109,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> crearPiePaginaDet(TbConfPiepaginadet piePaginaDet)
         {
-            var url = "https://localhost:7260/api/piepaginadet"; 
+            var url = "http://localhost:82/api/piepaginadet"; 
 
             try
             {
@@ -143,7 +143,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPiePaginaDet(int id)
         {
-            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
+            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -164,7 +164,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> modificarPiePaginaDet(int id, TbConfPiepaginadet boton)
         {
-            var url = $"https://localhost:7260/api/piepaginadet/{id}"; 
+            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

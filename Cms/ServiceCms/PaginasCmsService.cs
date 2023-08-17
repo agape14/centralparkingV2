@@ -22,7 +22,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "https://localhost:7260/api/paginas";
+                var url = "http://localhost:82/api/paginas";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -47,7 +47,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> obtenerPaginaDetalle(int id)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7260/api/paginas/{id}");
+            var response = await _httpClient.GetAsync($"http://localhost:82/api/paginas/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -67,7 +67,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> crearPagina(TbConfPaginascab tbConfPaginascab)
         {
-            var url = "https://localhost:7260/api/paginas"; 
+            var url = "http://localhost:82/api/paginas"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginascab);
 
@@ -86,7 +86,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> modificarPagina(int id, TbConfPaginascab tbConfPaginascab)
         {
-            var url = $"https://localhost:7260/api/paginas/{id}"; 
+            var url = $"http://localhost:82/api/paginas/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginascab);
 
@@ -104,7 +104,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPagina(int id)
         {
-            var url = $"https://localhost:7260/api/paginas/{id}"; 
+            var url = $"http://localhost:82/api/paginas/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

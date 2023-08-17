@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "https://localhost:7260/api/proveedor";
+                var url = "http://localhost:82/api/proveedor";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +44,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> obtenerProveedorDetalle(int id)
         {
-            var url = $"https://localhost:7260/api/proveedor/{id}";
+            var url = $"http://localhost:82/api/proveedor/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +66,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> crearProveedorRegistro(TbFormProveedore tbFormProveedore)
         {
-            var url = "https://localhost:7260/api/proveedor";
+            var url = "http://localhost:82/api/proveedor";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormProveedore);
 
@@ -84,7 +84,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> modificarProveedor(int id, TbFormProveedore tbFormProveedore)
         {
-            var url = $"https://localhost:7260/api/proveedor/{id}";
+            var url = $"http://localhost:82/api/proveedor/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormProveedore);
 
@@ -102,7 +102,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarProveedor(int id)
         {
-            var url = $"https://localhost:7260/api/proveedor/{id}";
+            var url = $"http://localhost:82/api/proveedor/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
