@@ -9,7 +9,6 @@ using ApiBD.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
 using CentralParkingSystem.DTOs;
-using System.Diagnostics.Contracts;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -22,34 +21,68 @@ public class HomeController : Controller
         var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await entidad.ListarEntidades();
 
+        if(listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+
 
         var redSocial = new RedesSocialesService(new HttpClient());
         var listRedes = await redSocial.ListarRedSociales();
-
+        if(listRedes.Count == 0)
+        {
+            RedesSociales objRedesSociales = new RedesSociales();
+            listRedes.Add(objRedesSociales);
+        }
 
         var menu = new MenusService(new HttpClient());
         var listMenu =await  menu.ListarMenus();
+        if (listMenu.Count == 0)
+        {
+            Result objResult = new Result();
+            listMenu.Add(objResult);
+        }
 
         var subMenu = new MenusService(new HttpClient());
         var listSubMenu = await subMenu.ListarSubMenus();
+        if(listSubMenu.Count == 0)
+        {
+            SubMenus objSubMenu = new SubMenus();
+            listSubMenu.Add(objSubMenu);
+        }
 
 
         var PiePaginaCab = new PiePaginaCabsService(new HttpClient());
         var listPie = await PiePaginaCab.ListarPiePaginasCabs();
+        if(listPie.Count == 0)
+        {
+            PiePaginaCabs objPaginaCab = new PiePaginaCabs();
+            listPie.Add(objPaginaCab);
+        }
 
 
         var PieDet = new PiePaginaDetsService(new HttpClient());
         var listPieDet = await PieDet.ListarPiePaginaDets();
-
-
+        
 
         var IServicio = new ServiciosCabsService(new HttpClient());
         var listIServicios = await IServicio.ListarServiciosCabs();
 
+        if(listIServicios.Count == 0)
+        {
+            TbIndServiciocab objIndServicioCab = new TbIndServiciocab();
+            listIServicios.Add(objIndServicioCab);
+        }
+
 
         var ServicioDet = new ServiciosdetsService(new HttpClient());
         var listIServiciodets = await ServicioDet.ListarServiciosdets();
-
+        if(listIServiciodets.Count == 0)
+        {
+            TbIndServiciodet objIndServicioDet = new TbIndServiciodet();
+            listIServiciodets.Add(objIndServicioDet);
+        }
 
 
         var option = new JsonSerializerOptions
@@ -74,11 +107,19 @@ public class HomeController : Controller
 
         var instancia = new CaracteristicasService(new HttpClient());
         var caracteristicasLista = await instancia.ListarCaracteristicas();
-
+        if(caracteristicasLista.Count == 0)
+        {
+            TbIndCaracteristica objCaracteristicas = new TbIndCaracteristica();
+            caracteristicasLista.Add(objCaracteristicas);
+        }
 
         var Slide = new SlideService(new HttpClient());
         var listSlide = await Slide.ListarSlide();
-
+        if (listSlide.Count == 0)
+        {
+            TbIndSlidecab objSlide = new TbIndSlidecab();
+            listSlide.Add(objSlide);
+        }
 
 
         var model = new IndexVM()
@@ -141,6 +182,12 @@ public class HomeController : Controller
         {
             PaginaCab = await paginasCab.paginasCabsPorDefault()
         };
+        if (model.PaginaCab == null)
+        {
+            TbConfPaginascab objPaginaCab = new TbConfPaginascab();
+            model.PaginaCab = objPaginaCab;
+            return View(model);
+        }
 
         return View(model);
     }
@@ -212,6 +259,14 @@ public class HomeController : Controller
     {
         var otrosServicios = new ServicioCabeceraService(new HttpClient());
         var servicios = await otrosServicios.ListarServicios();
+        if(servicios.Count == 0)
+        {
+            TbServCabecera objServCabecera = new TbServCabecera();
+            servicios.Add(objServCabecera);
+            return View(servicios);
+        }
+
+
         return View(servicios);
     }
     //----------------------------------------
@@ -282,6 +337,13 @@ public class HomeController : Controller
         {
             Puestos = await puesto.ListarPuestos(),
         };
+
+        if (model.Puestos.Count == 0)
+        {
+            TbTraPuesto obj = new TbTraPuesto();
+            model.Puestos.Add(obj);
+            return View(model);
+        }
 
         return View(model);
     }

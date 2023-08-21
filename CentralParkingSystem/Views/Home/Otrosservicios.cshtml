@@ -23,26 +23,31 @@
 
 @foreach (var valor in Model)
 {
-    <div class="container-xxl @colors[counter % colors.Count] ">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h3 class="display-6 mb-4">@valor.Titulo</h3>
-                    <p class="mb-5">@valor.DescCorto</p>
-                    <a class="btn btn-primary py-3 px-5" href="~/Home/CotizacionValetParking">Solicítalo aquí</a>
-                    <a class="btn btn-outline-primary py-3 px-5" href="~/Home/ValetParking">Conoce más</a>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
-                        <img class="position-absolute w-75 h-75" src="~/@valor.Imagen" alt="" style="object-fit: cover;">
+    @if (valor.Id != 0)
+    {
+        <div class="container-xxl @colors[counter % colors.Count] ">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <h3 class="display-6 mb-4">@valor.Titulo</h3>
+                        <p class="mb-5">@valor.DescCorto</p>
+                        <a class="btn btn-primary py-3 px-5" href="~/Home/CotizacionValetParking">Solicítalo aquí</a>
+                        <a class="btn btn-outline-primary py-3 px-5" href="~/Home/ValetParking">Conoce más</a>
+                    </div>
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
+                            <img class="position-absolute w-75 h-75" src="~/@valor.Imagen" alt="" style="object-fit: cover;">
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    counter++;
+
+        counter++;
+        
+    }
+   
 
 }
 

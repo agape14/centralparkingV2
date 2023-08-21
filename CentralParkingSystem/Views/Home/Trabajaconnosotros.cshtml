@@ -55,9 +55,12 @@
                                                href="postulacion.html">
                                                 POSTULAR
                                             </a>*@
-                                            <a href="@Url.Action("Postulacion", "Home", new { idpostulacion = puesto.Id })" class="btn btn-lg btn-primary text-dark">
-                                                POSTULAR
-                                            </a>
+                                            @if(puesto.Id!=0){
+                                                <a href="@Url.Action("Postulacion", "Home", new { idpostulacion = puesto.Id })" class="btn btn-lg btn-primary text-dark">
+                                                    POSTULAR
+                                                </a>
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </div>
