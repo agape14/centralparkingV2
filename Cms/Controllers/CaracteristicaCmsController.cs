@@ -13,6 +13,14 @@ namespace Cms.Controllers
         {
             var caracteristica = new CaracteristicasService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
+
+            if (caracteristicaLista.Count == 0)
+            {
+                TbIndCaracteristica objCaracteristica = new TbIndCaracteristica();
+                caracteristicaLista.Add(objCaracteristica);
+                return View(caracteristicaLista);
+            }
+
             return caracteristicaLista != null ?
                         View(caracteristicaLista) :
                         Problem("Entity set 'CentralparkingContext.TbIndCaracteristicas'  is null.");

@@ -14,6 +14,13 @@ namespace Cms.Controllers
             var paginaCabs = new PaginasCmsService(new HttpClient());
             var paginaCabsLista = await paginaCabs.paginasListar();
 
+            if(paginaCabsLista.Count == 0)
+            {
+                TbConfPaginascab objPaginasCab = new TbConfPaginascab();
+                paginaCabsLista.Add(objPaginasCab);
+                return View(paginaCabsLista);
+            }
+
             return paginaCabsLista != null ?
                         View(paginaCabsLista) :
                         Problem("Entity set 'CentralParkingContext.TbConfPaginascabs'  is null.");

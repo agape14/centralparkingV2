@@ -13,7 +13,9 @@ namespace Cms.Controllers
             var lista = await servicio.ListarHojaReclamaciones();
             if (lista.Count == 0)
             {
-                return View();
+                TbFormHojareclamacione objHojaReclamacione = new TbFormHojareclamacione();
+                lista.Add(objHojaReclamacione);
+                return View(lista);
             }
             return View(lista);
         }

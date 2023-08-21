@@ -12,6 +12,13 @@ namespace Cms.Controllers
         {
             var entidad = new EntidadCmsService(new HttpClient());
             var entidadLista = await entidad.listarEntidades();
+            if (entidadLista.Count == 0)
+            {
+                TbConfEntidad objEntidad = new TbConfEntidad();
+                entidadLista.Add(objEntidad);
+                return View(entidadLista);
+            }
+
             return entidadLista != null ?
                         View(entidadLista) :
                         Problem("Entity set 'CentralparkingContext.TbConfEntidads'  is null.");

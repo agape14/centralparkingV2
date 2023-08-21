@@ -13,7 +13,10 @@ namespace Cms.Controllers
             var lista = await proveedor.ListarProveedores();
             if (lista.Count == 0)
             {
-                return View();
+             
+                TbFormProveedore objProveedor = new TbFormProveedore();
+                lista.Add(objProveedor);
+                return View(lista);
             }
             return View(lista);
         }

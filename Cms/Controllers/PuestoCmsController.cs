@@ -12,6 +12,13 @@ namespace Cms.Controllers
         {
             var puesto = new PuestoCmsService(new HttpClient());
             var puestoLista = await puesto.puestoListar();
+            if(puestoLista.Count == 0)
+            {
+                TbTraPuesto objPuesto = new TbTraPuesto();
+                puestoLista.Add(objPuesto);
+                return View(puestoLista);
+            }
+
             return puestoLista != null ?
                         View(puestoLista) :
                         Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");

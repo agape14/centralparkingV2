@@ -12,6 +12,14 @@ namespace Cms.Controllers
         {
             var paginaDet = new PaginasDetCmsService(new HttpClient());
             var paginaDetLista = await paginaDet.paginasDetListar();
+
+            if(paginaDetLista.Count == 0)
+            {
+                TbConfPaginasdet objPaginasdet = new TbConfPaginasdet();
+                paginaDetLista.Add(objPaginasdet);
+                return View(paginaDetLista);
+            }
+
             return paginaDetLista != null ?
                         View(paginaDetLista) :
                         Problem("Entity set 'CentralParkingContext.TbConfPaginasdets'  is null.");

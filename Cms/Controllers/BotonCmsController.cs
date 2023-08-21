@@ -12,6 +12,14 @@ namespace Cms.Controllers
         {
             var boton = new ConfBotonesCmsService(new HttpClient());
             var botonLista = await boton.listarBotones();
+
+            if (botonLista.Count == 0 )
+            {
+                TbConfBotone objBotone = new TbConfBotone();
+                botonLista.Add(objBotone);
+                return View(botonLista);
+            }
+
             return botonLista != null ?
                         View(botonLista) :
                         Problem("Entity set 'CentralparkingContext.TbConfBotones'  is null.");

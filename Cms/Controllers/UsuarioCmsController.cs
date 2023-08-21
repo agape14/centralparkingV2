@@ -13,6 +13,14 @@ namespace Cms.Controllers
         {
             var usuario = new UsuarioCmsService(new HttpClient());
             var usuarioLista = await usuario.listarUsuarios();
+            if (usuarioLista.Count == 0)
+            {
+
+                TbConfUser objUsuario = new TbConfUser();
+                usuarioLista.Add(objUsuario);
+                return View(usuarioLista);
+            }
+
             return View(usuarioLista);
         }
        

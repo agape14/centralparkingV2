@@ -57,16 +57,18 @@
 
 
 
-
-                                        <td>
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
-                                            @if (item.TipoRuta == 2)
-                                            {
-                                                <a href="@Url.Action("Index", "ModaleDetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
-                                            }
-                                        </td>
+                                        @if(item.Id != 0){
+                                            <td>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                                @if (item.TipoRuta == 2)
+                                                {
+                                                    <a href="@Url.Action("Index", "ModaleDetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
+                                                }
+                                            </td>
+                                        }
+                                       
                                     </tr>
                                 }
                             </tbody>

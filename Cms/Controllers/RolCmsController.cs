@@ -12,6 +12,13 @@ namespace Cms.Controllers
         {
             var rol = new RolCmsService(new HttpClient());
             var rolLista = await rol.listarRoles();
+            if (rolLista.Count == 0)
+            {
+                TbConfRole objRole = new TbConfRole();
+                rolLista.Add(objRole);
+                return View(rolLista);
+
+            }
 
             return rolLista != null ?
                         View(rolLista) :

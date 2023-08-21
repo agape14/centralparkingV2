@@ -15,7 +15,9 @@ namespace Cms.Controllers
             var lista = await servicio.listarModalDetalle(codigo);
             if (lista.Count == 0)
             {
-                return View();
+                TbConfModaldet objModaleDet = new TbConfModaldet();
+                lista.Add(objModaleDet);
+                return View(lista);
             }
             return View(lista);
         }

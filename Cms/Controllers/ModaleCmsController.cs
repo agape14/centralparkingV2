@@ -13,7 +13,9 @@ namespace Cms.Controllers
             var lista = await servicio.listarEntrada();
             if (lista.Count == 0)
             {
-                return View();
+                TbConfPiepaginadet objPiePaginaDet = new TbConfPiepaginadet();
+                lista.Add(objPiePaginaDet);
+                return View(lista);
             }
             return View(lista);
         }

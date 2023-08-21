@@ -13,6 +13,13 @@ namespace Cms.Controllers
             var serviciodetalle = new ServicioDetalleService(new HttpClient());
             var servicio = await serviciodetalle.obtenerServicioDetalle(codigo);
 
+            if (servicio.Count == 0)
+            {
+                TbServDetalle objServicioDetalle = new TbServDetalle();
+                servicio.Add(objServicioDetalle);
+                return View(servicio);
+            }
+
             return View(servicio);
         }
 

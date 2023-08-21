@@ -13,6 +13,13 @@ namespace Cms.Controllers
             var redSocial = new RedesSocialesCmsService(new HttpClient());
             var redSocialLista = await redSocial.listarRedesSociales();
 
+            if (redSocialLista.Count == 0)
+            {
+                TbIndRedsocial objRedSocial = new  TbIndRedsocial();
+                redSocialLista.Add(objRedSocial);
+                return View(redSocialLista);
+            }
+
             return redSocialLista != null ?
                         View(redSocialLista) :
                         Problem("Entity set 'CentralParkingContext.TbIndRedsocials'  is null.");

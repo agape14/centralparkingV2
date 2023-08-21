@@ -21,6 +21,13 @@ namespace CentralParkingSystem.Controllers
         {
             var servicios = new ServiciosCabsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
+            if (lista.Count == 0)
+            {
+                TbIndServiciocab objServicioCab = new TbIndServiciocab();
+                lista.Add(objServicioCab);
+                return View(lista);
+            }
+
             return lista != null ?
                         View(lista) :
                         Problem("Entity set 'CentralParkingContext.TbIndServiciocabs'  is null.");

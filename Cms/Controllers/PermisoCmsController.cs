@@ -13,6 +13,12 @@ namespace Cms.Controllers
         {
             var permiso = new PermisoCmsService(new HttpClient());
             var permisoLista = await permiso.listarPermisos();
+            if (permisoLista.Count == 0)
+            {
+                TbConfPermiso objPermiso = new TbConfPermiso();
+                permisoLista.Add(objPermiso);
+                return View(permisoLista);
+            }
 
              return View(permisoLista);
         }

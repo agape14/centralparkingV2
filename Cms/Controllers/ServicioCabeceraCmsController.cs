@@ -22,7 +22,9 @@ namespace Cms.Controllers
             var lista = await servicioCabecera.listarServiciosCabecera();
             if (lista.Count == 0)
             {
-                return View();
+                TbServCabecera objServicioCabecera = new TbServCabecera();
+                lista.Add(objServicioCabecera);
+                return View(lista);
             }
             return View(lista);
         }

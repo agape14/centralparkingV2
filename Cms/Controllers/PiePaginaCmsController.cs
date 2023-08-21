@@ -13,6 +13,13 @@ namespace Cms.Controllers
             var piePagina = new PiePaginaCmsService(new HttpClient());
             var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
 
+            if(piePaginaListaCabs.Count == 0)
+            {
+                TbConfPiepaginacab objPiePagina = new TbConfPiepaginacab();
+                piePaginaListaCabs.Add(objPiePagina);
+                return View(piePaginaListaCabs);
+            }
+
             return piePaginaListaCabs != null ?
                         View(piePaginaListaCabs) :
                         Problem("Entity set 'CentralparkingContext.TbConfPiepaginacabs'  is null.");

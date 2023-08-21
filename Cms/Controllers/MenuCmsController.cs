@@ -17,7 +17,12 @@ namespace Cms.Controllers
             
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
-
+            if (menuLista.Count == 0)
+            {
+                TbConfMenu objMenu = new TbConfMenu();
+                menuLista.Add(objMenu);
+                return View(menuLista);
+            }
             return View(menuLista);
         }
 

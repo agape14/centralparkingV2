@@ -13,7 +13,9 @@ namespace Cms.Controllers
             var lista = await servicio.ListarParkingCard();
             if (lista.Count == 0)
             {
-                return View();
+                TbFormParkingcard objParkingCard = new TbFormParkingcard();
+                lista.Add(objParkingCard);
+                return View(lista);
             }
             return View(lista);
         }

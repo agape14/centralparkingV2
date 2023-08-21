@@ -14,7 +14,9 @@ namespace Cms.Controllers
             var lista = await contactos.ListarContactos();
             if (lista.Count == 0)
             {
-                return View();
+                TbFormContactano objContactano = new TbFormContactano();
+                lista.Add(objContactano);
+                return View(lista);
             }
             return View(lista);
         }
