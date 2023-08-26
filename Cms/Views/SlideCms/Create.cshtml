@@ -15,23 +15,41 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <form asp-action="Create">
+                        <div class="col-md-12">
+                            <form enctype="multipart/form-data" method="post" asp-action="Create">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="form-group">
-                                    <label asp-for="Titulo" class="control-label"></label>
-                                    <input asp-for="Titulo" class="form-control" />
-                                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Titulo" class="control-label"></label>
+                                            <input asp-for="Titulo" class="form-control" />
+                                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Imagen" class="control-label"></label>
+                                            <input asp-for="Imagen" class="form-control" readonly />
+                                            <span asp-validation-for="Imagen" class="text-danger"></span>
+                                        </div>
+                                    </div>-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Imagen" class="control-label">Imagen</label>
+                                            <!--<input asp-for="Imagen" class="form-control" />-->
+                                            <input class="form-control-file form-control" id="Imagen" name="Imagen" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                            <span for="Imagen" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="IdBtn1" class="control-label">Botón</label>
+                                            <select asp-for="IdBtn1" class="form-control" asp-items="ViewBag.IdBtn1"></select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="Imagen" class="control-label"></label>
-                                    <input asp-for="Imagen" class="form-control" />
-                                    <span asp-validation-for="Imagen" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="IdBtn1" class="control-label">Botón</label>
-                                    <select asp-for="IdBtn1" class="form-control" asp-items="ViewBag.IdBtn1"></select>
-                                </div>
+                                
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
                                     <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>

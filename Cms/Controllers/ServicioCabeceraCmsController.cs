@@ -73,7 +73,7 @@ namespace Cms.Controllers
                     string nombreImagen = file.FileName;
                     string path = "";
                     path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                    tbServCabecera.Imagen = "images/" + nombreImagen;
+                    tbServCabecera.Imagen = "/images/" + nombreImagen;
                 }
 
 
@@ -133,7 +133,7 @@ namespace Cms.Controllers
                         string nombreImagen = file.FileName;
                         string path = "";
                         path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                        tbServCabecera.Imagen = "images/" + nombreImagen;
+                        tbServCabecera.Imagen = "/images/" + nombreImagen;
 
 
                     }

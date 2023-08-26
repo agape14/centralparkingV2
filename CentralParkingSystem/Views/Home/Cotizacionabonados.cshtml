@@ -95,7 +95,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad">
+                                <input type="number" class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" >
                                 <label for="cantidad">Cantidad</label>
                             </div>
                         </div>
@@ -107,13 +107,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="celular" placeholder="Celular">
+                                <input type="text" class="form-control border-0 bg-light" id="celular"  maxlength="9">
                                 <label for="celular">Celular</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="telefono" placeholder="Teléfono">
+                                <input type="text" class="form-control border-0 bg-light" id="telefono" placeholder="Teléfono" maxlength="7">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
@@ -133,4 +133,32 @@
         </div>
     </div>
 </div>
+
+<script>
+  function validarcantidad() {
+    var campo = document.getElementById("cantidad");
+    if (campo.value < 1) {
+      campo.value = 1;
+    }
+  }
+  document.getElementById("cantidad").addEventListener("blur", validarcantidad);
+
+  function mascaraDeCelular(event) {
+    var campo = event.target;
+    var valor = campo.value.replace(/\D/g, '');
+    var mascara = valor.length === 9 ? valor : '999-999-999';
+    campo.value = valor.replace(/(\d{3})(\d{3})(\d{3})/, mascara);
+  }
+  document.getElementById("celular").addEventListener("input", mascaraDeCelular);
+
+  function mascaraDeTelefono(event) {
+    var campo = event.target;
+    var valor = campo.value.replace(/\D/g, '');
+    var mascara = valor.length === 7 ? valor : '999-9999';
+    campo.value = valor.replace(/(\d{3})(\d{4})/, mascara);
+  }
+  document.getElementById("telefono").addEventListener("input", mascaraDeTelefono);
+  
+</script>
+
 <!-- Cuerpo page End -->

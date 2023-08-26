@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.Services;
+using Cms.Helpers;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,12 @@ namespace Cms.Controllers
 {
     public class SlideCmsController : Controller
     {
+        private readonly HelperUploadFiles _helperUpload;
 
+        public SlideCmsController(HelperUploadFiles helperUpload)
+        {
+            _helperUpload = helperUpload;
+        }
 
         // GET: Slide
         public async Task<IActionResult> Index()
@@ -58,13 +64,22 @@ namespace Cms.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Imagen,IdBtn1")] TbIndSlidecab tbIndSlidecab)
+        public async Task<IActionResult> Create(TbIndSlidecab tbIndSlidecab)
         {
             var boton = new ConfBotonesCmsService(new HttpClient());
             var listBotones = await boton.listarBotones();
             var slide = new SlideCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
+                var file = Request.Form.Files.FirstOrDefault();
+
+                if (file != null)
+                {
+                    string nombreImagen = file.FileName;
+                    string path = "";
+                    path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                    tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                }
                 await slide.CreateSlide(tbIndSlidecab);
                 return RedirectToAction(nameof(Index));
             }
@@ -122,6 +137,15 @@ namespace Cms.Controllers
             {
                 try
                 {
+                    var file = Request.Form.Files.FirstOrDefault();
+
+                    if (file != null)
+                    {
+                        string nombreImagen = file.FileName;
+                        string path = "";
+                        path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                        tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                    }
                     await slide.UpdateSlide(id,tbIndSlidecab);
                 }
                 catch (DbUpdateConcurrencyException)

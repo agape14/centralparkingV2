@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ApiBD.Models.TbIndServiciocab>
 
 @{
-    ViewData["Title"] = "Servicios Inicio";
+    ViewData["Title"] = "Listado Servicios";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
@@ -21,19 +21,19 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TituloGrande)
+                                        Titulo Grande
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TituloPeque)
+                                        Titulo Corto
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Descripcion)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.ImagenGrande)
+                                        Imagen Grande
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.ImagenPeque)
+                                        Imagen Pequeña
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Ruta)
@@ -55,21 +55,28 @@
                                             @Html.DisplayFor(modelItem => item.Descripcion)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ImagenGrande)
+                                            @if (!string.IsNullOrEmpty(item.ImagenGrande))
+                                            {
+                                                <div style="width: 100px; height: 100px; overflow: hidden;">
+                                                    <img src="@Url.Content(item.ImagenGrande)" alt="Thumbnail" style="width: 100%; height: auto;">
+                                                </div>
+                                            }
+
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ImagenPeque)
+                                            @if (!string.IsNullOrEmpty(item.ImagenPeque))
+                                            {
+                                                <div style="width: 100px; height: 100px; overflow: hidden;">
+                                                    <img src="@Url.Content(item.ImagenPeque)" alt="Thumbnail" style="width: 100%; height: auto;">
+                                                </div>
+                                            }
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Ruta)
                                         </td>
                                         @if(item.Id != 0){
                                             <td>
-                                                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
                                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
                                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
                                                 <a href="@Url.Action("Index", "IserviciosdetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
                                             </td>

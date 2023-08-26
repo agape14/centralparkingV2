@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ApiBD.Models.TbConfBotone>
 
 @{
-    ViewData["Title"] = "Listado de Botones";
+    ViewData["Title"] = "Listado Botones";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
@@ -22,25 +22,25 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.MenuId)
+                                        Codigo
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.PaginadetId)
+                                        Codigo detalle
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.BtnTitulo)
+                                        Titulo
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.BtnRuta)
+                                        Ruta
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.BtnClase)
+                                        Clase
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Icono)
+                                        Icono
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Orden)
+                                        Orden
                                     </th>
                                     <th></th>
                                 </tr>
@@ -73,7 +73,6 @@
                                         @if(item.Id != 0){
                                             <td>
                                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-eye"></i> </a> |
                                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
                                             </td>
                                         }

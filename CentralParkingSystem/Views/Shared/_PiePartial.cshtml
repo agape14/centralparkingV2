@@ -10,6 +10,9 @@
 
     string piedetJson = HttpContextAccessor.HttpContext.Session.GetString("piepaginadet");
     List<TbConfPiepaginadet> listaPiedet = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(piedetJson);
+
+    string nameAcceder = "Acceder";
+    var rutaAcceder = "https://localhost:7063/DashbordCms/Index";
 }
 <div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
     <div class="container">
@@ -56,9 +59,12 @@
                                     {
                                         <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
                                     }
-                                }
+                                } 
                             }
                         }
+                        <a href="https://localhost:7063/DashbordCms/Index" class="btn btn-primary py-2 px-lg-3 d-none d-lg-block">
+                            @nameAcceder <i class="fa fa-arrow-right ms-3"></i>
+                        </a>
                     </div>
                 }
 
