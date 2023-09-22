@@ -1,6 +1,7 @@
 ﻿using ApiBD.Models;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cms.Controllers
@@ -46,8 +47,25 @@ namespace Cms.Controllers
         }
 
         // GET: TbTraPuesto/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+
+            //Listando Menu
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            var menuItems = menuLista.Where(m => m.Padre == 3).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             return View();
         }
         
@@ -64,6 +82,7 @@ namespace Cms.Controllers
                 await puesto.crearPuesto(tbTraPuesto);  
                 return RedirectToAction(nameof(Index));
             }
+
             return View(tbTraPuesto);
         }
 
@@ -83,6 +102,23 @@ namespace Cms.Controllers
             {
                 return NotFound();
             }
+
+            //Listando Menu
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            var menuItems = menuLista.Where(m => m.Padre == 3).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             return View(tbTraPuesto);
         }
 

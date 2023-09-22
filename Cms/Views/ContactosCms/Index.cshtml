@@ -12,10 +12,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Contactos que solicitan nuestro servicio</h4>
-                        @*<a asp-action="Create/@ViewBag.vPiepaginaId" class="btn btn-primary "><i class="ti-plus"></i> Nuevo</a>*@
+                        @*<a asp-action="Create/@ViewBag.vPiepaginaId" class="btn btn-primary "><i class="ti-plus"></i> Nuevo</a>
                         <a class="btn btn-primary " href="@Url.Action("Create", "ContactosCms", new { codigo = ViewBag.vServicioId })">
                             <i class="ti-plus"></i>  Nuevo
-                        </a>
+                        </a>*@
                     </div>
 
 
@@ -55,12 +55,12 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.CorreoElectronico)
                                         </td>
-                                        @if(item.Id != 0){
+                                        @*@if(item.Id != 0){
                                             <td>
                                                 <a asp-action="Edit" asp-route-id="@item.Id" asp-route-codigo="@ViewBag.vServicioId" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
                                                 <a asp-action="Delete" asp-route-id="@item.Id" asp-route-codigo="@ViewBag.vServicioId" class="btn btn-danger"><i class="ti-trash"></i> </a>
 
-                                            </td>
+                                            </td>*@
                                         }
                                        
                                     </tr>

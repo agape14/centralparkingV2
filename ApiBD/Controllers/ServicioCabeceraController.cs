@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ApiBD.Controllers
 {
@@ -20,8 +22,14 @@ namespace ApiBD.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TbServCabecera>>> Get()
         {
-            var servicio = await _dbContext.TbServCabeceras.Where(x=>x.IsMenu == 0).ToListAsync();
-            return servicio;
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
+
+            var servicio = await _dbContext.TbServCabeceras.Where(x => x.IsMenu == 0).Include(t => t.IdBtnConoceNavigation).Include(t => t.IdBtnSolicitarNavigation).ToListAsync();
+            return new JsonResult(servicio, options);
         }
 
         [HttpGet]

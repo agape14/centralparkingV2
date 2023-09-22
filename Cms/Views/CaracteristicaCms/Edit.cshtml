@@ -26,13 +26,16 @@
                                         <span asp-validation-for="Titulo" class="text-danger"></span>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="Icono" class="control-label"></label>
-                                        <input asp-for="Icono" class="form-control" />
+                                        <select asp-for="Icono" class="form-control" asp-items="ViewBag.vMenu"></select>
                                         <span asp-validation-for="Icono" class="text-danger"></span>
                                     </div>
                                 </div>
+
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="Detalle" class="control-label"></label>

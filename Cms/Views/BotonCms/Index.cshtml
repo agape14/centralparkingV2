@@ -12,11 +12,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">@ViewData["Title"]</h4>
-                        <a class="btn btn-primary " href="/BotonCms/Create">
+                        <a class="btn btn-primary " href="@Url.Action("Create", "BotonCms", new { codigo = ViewBag.SlideCodigo })">
                             <i class="ti-plus"></i>  Nuevo
                         </a>
                     </div>
-
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -72,8 +71,8 @@
                                         </td>
                                         @if(item.Id != 0){
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                                <a href="@Url.Action("Edit", "BotonCms", new { id = item.Id, codigo = ViewBag.SlideCodigo })" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a href="@Url.Action("Delete", "BotonCms", new { id = item.Id, codigo = ViewBag.SlideCodigo })" class="btn btn-danger"><i class="ti-trash"></i> </a>
                                             </td>
                                         }
                                         

@@ -63,7 +63,7 @@
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
                         <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button>  |
-                        <a class="btn btn-danger" asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                        <a class="btn btn-danger" href="@Url.Action("Index", "BotonCms", new { codigo = ViewBag.SlideCodigo })"><i class="ti-back-left"></i> Regresar</a>
                     </form>
                 </div>
             </div>

@@ -362,4 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ApiBD/Models/CentralParkingContext.cs
+**/CentralParkingContext.cs
 /centralparking.sql
+.gitignore
+.log
+*.log

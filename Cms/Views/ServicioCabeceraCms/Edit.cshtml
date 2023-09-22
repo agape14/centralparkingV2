@@ -42,7 +42,7 @@
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="DescCorto" class="control-label"></label>
                                             <input asp-for="DescCorto" class="form-control" />
@@ -52,14 +52,15 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="IdBtnSolicitar" class="control-label"></label>
-                                            <input asp-for="IdBtnSolicitar" class="form-control" />
+                                            <select asp-for="IdBtnSolicitar" class="form-control" asp-items="ViewBag.IdBtn1"></select>
                                             <span asp-validation-for="IdBtnSolicitar" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="IdBtnConoce" class="control-label"></label>
-                                            <textarea asp-for="IdBtnConoce" class="form-control" rows="4" cols="50" resize="both"></textarea>
+                                            <select asp-for="IdBtnConoce" class="form-control" asp-items="ViewBag.IdBtn1"></select>
                                             <span asp-validation-for="IdBtnConoce" class="text-danger"></span>
                                         </div>
                                     </div>                          

@@ -8,8 +8,7 @@ namespace Cms.Controllers
     public class ModaleDetCmsController : Controller
     {
         public async Task<IActionResult> Index(int codigo)
-        {
-          
+        {        
           
             var servicio = new ModaleDetalleService(new HttpClient());
             var lista = await servicio.listarModalDetalle(codigo);
@@ -19,6 +18,10 @@ namespace Cms.Controllers
                 lista.Add(objModaleDet);
                 return View(lista);
             }
+            else {
+                ViewData["Codigo"] = lista[0].ModalcabId;
+            }
+            ViewData["ModaleCabId"] = codigo;
             return View(lista);
         }
 
@@ -43,8 +46,10 @@ namespace Cms.Controllers
         }
 
         // GET: IServicios/Create
-        public IActionResult Create()
+        public IActionResult Create(int codigo, int ModaleCabId)
         {
+            ViewData["ModaleCabId"] = codigo;
+            ViewData["Codigo"] = ModaleCabId;
             return View();
         }
 
@@ -54,14 +59,14 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TbConfModaldet tbConfModaldet)
+        public async Task<IActionResult> Create(int codigo, TbConfModaldet tbConfModaldet)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
 
             if (ModelState.IsValid)
             {
                 await servicio.crearModalDetRegistro(tbConfModaldet);
-                return RedirectToAction("Index", "ModaleCms");
+                return RedirectToAction(nameof(Index), new { codigo = codigo });
 
 
             }
@@ -69,9 +74,9 @@ namespace Cms.Controllers
         }
 
         // GET: TbTraPuesto/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, int codigo)
         {
-
+            ViewData["ModaleCabId"] = codigo;
             var servicio = new ModaleDetalleService(new HttpClient());
             var lista = await servicio.listarModalDetalle(id);
 
@@ -94,7 +99,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TbConfModaldet tbConfModaldet)
+        public async Task<IActionResult> Edit(int id, int codigo, TbConfModaldet tbConfModaldet)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
            
@@ -118,7 +123,7 @@ namespace Cms.Controllers
                     return NotFound();
 
                 }
-                return RedirectToAction("Index", "ModaleCms");
+                return RedirectToAction(nameof(Index), new { codigo = codigo });
 
 
             }
@@ -126,8 +131,9 @@ namespace Cms.Controllers
         }
 
         // GET: TbTraPuesto/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, int codigo)
         {
+            ViewData["ModaleCabId"] = codigo;
             var servicio = new ModaleDetalleService(new HttpClient());
          
 
@@ -148,7 +154,7 @@ namespace Cms.Controllers
         // POST: TbTraPuesto/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int codigo)
         {
             var servicio = new ModaleDetalleService(new HttpClient());
            
@@ -159,7 +165,7 @@ namespace Cms.Controllers
             }
 
 
-            return RedirectToAction("Index", "ModaleCms");
+            return RedirectToAction(nameof(Index), new { codigo = codigo });
 
 
         }

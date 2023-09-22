@@ -54,8 +54,27 @@ namespace CentralParkingSystem.Controllers
         }
 
         // GET: IServicios/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
+
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
             return View();
         }
 
@@ -82,6 +101,12 @@ namespace CentralParkingSystem.Controllers
             var serviciosCms = new IServicioCmsService(new HttpClient());
             var servicios = new ServiciosCabsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
 
             if (id == 0 || lista == null)
             {
@@ -93,6 +118,19 @@ namespace CentralParkingSystem.Controllers
             {
                 return NotFound();
             }
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             return View(tbIndServiciocab);
         }
 
@@ -104,7 +142,7 @@ namespace CentralParkingSystem.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,TituloGrande,TituloPeque,Descripcion,ImagenGrande,ImagenPeque,Ruta")] TbIndServiciocab tbIndServiciocab)
         {
             var serviciosCms = new IServicioCmsService(new HttpClient());
-        
+            
 
             if (id != tbIndServiciocab.Id)
             {
@@ -126,6 +164,7 @@ namespace CentralParkingSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(tbIndServiciocab);
         }
 

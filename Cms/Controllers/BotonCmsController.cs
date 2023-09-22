@@ -1,6 +1,8 @@
 ﻿using ApiBD.Models;
+using CentralParkingSystem.DTOs;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cms.Controllers
@@ -8,10 +10,10 @@ namespace Cms.Controllers
     public class BotonCmsController : Controller
     {
         // GET: Boton
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(uint codigo)
         {
             var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotones();
+            var botonLista = await boton.listarBotonesBanner(codigo);
 
             if (botonLista.Count == 0 )
             {
@@ -19,7 +21,7 @@ namespace Cms.Controllers
                 botonLista.Add(objBotone);
                 return View(botonLista);
             }
-
+            ViewData["SlideCodigo"] = codigo;
             return botonLista != null ?
                         View(botonLista) :
                         Problem("Entity set 'CentralparkingContext.TbConfBotones'  is null.");
@@ -29,8 +31,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotones();
-            if (id == 0 || botonLista == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -45,8 +46,26 @@ namespace Cms.Controllers
         }
 
         // GET: Boton/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(uint codigo)
         {
+            //Guardando ID Codigo Slide Padre
+            ViewData["SlideCodigo"] = codigo;
+            //Listando Menu
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             return View();
         }
 
@@ -62,19 +81,18 @@ namespace Cms.Controllers
            if (ModelState.IsValid)
            {
                await boton.crearBoton(tbConfBotone);
-               return RedirectToAction(nameof(Index));
-           }
-           return View(tbConfBotone);
+               return RedirectToAction(nameof(Index), new { codigo = tbConfBotone.MenuId });
+            }
+            return View(tbConfBotone);
        }
         
 
 
        // GET: Boton/Edit/5
-       public async Task<IActionResult> Edit(int id)
+       public async Task<IActionResult> Edit(int id, uint codigo)
        {
             var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotones();
-           if (id == 0 || botonLista == null)
+           if (id == 0)
            {
                return NotFound();
            }
@@ -84,7 +102,25 @@ namespace Cms.Controllers
            {
                return NotFound();
            }
-           return View(tbConfBotone);
+            //Guardando ID Codigo Slide Padre
+            ViewData["SlideCodigo"] = codigo;
+            //Listando Menu
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
+            return View(tbConfBotone);
        }
         
        // POST: Boton/Edit/5
@@ -112,17 +148,18 @@ namespace Cms.Controllers
                        return NotFound();
                  
                }
-               return RedirectToAction(nameof(Index));
-           }
+               return RedirectToAction(nameof(Index), new { codigo = tbConfBotone.MenuId });
+            }
            return View(tbConfBotone);
        }
         
        // GET: Boton/Delete/5
-       public async Task<IActionResult> Delete(int id)
-       {
+       public async Task<IActionResult> Delete(int id, uint codigo)
+        {
+            //Guardando ID Codigo Slide Padre
+            ViewData["SlideCodigo"] = codigo;
             var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotones();
-           if (id == 0 || botonLista == null)
+           if (id == 0)
            {
                return NotFound();
            }
@@ -143,21 +180,15 @@ namespace Cms.Controllers
        public async Task<IActionResult> DeleteConfirmed(int id)
        {
             var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotones();
-
-            if (botonLista == null)
-           {
-               return Problem("Entity set 'CentralparkingContext.TbConfBotones'  is null.");
-           }
            var tbConfBotone = await boton.obtenerBotonDetalle(id);
            if (tbConfBotone != null)
            {
                await boton.eliminarBoton(id);
            }
 
-         
-           return RedirectToAction(nameof(Index));
-       }
+
+            return RedirectToAction(nameof(Index), new { codigo = tbConfBotone.MenuId });
+        }
         
 
     }

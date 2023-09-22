@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">@ViewData["Title"]</h4>
-                        <a class="btn btn-primary " href="/ModaleDetCms/Create">
+                        <a class="btn btn-primary " href="@Url.Action("Create", "ModaleDetCms", new { codigo = ViewBag.ModaleCabId,ModaleCabId = ViewBag.Codigo  })">
                             <i class="ti-plus"></i>  Nuevo
                         </a>
                     </div>
@@ -72,8 +72,8 @@
 
                                         @if(item.Id !=0){
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                                <a href="@Url.Action("Edit", "ModaleDetCms", new { id = item.Id, codigo = ViewBag.ModaleCabId })" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a href="@Url.Action("Delete", "ModaleDetCms", new { id = item.Id, codigo = ViewBag.ModaleCabId })" class="btn btn-danger"><i class="ti-trash"></i> </a>
 
                                             </td>
                                         }

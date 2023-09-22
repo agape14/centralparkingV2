@@ -22,14 +22,18 @@ namespace Cms.Controllers
         public async Task<IActionResult> Index(int codigo)
         {
             var servicioDet = new ServiciosdetsService(new HttpClient());
+          
+
             var servicioDetLista = await servicioDet.ListarServiciosdets();
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
             var servicioDetCmsLista = await servicioDetCms.filtrarPorCodigo(codigo);
+            
 
             if (codigo == 0 || servicioDetLista == null)
             {
                 return NotFound();
             }
+            
             ViewData["vServicioId"] = codigo;
             return servicioDetLista != null ?
                           View(servicioDetCmsLista) :
@@ -64,6 +68,17 @@ namespace Cms.Controllers
         {
             var servicioCab = new ServiciosCabsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
+            ViewData["vMenu"] = new SelectList(menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            }), "Value", "Text");
             ViewData["vServicioId"] = codigo;
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande");
             return View();
@@ -113,6 +128,8 @@ namespace Cms.Controllers
             var servicioCab = new ServiciosCabsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
 
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
 
             if (id == 0 || servicioDetLista == null)
             {
@@ -124,6 +141,18 @@ namespace Cms.Controllers
             {
                 return NotFound();
             }
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
+
+            ViewData["vMenu"] = new SelectList(menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            }), "Value", "Text");
+
+
             ViewData["vServicioId"] = codigo;
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             return View(tbIndServiciodet);

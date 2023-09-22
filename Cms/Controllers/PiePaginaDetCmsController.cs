@@ -61,6 +61,26 @@ namespace Cms.Controllers
         {
             var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
             var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
+
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             ViewData["vPiepaginaId"] = codigo;
             ViewData["PiepaginaId"] = new SelectList(piePaginaCabsLista, "Id", "Titulo", codigo);
             return View();
@@ -106,18 +126,41 @@ namespace Cms.Controllers
             var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
             var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
 
-            if (id == 0 || piePaginaDetLista == null)
-           {
-               return NotFound();
-           }
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
 
-           var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
-           if (tbConfPiepaginadet == null)
-           {
-               return NotFound();
-           }
-           ViewData["vPiepaginaId"] = codigo;
-           ViewData["PiepaginaId"] = new SelectList(piePaginaCabsLista, "Id", "Titulo", codigo);
+            if (id == 0 || piePaginaDetLista == null)
+            {
+                return NotFound();
+            }
+
+            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+            if (tbConfPiepaginadet == null)
+            {
+                return NotFound();
+            }
+            var codigoTipo =  tbConfPiepaginadet.TipoRuta==2 ? tbConfPiepaginadet.TipoRuta:0;
+
+            if (menuLista.Count == 0)
+            {
+                return NotFound();
+            }
+
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+            ViewData["vPiepaginaId"] = codigo;
+            ViewData["iCodigoTipo"] = codigoTipo;
+            ViewData["PiepaginaId"] = new SelectList(piePaginaCabsLista, "Id", "Titulo", codigo);
            return View(tbConfPiepaginadet);
        }
         

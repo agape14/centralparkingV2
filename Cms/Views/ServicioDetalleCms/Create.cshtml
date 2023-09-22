@@ -49,10 +49,11 @@
                                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="IdBtnSolicitalo" class="control-label"></label>
-                                            <textarea asp-for="IdBtnSolicitalo" class="form-control" rows="4" cols="50" resize="both"></textarea>
+                                            <select asp-for="IdBtnSolicitalo" class="form-control" asp-items="ViewBag.IdBtn1"></select>
                                             <span asp-validation-for="IdBtnSolicitalo" class="text-danger"></span>
                                         </div>
                                     </div>

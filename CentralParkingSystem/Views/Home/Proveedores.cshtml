@@ -47,7 +47,7 @@
                                 Fecha
                             </label>
                             <div class="col-sm-3">
-                                <input asp-for="Fecha" class="form-control" type="date" value="" />
+                                <input asp-for="Fecha" class="form-control" required type="date" value="" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -55,7 +55,7 @@
                                 Solicitado por
                             </label>
                             <div class="col-sm-10">
-                                <input asp-for="SolicitadoPor" class="form-control"  placeholder="Ingrese sus nombres completos..." type="text" />
+                                <input asp-for="SolicitadoPor" class="form-control" required placeholder="Ingrese sus nombres completos..." type="text" />
                             </div>
                         </div>
                         <fieldset class=" border p-2 mb-2">
@@ -67,7 +67,7 @@
                                     RUC
                                 </label>
                                 <div class="col-sm-4">
-                                    <input asp-for="FRuc" class="form-control"  placeholder="RUC" type="text" />
+                                    <input asp-for="FRuc" class="form-control" required placeholder="RUC" pattern="[0-9]{11}" type="text"  />
                                    
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="cbxTipoPersona">
@@ -89,7 +89,7 @@
                                     DNI
                                 </label>
                                 <div class="col-sm-5">
-                                    <input asp-for="FDni" class="form-control"  placeholder="DNI" type="text" />
+                                    <input asp-for="FDni" class="form-control"  required placeholder="DNI" pattern="[0-9]{8}" type="text" />
                             
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input asp-for="FNombre" class="form-control"  placeholder="Nombres o Razon Social..." type="text" />
+                                    <input asp-for="FNombre" class="form-control" required placeholder="Nombres o Razon Social..." type="text" />
                                     
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                     Direccion
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="FDireccion" placeholder="Direccion..." type="text" />
+                                    <input class="form-control" asp-for="FDireccion" required placeholder="Direccion..." type="text" />
 
                                 </div>
                             </div>
@@ -116,9 +116,24 @@
                                     Distrito
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" asp-for="FDistrito" placeholder="Distrito">
+                                    <select class="form-control" asp-for="FDistrito" required placeholder="Distrito">
                                         <option value="LIMA">
                                             LIMA
+                                        </option>
+                                        <option value="MAGDALENA">
+                                            MAGDALENA
+                                        </option>
+                                        <option value="MIRAFLORES">
+                                            MIRAFLORES
+                                        </option>
+                                        <option value="PUEBLO LIBRE">
+                                            PUEBLO LIBRE
+                                        </option>
+                                        <option value="SAN ISIDRO">
+                                            SAN ISIDRO
+                                        </option>
+                                        <option value="SURCO">
+                                            SURCO
                                         </option>
                                     </select>
                                 </div>
@@ -126,7 +141,7 @@
                                     Cod. Postal
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="FCodigoPostal" placeholder="Cod. Postal" type="text" />
+                                    <input class="form-control" asp-for="FCodigoPostal" required placeholder="Cod. Postal" type="text" />
                                    
                                 </div>
                             </div>
@@ -135,14 +150,14 @@
                                     Telefono
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="FTelefono" placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="FTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtFax">
                                     Fax
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="FFax" placeholder="Fax" type="text" />
+                                    <input class="form-control" asp-for="FFax" required placeholder="Fax" type="text" />
                                     
                                 </div>
                             </div>
@@ -151,11 +166,7 @@
                                     Rubro
                                 </label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" asp-for="FRubro" placeholder="Departamento">
-                                        <option value="Tecnología de la información">
-                                            Tecnología de la información
-                                        </option>
-                                    </select>
+                                    <select asp-for="FRubro" class="form-control" required placeholder="Departamento" asp-items="ViewBag.vMenu"></select>
                                 </div>
                             </div>
                         </fieldset>
@@ -168,7 +179,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="RlNombre" placeholder="Nombres Completos..." type="text" />
+                                    <input class="form-control" asp-for="RlNombre" required placeholder="Nombres Completos..." type="text" />
                                     
                                 </div>
                             </div>
@@ -177,14 +188,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="RlCargo" placeholder="Cargo" type="text" />
+                                    <input class="form-control" asp-for="RlCargo" required placeholder="Cargo" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="RlTelefono" placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="RlTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                             </div>
@@ -193,14 +204,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="RlCelular" placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="RlCelular" required placeholder="Telf" type="text" />
                                 
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="RlEmail" placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="RlEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -214,7 +225,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="CcNombre" placeholder="Nombres Completos..." type="text" />
+                                    <input class="form-control" asp-for="CcNombre" required placeholder="Nombres Completos..." type="text" />
                                    
                                 </div>
                             </div>
@@ -223,14 +234,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcCargo" placeholder="Cargo" type="text" />
+                                    <input class="form-control" asp-for="CcCargo" required placeholder="Cargo" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcTelefono" placeholder="Telefono" type="text">
+                                    <input class="form-control" asp-for="CcTelefono" required placeholder="Telefono" type="text">
                                     
                                 </div>
                             </div>
@@ -239,14 +250,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcCelular" placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="CcCelular" required placeholder="Telf" type="text" />
                                  
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcEmail" placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="CcEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -427,7 +438,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="CcobranzaNombre" placeholder="Nombres Completos..." type="text">
+                                    <input class="form-control" asp-for="CcobranzaNombre" required placeholder="Nombres Completos..." type="text">
                                     
                                 </div>
                             </div>
@@ -436,14 +447,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcobranzaCargo" placeholder="Cargo" type="text">
+                                    <input class="form-control" asp-for="CcobranzaCargo" required placeholder="Cargo" type="text">
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcobranzaTelefono" placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="CcobranzaTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                             </div>
@@ -452,14 +463,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcobranzaCelular" placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="CcobranzaCelular" required placeholder="Telf" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcobranzaEmail" placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="CcobranzaEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -473,7 +484,7 @@
                                     Banco
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" asp-for="CodCuentaBancaria" placeholder="Banco">
+                                    <select class="form-control" asp-for="CodCuentaBancaria" required placeholder="Banco">
                                         <option value="1">
                                             Interbank
                                         </option>
@@ -486,7 +497,7 @@
                                     Titular
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CuentaBancariaTitular" type="text" />
+                                    <input class="form-control" asp-for="CuentaBancariaTitular" required type="text" />
                                     
                                 </div>
                             </div>
@@ -495,14 +506,14 @@
                                     Cuenta
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CuentaBancaria" type="text" />
+                                    <input class="form-control" asp-for="CuentaBancaria" required type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtCCI">
                                     CCI
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CuentaBancariaCci" type="text" />
+                                    <input class="form-control" asp-for="CuentaBancariaCci" required type="text" />
                                 </div>
                             </div>
                         </fieldset>

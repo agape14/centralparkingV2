@@ -23,6 +23,17 @@ namespace ApiBD.Controllers
             return botones;
         }
 
+        [HttpGet("banner/{codigo}")]
+        public async Task<ActionResult<TbConfBotone>> GetBannerById(int codigo)
+        {
+            var boton = await _dbContext.TbConfBotones.Where(c=>c.MenuId == codigo).ToListAsync();
+            if (boton == null)
+            {
+                return NotFound();
+            }
+            return Ok(boton);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<TbConfBotone>> GetById(int id)
         {

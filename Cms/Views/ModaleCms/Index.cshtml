@@ -59,7 +59,7 @@
 
                                         @if(item.Id != 0){
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a href="@Url.Action("Edit", "ModaleCms", new { id = item.Id, tipoRuta = item.TipoRuta })" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
                                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
                                                 @if (item.TipoRuta == 2)
                                                 {

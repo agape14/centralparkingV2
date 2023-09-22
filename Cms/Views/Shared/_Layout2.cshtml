@@ -19,7 +19,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="~/css/vertical-layout-light/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="~/images/favicon.png" />
+    <link rel="shortcut icon" href="~/images/icono.ico" />
     <meta name="google-signin-client_id" content="869731597429-ilj8i83fbs6hmn9lvo6ges9vdjfmsuan.apps.googleusercontent.com">
     <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
 </head>
@@ -122,6 +122,21 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-cotizanos" aria-expanded="false" aria-controls="ui-cotizanos">
+                            <i class="icon-share menu-icon"></i>
+                            <span class="menu-title">Cotizanos</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-cotizanos">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "CotizanosCms", new { codigo = 3 })">Cotizaciones - Valet Parking</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "CotizanosCms", new { codigo = 4 })">Cotizaciones - Eventos</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "CotizanosCms", new { codigo = 5 })">Cotizaciones - Prevención</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "CotizanosCms", new { codigo = 6 })">Cotizaciones - Rentabilización</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-proveedor" aria-expanded="false" aria-controls="ui-proveedor">
                             <i class="icon-share menu-icon"></i>
                             <span class="menu-title">Proveedores</span>
@@ -130,6 +145,7 @@
                         <div class="collapse" id="ui-proveedor">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link" href="~/ProveedoresCms">Registro Proveedores</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="~/RubroCms">Rubros</a></li>
                             </ul>
                         </div>
                     </li>

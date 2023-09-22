@@ -2,6 +2,7 @@
 using CentralParkingSystem.Services;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cms.Controllers
@@ -43,8 +44,15 @@ namespace Cms.Controllers
         }
 
         // GET: IServicios/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+
+            var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await boton.listarBotones();
+
+            listBotones.Insert(0, new TbConfBotone { Id = 0, BtnTitulo = "Seleccionar" });
+
+            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo");
             return View();
         }
 
@@ -83,6 +91,12 @@ namespace Cms.Controllers
             {
                 return NotFound();
             }
+
+            var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await boton.listarBotones();
+            listBotones.Insert(0, new TbConfBotone { Id = 0, BtnTitulo = "Seleccionar" });
+            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo");
+
             return View(servicio);
         }
 

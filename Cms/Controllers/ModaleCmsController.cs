@@ -1,12 +1,22 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.Services;
+using Cms.Helpers;
+using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cms.Controllers
 {
     public class ModaleCmsController : Controller
     {
+        private readonly HelperUploadFiles _helperUpload;
+
+        public ModaleCmsController(HelperUploadFiles helperUpload)
+        {
+            _helperUpload = helperUpload;
+        }
+
         public async Task<IActionResult> Index()
         {
             var servicio = new ModaleCabeceraService(new HttpClient());
@@ -66,7 +76,7 @@ namespace Cms.Controllers
         }
 
         // GET: TbTraPuesto/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, int tipoRuta)
         {
 
             var servicio = new ModaleCabeceraService(new HttpClient());
@@ -82,6 +92,26 @@ namespace Cms.Controllers
             {
                 return NotFound();
             }
+
+
+            //Listando Menu
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
+            {
+                Value = m.Ruta,
+                Text = $"{m.Nombre} - {m.Ruta}"
+            });
+
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
+            ViewData["TipoRuta"] = tipoRuta;
+
             return View(modal);
         }
 
@@ -96,25 +126,35 @@ namespace Cms.Controllers
             var servicio = new ModaleCabeceraService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
             var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
-            id = modal.Id;
 
+            tbConfModalcab.IdDetallePie = id;
+            id = modal.Id;
+            tbConfModalcab.Id = modal.Id;
+            
             if ( id != tbConfModalcab.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
+
                 try
                 {
+                    
+                    var file = Request.Form.Files.FirstOrDefault();
 
+                    if (file != null)
+                    {
+                        string nombreImagen = file.FileName;
+                        string path = "";
+                        path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Documents);
+                        tbConfModalcab.BtnRuta = "/docs/" + nombreImagen;
+                    }
                     await servicio.modificarModalCab(id, tbConfModalcab);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-
                     return NotFound();
-
                 }
                 return RedirectToAction(nameof(Index));
             }

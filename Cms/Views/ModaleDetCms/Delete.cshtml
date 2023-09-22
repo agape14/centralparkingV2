@@ -53,8 +53,10 @@
 
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" name="codigo" value="@ViewBag.ModaleCabId" />
                         <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button>  |
-                        <a asp-controller="ModaleCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                        <a class="btn btn-danger " href="@Url.Action("Index", "ModaleDetCms", new { codigo = ViewBag.ModaleCabId })"><i class="ti-back-left"></i> Regresar</a>
+
 
                      
                     </form>

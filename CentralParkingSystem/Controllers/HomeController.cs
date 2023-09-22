@@ -9,6 +9,8 @@ using ApiBD.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
 using CentralParkingSystem.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ApiBD.Controllers;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -230,7 +232,7 @@ public class HomeController : Controller
         int contador = 1;
         ServicioDetalleDtos objeto = new ServicioDetalleDtos();
         var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
-        var servicio = await adminiestacionamiento.obtenerServicioDetalle(1);
+        var servicio = await adminiestacionamiento.obtenerServicioDetalle(2);
         foreach (var valor in servicio)
         {
             if (contador == 1)
@@ -329,6 +331,81 @@ public class HomeController : Controller
         }
         return View(tbFormContactano);
     }
+
+    // ============================ Cotizanos ============================
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosValetParking([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Valet Parking llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosEventos([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,FechaEvento,CorreoElectronico,Comentario,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Eventos llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosPrevencion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Prevención llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosRentabilizacion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Rentabilización de Terrenos llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+
     // ============================ Trabaja con Nosotros ============================
     public async Task<IActionResult> Trabajaconnosotros()
     {
@@ -385,8 +462,25 @@ public class HomeController : Controller
     }
 
     // ============================ Proveedores ============================ 
-    public IActionResult Proveedores()
+    public async Task<IActionResult> Proveedores()
     {
+
+        //Listando Rubros
+        var menu = new RubroService(new HttpClient());
+        var menuLista = await menu.ListarRubros();
+        var menuItems = menuLista.Select(m => new SelectListItem
+        {
+            Value = m.Rubro,
+            Text = $"{m.Rubro}"
+        });
+
+        ViewData["vMenu"] = new SelectList(
+            Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+            .Concat(menuItems),
+            "Value",
+            "Text"
+        );
+
         return View();
     }
     

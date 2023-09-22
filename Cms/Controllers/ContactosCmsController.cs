@@ -93,7 +93,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, TbFormContactano tbFormContactano)
         {
             var contactos = new ContactanoService(new HttpClient());
-          
+
 
             if (id != tbFormContactano.Id)
             {

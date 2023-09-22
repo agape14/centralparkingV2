@@ -42,14 +42,16 @@
                                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="IdBtnSolicitalo" class="control-label"></label>
-                                            <input asp-for="IdBtnSolicitalo" class="form-control" />
+                                            <select asp-for="IdBtnSolicitalo" class="form-control" asp-items="ViewBag.IdBtn1"></select>
                                             <span asp-validation-for="IdBtnSolicitalo" class="text-danger"></span>
                                         </div>
                                     </div>
-                                   
+
                                 <div class="form-group">
                                     @*<input type="submit" value="Save" class="btn btn-primary" />*@
 

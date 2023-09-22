@@ -1,15 +1,25 @@
 ﻿@model IEnumerable<ApiBD.Models.TbIndRedsocial>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Redes Sociales";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
-
+<!--
 <h1>Index</h1>
+-->
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <a class="btn btn-primary " href="/RedesSocialesCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+                    <div class="table-responsive">
 <table class="table">
     <thead>
         <tr>
@@ -63,13 +73,21 @@
             </td>
                 @if (item.Id != 0)
                 {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                                            <td>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                            </td>
                 }
               
         </tr>
 }
     </tbody>
 </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

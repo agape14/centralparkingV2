@@ -2,6 +2,7 @@
 using CentralParkingSystem.Services;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cms.Controllers
@@ -25,7 +26,7 @@ namespace Cms.Controllers
                         View(caracteristicaLista) :
                         Problem("Entity set 'CentralparkingContext.TbIndCaracteristicas'  is null.");
         }
-        
+
         // GET: Caracteristica/Details/5
         public async Task<IActionResult> Details(uint id)
         {
@@ -49,9 +50,22 @@ namespace Cms.Controllers
         // GET: Caracteristica/Create
         public IActionResult Create()
         {
+            //Listando Iconos
+            var menuLista = getIcons();
+            var menuItems = menuLista.Select(m => new SelectListItem
+            {
+                Value = m.Class,
+                Text = m.Class + " " + m.Descripcion
+            });
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
             return View();
         }
-        
+
         // POST: Caracteristica/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -67,10 +81,24 @@ namespace Cms.Controllers
             }
             return View(tbIndCaracteristica);
         }
-        
+
         // GET: Caracteristica/Edit/5
         public async Task<IActionResult> Edit(uint id)
         {
+            //Listando Iconos
+            var menuLista = getIcons();
+            var menuItems = menuLista.Select(m => new SelectListItem
+            {
+                Value = m.Class,
+                Text = m.Class + " " + m.Descripcion
+            });
+            ViewData["vMenu"] = new SelectList(
+                Enumerable.Repeat(new SelectListItem { Value = "", Text = "Selecciona" }, 1)
+                .Concat(menuItems),
+                "Value",
+                "Text"
+            );
+
             var caracteristica = new CaracteristicasService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
             var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
@@ -109,15 +137,15 @@ namespace Cms.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    
-                        return NotFound();
-                    
+
+                    return NotFound();
+
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(tbIndCaracteristica);
         }
-       
+
         // GET: Caracteristica/Delete/5
         public async Task<IActionResult> Delete(uint id)
         {
@@ -132,7 +160,7 @@ namespace Cms.Controllers
             }
 
             var tbIndCaracteristica = await caracteristicaCms.obtenerCaracteristicaDetalle(id);
-                
+
             if (tbIndCaracteristica == null)
             {
                 return NotFound();
@@ -160,10 +188,27 @@ namespace Cms.Controllers
                 await caracteristicaCms.eliminarCaracteristica(id);
             }
 
-           
+
             return RedirectToAction(nameof(Index));
         }
 
-        
+
+        private List<Icono> getIcons()
+        {
+            var icons = new List<Icono>();
+
+            icons.Add(new Icono { Class = "fa fa-puzzle-piece", Descripcion = "Descriopcion del icono fa-puzzle-piece" });
+            icons.Add(new Icono { Class = "fa fa-magic", Descripcion = "Descriopcion del icono fa-magic" });
+            icons.Add(new Icono { Class = "fa fa-trophy", Descripcion = "Descriopcion del icono fa-trophy" });
+            icons.Add(new Icono { Class = "fa fa-arrow-circle-right", Descripcion = "Descriopcion fa-arrow-circle-right" });
+            return icons;
+        }
+
+        private class Icono
+        {
+            public string Class { get; set; }
+            public string Descripcion { get; set; }
+
+        }
     }
 }

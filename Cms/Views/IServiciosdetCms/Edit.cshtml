@@ -52,7 +52,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Ruta" class="control-label"></label>
-                                            <input asp-for="Ruta" class="form-control" />
+                                            <select asp-for="Ruta" class="form-control" asp-items="ViewBag.vMenu"></select>
                                             <span asp-validation-for="Ruta" class="text-danger"></span>
                                         </div>
                                     </div>

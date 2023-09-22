@@ -30,7 +30,7 @@ namespace Cms.Providers
             }
             else if (folder == Folders.Documents)
             {
-                carpeta = "documents";
+                carpeta = "docs";
             }
 
             string path = Path.Combine(this.hostEnvironment.WebRootPath, carpeta, fileName);

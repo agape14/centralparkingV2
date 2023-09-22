@@ -43,6 +43,35 @@ namespace Cms.ServiceCms
             return botones;
         }
 
+        public async Task<List<TbConfBotone>> listarBotonesBanner(uint codigo)
+        {
+            List<TbConfBotone> botones = new List<TbConfBotone>();
+
+            try
+            {
+                var url = $"http://localhost:82/api/botones/banner/{codigo}";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    botones = JsonSerializer.Deserialize<List<TbConfBotone>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return botones;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return botones;
+        }
+
         public async Task<TbConfBotone> obtenerBotonDetalle(int id)
         {
             var url = $"http://localhost:82/api/botones/{id}"; 

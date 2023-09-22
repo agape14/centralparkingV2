@@ -1,4 +1,5 @@
 ﻿@{
+    @model ApiBD.Models.TbFormCotizano;
     ViewData["Title"] = "Cotizacion de Prevención";
 }
 <!-- Page Header Start -->
@@ -43,89 +44,75 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <form>
+                <form asp-action="CotizanosPrevencion">
                     <div class="col-12">
                         <div class="form-floating">
-                            <select class="form-control border-0 bg-light mb-4" id="cbxTipoServicio"
-                                    placeholder="Tipo Servicio" disabled>
-                                <option value="3">PREVENCIÓN</option>
-                                <option value="1">ADMINISTRACIÓN DE ESTACIONAMIENTOS</option>
-                                <option value="2">ABONADOS</option>
-                                <option value="4">VALET PARKING</option>
-                                <option value="5">EVENTOS</option>
+                            <select class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="TipoServicio">
+                                <option value="5">PREVENCIÓN</option>
                             </select>
-                            <label for="cbxTipoServicio">Tipo de Servicio</label>
+                            <label for="tipoServicio">Tipo de Servicio</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select name="distrito_administracion" id="distrito_administracion"
-                                    class="form-control border-0 bg-light mb-4" placeholder="Distrito">
-                                <option value="1">Cercado de Lima</option>
-                                <option value="2">Miraflores</option>
-                                <option value="3">Pueblo Libre</option>
-                                <option value="4">San Isidro</option>
-                                <option value="5">Surco</option>
+                            <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="Distrito">
+                                <option value="Cercado de Lima">Cercado de Lima</option>
+                                <option value="Miraflores">Miraflores</option>
+                                <option value="Pueblo Libre">Pueblo Libre</option>
+                                <option value="San Isidro">San Isidro</option>
+                                <option value="Surco">Surco</option>
                             </select>
-                            <label for="distrito_administracion">Distrito</label>
+                            <label for="distrito">Distrito</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control border-0 bg-light mb-4"
-                                   id="direcion_estacionamiento" placeholder="Direccion Estacionamiento">
-                            <label for="direcion_estacionamiento">Direccion Estacionamiento</label>
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="direccion" name="direccion" placeholder="Direccion Estacionamiento" asp-for="Direccion">
+                            <label for="direccion">Direccion Estacionamiento</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="number" class="form-control border-0 bg-light mb-4" id="ruc"
-                                   placeholder="RUC">
+                            <input required pattern="[0-9]{11}" type="number" class="form-control border-0 bg-light mb-4" id="ruc" name="ruc" placeholder="RUC" asp-for="Ruc">
                             <label for="ruc">RUC</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control border-0 bg-light mb-4" id="razon_social"
-                                   placeholder="Direccion Estacionamiento">
-                            <label for="razon_social">Razon Social</label>
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="razonSocial" name="razonSocial" placeholder="Direccion Estacionamiento" asp-for="Direccion">
+                            <label for="razonSocial">Razon Social</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control border-0 bg-light mb-4" id="namecontacto"
-                                   placeholder="Datos del Contacto">
-                            <label for="namecontacto">Datos del Contacto</label>
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="contacto" name="contacto" placeholder="Datos del Contacto" asp-for="Contacto">
+                            <label for="contacto">Datos del Contacto</label>
                         </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="celular"
-                                       placeholder="Celular">
+                                <input required type="number" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
                                 <label for="celular">Celular</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="telefono"
-                                       placeholder="Teléfono">
+                                <input required type="number" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating">
-                                <input type="email" class="form-control border-0 bg-light" id="email"
-                                       placeholder="Correo electrónico">
-                                <label for="email">Correo electrónico</label>
+                                <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="CorreoElectronico">
+                                <label for="correoElectronico">Correo electrónico</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <button class="btn btn-primary py-3 px-6 w-50">
                                 <i class="fas fa-check-square"></i>
-                                Registrar mi Solicitud
+                                Registrar mi cotización
                             </button>
-                            <!-- <a class="btn btn-outline-primary py-3 px-5 w-30" href="abonados.html"><i class="fa fa-home"></i> Retornar</a> -->
                         </div>
                     </div>
                 </form>

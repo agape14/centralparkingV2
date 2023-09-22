@@ -17,36 +17,61 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <form asp-action="Edit">
+                            <form asp-action="Edit" enctype="multipart/form-data" >
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
 
                                 <div class="row">
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="Titulo" class="control-label"></label>
                                             <input asp-for="Titulo" class="form-control" />
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Titulo" class="control-label"></label>
-                                            <input asp-for="Titulo" class="form-control" />
-                                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                                    @if (@ViewBag.TipoRuta == 1)
+                                    {
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="BtnRuta" class="control-label"></label>
+                                                <select asp-for="BtnRuta" class="form-control" asp-items="ViewBag.vMenu"></select>
+                                                <span asp-validation-for="BtnRuta" class="text-danger"></span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="BtnRuta" class="control-label"></label>
-                                            <input asp-for="BtnRuta" class="form-control" />
-                                            <span asp-validation-for="BtnRuta" class="text-danger"></span>
+                                    }
+                                    else
+                                    @if (@ViewBag.TipoRuta == 4)
+                                    {
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="BtnRuta" class="control-label"></label>
+                                                <input asp-for="BtnRuta" class="form-control" readonly />
+                                                <span asp-validation-for="BtnRuta" class="text-danger"></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="ImagenNueva" class="form-label">Escoja la imagen</label>
+                                                <input class="form-control-file form-control" id="ImagenNueva" name="ImagenNueva" type="file" accept="application/pdf">
+                                                <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                            </div>
+                                        </div>
+                                    }
+                                    else {
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="BtnRuta" class="control-label"></label>
+                                                <input asp-for="BtnRuta" class="form-control" />
+                                                <span asp-validation-for="BtnRuta" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="Estado" class="control-label"></label>
                                             <input asp-for="Estado" class="form-control" />

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ApiBD.Models.TbFormCotizano>
+
+@{
+    ViewData["Title"] = "Cotizaciones Registradas";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Cotizaciones @{
+                                if (ViewBag.TipoServicio == 3)
+                                {
+                                    <span>Valet Parking</span>
+                                }
+                                else if (ViewBag.TipoServicio == 4)
+                                {
+                                    <span>Eventos</span>
+                                }
+                                else if (ViewBag.TipoServicio == 5)
+                                {
+                                    <span>Prevención</span>
+                                }
+                                else if (ViewBag.TipoServicio == 6)
+                                {
+                                    <span>Rentabilización de Terrenos</span>
+                                }
+                        }
+                        </h4>
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TipoServicio)
+                                    </th>
+                                  
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Distrito)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Direccion)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Ruc)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.RazonSocial)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Contacto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Celular)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Telefono)
+                                    </th>
+                                    @{
+                                        if (ViewBag.TipoServicio == 4)
+                                        {
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.FechaEvento)
+                                            </th>
+                                        }
+                                    }
+                                       
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CorreoElectronico)
+                                    </th>
+                                    @{
+                                        if (ViewBag.TipoServicio == 4)
+                                        {
+
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Comentario)
+                                            </th>
+                                        }
+                                    }
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TipoServicio)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Distrito)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Direccion)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ruc)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.RazonSocial)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Contacto)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Celular)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Telefono)
+                                        </td>
+                                        @{
+                                            if (ViewBag.TipoServicio == 4)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.FechaEvento)
+                                                </td>
+                                            }
+                                        }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                                        </td>
+                                        @{
+                                            if (ViewBag.TipoServicio == 4)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Comentario)
+                                                </td>
+                                            }
+                                        }
+                                            </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a asp-controller="CotizanosCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

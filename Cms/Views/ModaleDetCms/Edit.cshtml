@@ -20,13 +20,14 @@
                             <form asp-action="Edit">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
+                                <input type="hidden" name="codigo" value="@ViewBag.ModaleCabId" />
 
                                 <div class="row">
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="ModalcabId" class="control-label"></label>
-                                            <input asp-for="ModalcabId" class="form-control" />
+                                            <input asp-for="ModalcabId" class="form-control" disabled/>
                                             <span asp-validation-for="ModalcabId" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -57,8 +58,8 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" name="codigo" value="@ViewData["codigo"]" ><i class="ti-save"></i> Grabar</button> |
-                                    <a asp-controller="ModaleCms" asp-action="Index" class="btn btn-danger"><i class="ti-back-left"></i> Regresar</a>
+                                    <button type="submit" class="btn btn-primary" ><i class="ti-save"></i> Grabar</button> |
+                                    <a class="btn btn-danger " href="@Url.Action("Index", "ModaleDetCms", new { codigo = ViewBag.ModaleCabId })"><i class="ti-back-left"></i> Regresar</a>
 
                                 </div>
                             </form>

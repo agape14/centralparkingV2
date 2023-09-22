@@ -1,14 +1,18 @@
 ﻿@model ApiBD.Models.TbIndRedsocial
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nueva Red Social";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>TbIndRedsocial</h4>
-<hr />
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -44,13 +48,15 @@
                 <span asp-validation-for="Color" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
             </div>
-        </form>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
