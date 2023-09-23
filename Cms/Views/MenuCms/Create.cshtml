@@ -36,7 +36,7 @@
                                         <div class="form-group">
                                             <label asp-for="Acceso" class="control-label"></label>
                                             @*<input asp-for="Acceso" class="form-control" />*@
-                                            <select class="form-control" asp-for="Acceso" disabled >
+                                            <select class="form-control" asp-for="Acceso" readonly >
                                                 <option value="0">No</option>
                                                 <option value="1">Dashbord</option>
                                             </select>
@@ -63,7 +63,7 @@
                                         <div class="form-group">
                                             <label asp-for="Estado" class="control-label"></label>
                                             @*<input asp-for="Acceso" class="form-control" />*@
-                                            <select class="form-control" asp-for="Estado" disabled>
+                                            <select class="form-control" asp-for="Estado" readonly>
                                                 <option value="1">Activo</option>
                                                 <option value="0">Inactivo</option>
                                             </select>

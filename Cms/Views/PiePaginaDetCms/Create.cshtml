@@ -31,7 +31,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="PiepaginaId" class="control-label">Pie Pagina</label>
-                                            <select asp-for="PiepaginaId" class="form-control" asp-items="ViewBag.PiepaginaId" disabled></select>
+                                            <select asp-for="PiepaginaId" class="form-control" asp-items="ViewBag.PiepaginaId" readonly></select>
                                             <input type="hidden" asp-for="PiepaginaId" value="@ViewBag.vPiepaginaId" />
                                             <span asp-validation-for="PiepaginaId" class="text-danger"></span>
                                         </div>
@@ -72,7 +72,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Imagen" class="control-label"></label>
-                                            <input asp-for="Imagen" class="form-control" disabled readonly />
+                                            <input asp-for="Imagen" class="form-control"  readonly />
                                             <span asp-validation-for="Imagen" class="text-danger"></span>
                                         </div>
                                     </div>

@@ -123,7 +123,7 @@ namespace Cms.Controllers
 
                     await serviciodetalle.modificarServicioDetalle(id, tbServDetalle);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
 
                     return NotFound();
