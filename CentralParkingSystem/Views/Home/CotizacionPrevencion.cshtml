@@ -68,19 +68,19 @@
                     <div class="col-12">
                         <div class="form-floating">
                             <input required type="text" class="form-control border-0 bg-light mb-4" id="direccion" name="direccion" placeholder="Direccion Estacionamiento" asp-for="Direccion">
-                            <label for="direccion">Direccion Estacionamiento</label>
+                            <label for="direccion">Dirección Estacionamiento</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input required pattern="[0-9]{11}" type="number" class="form-control border-0 bg-light mb-4" id="ruc" name="ruc" placeholder="RUC" asp-for="Ruc">
+                            <input required pattern="[0-9]{11}" title="Ingrese un RUC válido" type="text" class="form-control border-0 bg-light mb-4" id="ruc" name="ruc" placeholder="RUC" asp-for="Ruc">
                             <label for="ruc">RUC</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
                             <input required type="text" class="form-control border-0 bg-light mb-4" id="razonSocial" name="razonSocial" placeholder="Direccion Estacionamiento" asp-for="Direccion">
-                            <label for="razonSocial">Razon Social</label>
+                            <label for="razonSocial">Razón Social</label>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -92,13 +92,13 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input required type="number" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
+                                <input required pattern="[0-9]{9}" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
                                 <label for="celular">Celular</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input required type="number" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
+                                <input pattern="[0-9]{7}" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
