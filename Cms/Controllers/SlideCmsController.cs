@@ -78,8 +78,7 @@ namespace Cms.Controllers
                 {
                     string nombreImagen = file.FileName;
                     string path = "";
-                    path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                    tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                   
                     if (file.Length > 1024 * 1024)
                     {
                         // El archivo excede el peso máximo permitido.
@@ -102,6 +101,8 @@ namespace Cms.Controllers
                         ModelState.AddModelError("Imagen", "La imagen no puede tener más de 170 caracteres.");
                         return View(tbIndSlidecab);
                     }
+                    path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                    tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                 }
                 await slide.CreateSlide(tbIndSlidecab);
                 return RedirectToAction(nameof(Index));
@@ -165,8 +166,7 @@ namespace Cms.Controllers
                     {
                         string nombreImagen = file.FileName;
                         string path = "";
-                        path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
-                        tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                        
                         if (file.Length > 1024 * 1024)
                         {
                             // El archivo excede el peso máximo permitido.
@@ -189,6 +189,8 @@ namespace Cms.Controllers
                             ModelState.AddModelError("Imagen", "La imagen no puede tener más de 170 caracteres.");
                             return View(tbIndSlidecab);
                         }
+                        path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                        tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                     }
 
                    
