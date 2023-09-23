@@ -367,3 +367,4 @@ FodyWeavers.xsd
 .gitignore
 .log
 *.log
+Cms/wwwroot/images/

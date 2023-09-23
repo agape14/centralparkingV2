@@ -69,6 +69,7 @@ namespace Cms.Controllers
             var boton = new ConfBotonesCmsService(new HttpClient());
             var listBotones = await boton.listarBotones();
             var slide = new SlideCmsService(new HttpClient());
+            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
             if (ModelState.IsValid)
             {
                 var file = Request.Form.Files.FirstOrDefault();
@@ -79,12 +80,33 @@ namespace Cms.Controllers
                     string path = "";
                     path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
                     tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                    if (file.Length > 1024 * 1024)
+                    {
+                        // El archivo excede el peso máximo permitido.
+                        ModelState.AddModelError("Imagen", "La imagen no debe superar 1MB de tamaño.");
+                        return View(tbIndSlidecab);
+                    }
+                    // Validar las dimensiones.
+                    using (var image = System.Drawing.Image.FromStream(file.OpenReadStream()))
+                    {
+                        if (image.Width != 626 || image.Height != 267)
+                        {
+                            // Las dimensiones no son las recomendadas.
+                            ModelState.AddModelError("Imagen", "La imagen debe tener un tamaño de 626x267 píxeles.");
+                            return View(tbIndSlidecab);
+                        }
+                    }
+                    if (nombreImagen != null && nombreImagen.Length > 170)
+                    {
+                        // Agregar un error al ModelState.
+                        ModelState.AddModelError("Imagen", "La imagen no puede tener más de 170 caracteres.");
+                        return View(tbIndSlidecab);
+                    }
                 }
                 await slide.CreateSlide(tbIndSlidecab);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
-
+            
             return View(tbIndSlidecab);
    
         }
@@ -127,7 +149,7 @@ namespace Cms.Controllers
             var boton = new ConfBotonesCmsService(new HttpClient());
             var listBotones = await boton.listarBotones();
             var slide = new SlideCmsService(new HttpClient());
-
+            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
             if (id != tbIndSlidecab.Id)
             {
                 return NotFound();
@@ -145,7 +167,31 @@ namespace Cms.Controllers
                         string path = "";
                         path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
                         tbIndSlidecab.Imagen = "/images/" + nombreImagen;
+                        if (file.Length > 1024 * 1024)
+                        {
+                            // El archivo excede el peso máximo permitido.
+                            ModelState.AddModelError("Imagen", "La imagen no debe superar 1MB de tamaño.");
+                            return View(tbIndSlidecab);
+                        }
+                        // Validar las dimensiones.
+                        using (var image = System.Drawing.Image.FromStream(file.OpenReadStream()))
+                        {
+                            if (image.Width != 626 || image.Height != 267)
+                            {
+                                // Las dimensiones no son las recomendadas.
+                                ModelState.AddModelError("Imagen", "La imagen debe tener un tamaño de 626x267 píxeles.");
+                                return View(tbIndSlidecab);
+                            }
+                        }
+                        if (nombreImagen != null && nombreImagen.Length > 170)
+                        {
+                            // Agregar un error al ModelState.
+                            ModelState.AddModelError("Imagen", "La imagen no puede tener más de 170 caracteres.");
+                            return View(tbIndSlidecab);
+                        }
                     }
+
+                   
                     await slide.UpdateSlide(id,tbIndSlidecab);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -155,7 +201,7 @@ namespace Cms.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
+            
             
             return View(tbIndSlidecab);
         }

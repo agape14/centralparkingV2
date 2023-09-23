@@ -1,7 +1,7 @@
 ﻿@model ApiBD.Models.TbIndSlidecab
 
 @{
-    ViewData["Title"] = "Nuevo Slide";
+    ViewData["Title"] = "Nuevo Banner";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
@@ -22,7 +22,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="Titulo" class="control-label"></label>
-                                            <input asp-for="Titulo" class="form-control" />
+                                            <input asp-for="Titulo" class="form-control" maxlength="255" />
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -39,7 +39,7 @@
                                             <!--<input asp-for="Imagen" class="form-control" />-->
                                             <input class="form-control-file form-control" id="Imagen" name="Imagen" type="file" accept="image/*">
                                             <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
-                                            <span for="Imagen" class="text-danger"></span>
+                                            <span asp-validation-for="Imagen" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
