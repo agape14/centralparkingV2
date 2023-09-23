@@ -50,6 +50,10 @@ namespace ApiBD.Controllers
         [HttpPost]
         public async Task<ActionResult<TbServDetalle>> Create(TbServDetalle servicio)
         {
+            if (servicio.IdBtnSolicitalo == 0)
+            {
+                servicio.IdBtnSolicitalo = null;
+            }
             _dbContext.TbServDetalles.Add(servicio);
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById2), new { id = servicio.Id }, servicio);
@@ -61,6 +65,9 @@ namespace ApiBD.Controllers
             if (id != tbServDetalle.Id)
             {
                 return BadRequest();
+            }
+            if (tbServDetalle.IdBtnSolicitalo == 0) { 
+                tbServDetalle.IdBtnSolicitalo = null;
             }
             _dbContext.Entry(tbServDetalle).State = EntityState.Modified;
             try
