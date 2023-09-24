@@ -33,84 +33,140 @@
     <!-- statistics data -->
     <div class="statistics">
         <div class="row">
-            <div class="col-xl-6 pr-xl-2">
-                <div class="row">
-                    <div class="col-sm-6 pr-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-user"> </i>
-                            <h3 class="text-primary number">2</h3>
-                            <p class="stat-text">Total Usuarios</p>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-primary">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-user" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Total usuarios</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countUsuarios</p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-info">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-headphone-alt" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Contactanos</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countContactos</p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-success">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-write" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Cotizanos</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countCotizanos</p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-primary ">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-truck" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Proveedores</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countProvedores</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6 pl-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-headphone-alt "> </i>
-                            <h3 class="text-secondary number">5</h3>
-                            <p class="stat-text">Contactanos</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 pl-xl-2">
-                <div class="row">
-                    <div class="col-sm-6 pr-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class=" ti-write"> </i>
-                            <h3 class="text-success number">16</h3>
-                            <p class="stat-text">Cotizanos</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 pl-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-truck"> </i>
-                            <h3 class="text-danger number">12</h3>
-                            <p class="stat-text">Proveedores</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-    </div>
-        <div class="row mt-2">
-            <div class="col-xl-6 pl-xl-2">
-                <div class="row">
-                    <div class="col-sm-6 pr-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-book"> </i>
-                            <h3 class="text-success number">16</h3>
-                            <p class="stat-text">Hoja de reclamaciones</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 pl-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-bookmark"> </i>
-                            <h3 class="text-danger number">0</h3>
-                            <p class="stat-text">Parking card vip</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 pl-xl-2">
-                <div class="row">
-                    <div class="col-sm-6 pr-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-target"> </i>
-                            <h3 class="text-success number">3</h3>
-                            <p class="stat-text">Vacantes</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 pl-sm-2 statistics-grid">
-                        <div class="card card_border border-primary-top p-4">
-                            <i class="ti-star"> </i>
-                            <h3 class="text-danger number">5</h3>
-                            <p class="stat-text">Servicios</p>
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-success">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-book" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Hoja de reclamaciones</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countHojaRecla</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-secondary ">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-bookmark" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Parking card vip </p>
+                                                <p class="fs-30 mb-2">@ViewBag.countParking</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-warning">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-target" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Puestos disponibles</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countVacantes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mt-4">
+                                <div class="card card-inverse-danger">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="ti-star" style="opacity: 0.2; font-size: 70px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="mb-4">Servicios</p>
+                                                <p class="fs-30 mb-2">@ViewBag.countServicios</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <!-- //statistics data -->
-        
     </div>
-</div>
 <!-- content-wrapper ends -->

@@ -20,13 +20,13 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <div class="form-group">
-                                    <label asp-for="TituloGrande" class="control-label"></label>
-                                    <input asp-for="TituloGrande" class="form-control" />
+                                    <label asp-for="TituloGrande" class="control-label">Titulo Grande</label>
+                                    <input asp-for="TituloGrande" class="form-control" maxlength="255" />
                                     <span asp-validation-for="TituloGrande" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="TituloPeque" class="control-label"></label>
-                                    <input asp-for="TituloPeque" class="form-control" />
+                                    <label asp-for="TituloPeque" class="control-label">Titulo Pequeño</label>
+                                    <input asp-for="TituloPeque" class="form-control" maxlength="255" />
                                     <span asp-validation-for="TituloPeque" class="text-danger"></span>
                                 </div>
                                 <div class="form-group d-none">

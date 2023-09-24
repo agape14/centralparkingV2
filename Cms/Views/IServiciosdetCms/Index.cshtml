@@ -35,9 +35,6 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.Ruta)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.IdCabNavigation)
-                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -51,14 +48,11 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Titulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.Detalle)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Ruta)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IdCabNavigation.Id)
                                         </td>
                                         <td>
                                             @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
