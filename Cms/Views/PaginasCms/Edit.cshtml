@@ -16,7 +16,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <form asp-action="Edit">
+                            <form asp-action="Edit" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ReseniaTitulo" />
@@ -96,15 +96,31 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="ImagenMision" class="control-label"></label>
-                                            <input asp-for="ImagenMision" class="form-control" />
+                                            <input readonly asp-for="ImagenMision" class="form-control" />
                                             <span asp-validation-for="ImagenMision" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label for="ImagenMisionNueva" class="form-label">Escoja la imagen</label>
+                                            <input  class="form-control-file form-control" id="ImagenMisionNueva" name="ImagenMisionNueva" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label asp-for="ImagenValores" class="control-label"></label>
-                                            <input asp-for="ImagenValores" class="form-control" />
+                                            <input readonly asp-for="ImagenValores" class="form-control" />
                                             <span asp-validation-for="ImagenValores" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ImagenValoresNueva" class="form-label">Escoja la imagen</label>
+                                            <input  class="form-control-file form-control" id="ImagenValoresNueva" name="ImagenMisionNueva" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
                                         </div>
                                     </div>
                                 </div>

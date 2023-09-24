@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.Services;
+using Cms.Helpers;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,12 @@ namespace Cms.Controllers
 {
     public class PaginasCmsController : Controller
     {
+        private readonly HelperUploadFiles _helperUpload;
+
+        public PaginasCmsController(HelperUploadFiles helperUpload)
+        {
+            _helperUpload = helperUpload;
+        }
         // GET: Paginas
         public async Task<IActionResult> Index()
         {
@@ -62,7 +69,27 @@ namespace Cms.Controllers
             var paginaCabs = new PaginasCmsService(new HttpClient());
             if (ModelState.IsValid)
           {
-              await paginaCabs.crearPagina(tbConfPaginascab);
+                var file1 = Request.Form.Files?[0];
+
+                if (file1 != null)
+                {
+                    string nombreImagen = file1.FileName;
+                    string path = "";
+                    path = await _helperUpload.UploadFilesAsync(file1, nombreImagen, Providers.Folders.Images);
+                    tbConfPaginascab.ImagenMision = "/images/" + nombreImagen;
+                }
+
+                var file2 = Request.Form.Files?[1];
+
+                if (file2 != null)
+                {
+                    string nombreImagen = file2.FileName;
+                    string path = "";
+                    path = await _helperUpload.UploadFilesAsync(file2, nombreImagen, Providers.Folders.Images);
+                    tbConfPaginascab.ImagenValores = "/images/" + nombreImagen;
+                }
+
+                await paginaCabs.crearPagina(tbConfPaginascab);
               return RedirectToAction(nameof(Index));
           }
           return View(tbConfPaginascab);
@@ -104,6 +131,25 @@ namespace Cms.Controllers
           {
               try
               {
+                    var file1 = Request.Form.Files?[0];
+
+                    if (file1 != null)
+                    {
+                        string nombreImagen = file1.FileName;
+                        string path = "";
+                        path = await _helperUpload.UploadFilesAsync(file1, nombreImagen, Providers.Folders.Images);
+                        tbConfPaginascab.ImagenMision = "/images/" + nombreImagen;
+                    }
+
+                    var file2 = Request.Form.Files?[1];
+
+                    if (file2 != null)
+                    {
+                        string nombreImagen = file2.FileName;
+                        string path = "";
+                        path = await _helperUpload.UploadFilesAsync(file2, nombreImagen, Providers.Folders.Images);
+                        tbConfPaginascab.ImagenValores = "/images/" + nombreImagen;
+                    }
 
                     await paginaCabs.modificarPagina(id, tbConfPaginascab);
               }

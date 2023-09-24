@@ -16,7 +16,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <form asp-action="Create">
+                            <form asp-action="Create" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="ReseniaTitulo" />
                                 <input type="hidden" asp-for="ReseniaDetalle" />
@@ -25,88 +25,101 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Titulo" class="control-label"></label>
-                                            <input asp-for="Titulo" class="form-control" />
+                                            <input required asp-for="Titulo" class="form-control" />
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Subtitulo" class="control-label"></label>
-                                            <input asp-for="Subtitulo" class="form-control" />
+                                            <input required asp-for="Subtitulo" class="form-control" />
                                             <span asp-validation-for="Subtitulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="MisionTitulo" class="control-label"></label>
-                                            <input asp-for="MisionTitulo" class="form-control" />
+                                            <input required asp-for="MisionTitulo" class="form-control" />
                                             <span asp-validation-for="MisionTitulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="MisionDetalle" class="control-label"></label>
-                                            <input asp-for="MisionDetalle" class="form-control" />
+                                            <textarea required asp-for="MisionDetalle" rows="10" cols="40" class="form-control"></textarea>
                                             <span asp-validation-for="MisionDetalle" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="VisionTitulo" class="control-label"></label>
-                                            <input asp-for="VisionTitulo" class="form-control" />
+                                            <input required asp-for="VisionTitulo" class="form-control" />
                                             <span asp-validation-for="VisionTitulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="VisionDetalle" class="control-label"></label>
-                                            <textarea asp-for="MisionDetalle" rows="10" cols="40" class="form-control"></textarea>
+                                            <textarea required asp-for="MisionDetalle" rows="10" cols="40" class="form-control"></textarea>
                                             <span asp-validation-for="VisionDetalle" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="ValoresTitulo" class="control-label"></label>
-                                            <input asp-for="ValoresTitulo" class="form-control" />
+                                            <input required asp-for="ValoresTitulo" class="form-control" />
                                             <span asp-validation-for="ValoresTitulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="ValoresDetalle" class="control-label"></label>
-                                            <textarea asp-for="VisionDetalle" rows="10" cols="40" class="form-control"></textarea>
+                                            <textarea required asp-for="VisionDetalle" rows="10" cols="40" class="form-control"></textarea>
                                             <span asp-validation-for="ValoresDetalle" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="ReconocTitulo" class="control-label"></label>
-                                            <input asp-for="ReconocTitulo" class="form-control" />
+                                            <input required asp-for="ReconocTitulo" class="form-control" />
                                             <span asp-validation-for="ReconocTitulo" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="ReconocDetalle" class="control-label"></label>
-                                            <textarea asp-for="ReconocDetalle" rows="10" cols="40" class="form-control"></textarea>
+                                            <textarea required asp-for="ReconocDetalle" rows="10" cols="40" class="form-control"></textarea>
                                             <span asp-validation-for="ReconocDetalle" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="ImagenMision" class="control-label"></label>
-                                            <input asp-for="ImagenMision" class="form-control" />
+                                            <input required readonly asp-for="ImagenMision" class="form-control" />
                                             <span asp-validation-for="ImagenMision" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label for="ImagenMisionNueva" class="form-label">Escoja la imagen</label>
+                                            <input required class="form-control-file form-control" id="ImagenMisionNueva" name="ImagenMisionNueva" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label asp-for="ImagenValores" class="control-label"></label>
-                                            <input asp-for="ImagenValores" class="form-control" />
+                                            <input required readonly asp-for="ImagenValores" class="form-control" />
                                             <span asp-validation-for="ImagenValores" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ImagenValoresNueva" class="form-label">Escoja la imagen</label>
+                                            <input required class="form-control-file form-control" id="ImagenValoresNueva" name="ImagenMisionNueva" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
