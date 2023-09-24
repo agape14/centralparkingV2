@@ -51,21 +51,21 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="BtnClase" class="control-label">Clase</label>
-                                            <input asp-for="BtnClase" class="form-control" />
+                                            <input asp-for="BtnClase" class="form-control" value="btn btn-primary" readonly/>
                                             <span asp-validation-for="BtnClase" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Icono" class="control-label"></label>
-                                            <input asp-for="Icono" class="form-control" />
+                                            <input asp-for="Icono" class="form-control" value="fa fa-arrow-circle-right" readonly />
                                             <span asp-validation-for="Icono" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6  d-none">
                                         <div class="form-group">
                                             <label asp-for="Orden" class="control-label"></label>
-                                            <input asp-for="Orden" class="form-control" />
+                                            <input asp-for="Orden" class="form-control" value="0"/>
                                             <span asp-validation-for="Orden" class="text-danger"></span>
                                         </div>
                                     </div>

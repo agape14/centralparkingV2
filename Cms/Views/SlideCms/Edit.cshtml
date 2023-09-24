@@ -24,7 +24,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label asp-for="Titulo" class="control-label"></label>
-                                            <input asp-for="Titulo" class="form-control" />
+                                            <input asp-for="Titulo" class="form-control" maxlength="255" />
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -33,13 +33,13 @@
                                             <label for="ImagenNueva" class="form-label">Escoja la imagen</label>
                                             <input class="form-control-file form-control" id="ImagenNueva" name="ImagenNueva" type="file" accept="image/*">
                                             <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
+                                            <span asp-validation-for="Imagen" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Imagen" class="control-label"></label>
                                             <input asp-for="Imagen" class="form-control" readonly />
-                                            <span asp-validation-for="Imagen" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

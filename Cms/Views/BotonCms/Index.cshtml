@@ -23,7 +23,7 @@
                                     <th>
                                         Codigo
                                     </th>
-                                    <th>
+                                    <th  class="d-none">
                                         Codigo detalle
                                     </th>
                                     <th>
@@ -38,7 +38,7 @@
                                     <th>
                                         Icono
                                     </th>
-                                    <th>
+                                    <th class="d-none">
                                         Orden
                                     </th>
                                     <th></th>
@@ -51,7 +51,7 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.MenuId)
                                         </td>
-                                        <td>
+                                        <td class="d-none">
                                             @Html.DisplayFor(modelItem => item.PaginadetId)
                                         </td>
                                         <td>
@@ -66,7 +66,7 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Icono)
                                         </td>
-                                        <td>
+                                        <td class="d-none">
                                             @Html.DisplayFor(modelItem => item.Orden)
                                         </td>
                                         @if(item.Id != 0){
