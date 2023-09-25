@@ -158,6 +158,35 @@ namespace Cms.Controllers
             
             return RedirectToAction(nameof(Index));
         }
-        
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCorreo(int id, [Bind("Id,Server,Puerto,CorreoNotifica,ClaveNotifica,CorreoConCopia")] TbConfEntidad tbConfEntidad)
+        {
+            var entidad = new EntidadCmsService(new HttpClient());
+            if (id != tbConfEntidad.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    await entidad.modificarEntidad(id, tbConfEntidad);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    return NotFound();
+
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tbConfEntidad);
+        }
+
     }
 }

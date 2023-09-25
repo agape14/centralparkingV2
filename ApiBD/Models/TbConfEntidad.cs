@@ -34,4 +34,10 @@ public partial class TbConfEntidad
     public string RutaPagWeb { get; set; }
 
     public bool? RedesSociales { get; set; }
+
+    public string Server { get; set; }
+    public int Puerto { get; set; }
+    public string CorreoNotifica { get; set; }
+    public string ClaveNotifica { get; set; }
+    public string CorreoConCopia { get; set; }
 }
