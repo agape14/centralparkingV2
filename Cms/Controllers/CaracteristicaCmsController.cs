@@ -197,10 +197,10 @@ namespace Cms.Controllers
         {
             var icons = new List<Icono>();
 
-            icons.Add(new Icono { Class = "fa fa-puzzle-piece", Descripcion = "Descriopcion del icono fa-puzzle-piece" });
-            icons.Add(new Icono { Class = "fa fa-magic", Descripcion = "Descriopcion del icono fa-magic" });
-            icons.Add(new Icono { Class = "fa fa-trophy", Descripcion = "Descriopcion del icono fa-trophy" });
-            icons.Add(new Icono { Class = "fa fa-arrow-circle-right", Descripcion = "Descriopcion fa-arrow-circle-right" });
+            icons.Add(new Icono { Class = "fa fa-puzzle-piece", Descripcion = "Icono de una pieza de rompecabezas" });
+            icons.Add(new Icono { Class = "fa fa-magic", Descripcion = "Icono de una varita mágica" });
+            icons.Add(new Icono { Class = "fa fa-trophy", Descripcion = "Icono de un trofeo" });
+            icons.Add(new Icono { Class = "fa fa-arrow-circle-right", Descripcion = "Icono de flecha con direccion a la derecha" });
             return icons;
         }
 

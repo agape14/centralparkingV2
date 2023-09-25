@@ -539,9 +539,12 @@ public class HomeController : Controller
         string pass = "mwabukzuumewdbhn";
 
 
+        string correoCC = "carlos.soraluz@gmail.com";
+
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Remitente", correo));
         message.To.Add(new MailboxAddress("Destinatario", correoDestinatario));
+        //message.Cc.Add(new MailboxAddress("CC", correoCC));
         message.Subject = "Agencia CentralParking Perú";
 
         var bodyBuilder = new BodyBuilder();

@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">@ViewData["Title"]</h4>
-                        <a class="btn btn-primary " href="/PaginasCms/Create">
+                        <a class="btn btn-primary d-none" href="/PaginasCms/Create">
                             <i class="ti-plus"></i>  Nuevo
                         </a>
                     </div>
@@ -70,52 +70,52 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.Titulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.Subtitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ReseniaTitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ReseniaDetalle)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.MisionTitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.MisionDetalle)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.VisionTitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.VisionDetalle)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ValoresTitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ValoresDetalle)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ReconocTitulo)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ReconocDetalle)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ImagenMision)
                                         </td>
-                                        <td>
+                                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                                             @Html.DisplayFor(modelItem => item.ImagenValores)
                                         </td>
                                         @if(item.Id != 0){
                                             <td>
                                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a> |
+                                                <!--<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a> |-->
                                                 <a href="@Url.Action("Index", "PaginasDetCms", new { codigo = item.Id })" class="btn btn-primary"><i class="ti-more"></i></a>
                                             </td>
                                         }

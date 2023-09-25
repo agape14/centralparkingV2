@@ -102,6 +102,7 @@ namespace Cms.Controllers
                         return View(tbIndSlidecab);
                     }
                     path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                    //string path2 = await _helperUpload.UploadFilesWebAsync(file, nombreImagen, Providers.Folders.Images);
                     tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                 }
                 await slide.CreateSlide(tbIndSlidecab);
@@ -190,6 +191,7 @@ namespace Cms.Controllers
                             return View(tbIndSlidecab);
                         }
                         path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                        //string path2 = await _helperUpload.UploadFilesWebAsync(file, nombreImagen, Providers.Folders.Images);
                         tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                     }
 

@@ -47,16 +47,15 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label asp-for="BtnRuta" class="control-label"></label>
+                                                <label asp-for="BtnRuta" class="control-label">Archivo</label>
                                                 <input asp-for="BtnRuta" class="form-control" readonly />
                                                 <span asp-validation-for="BtnRuta" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="ImagenNueva" class="form-label">Escoja la imagen</label>
+                                                <label for="ImagenNueva" class="form-label">Escoja el archivo</label>
                                                 <input class="form-control-file form-control" id="ImagenNueva" name="ImagenNueva" type="file" accept="application/pdf">
-                                                <small class="form-text text-muted">Tamaño recomendado: 626x267 pixels. Peso maximo: 1MB.</small>
                                             </div>
                                         </div>
                                     }
@@ -75,8 +74,8 @@
                                         <div class="form-group">
                                             <label asp-for="Estado" class="control-label"></label>
                                             <select class="form-control" asp-for="Estado">
-                                                <option value="true">Activo</option>
-                                                <option value="false">Inactivo</option>
+                                                <option value="1">Activo</option>
+                                                <option value="0">Inactivo</option>
                                             </select>
                                             <span asp-validation-for="Estado" class="text-danger"></span>
                                         </div>

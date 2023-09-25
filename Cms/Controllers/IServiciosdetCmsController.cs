@@ -169,7 +169,7 @@ namespace Cms.Controllers
 
             var servicioCab = new ServiciosCabsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
-
+            ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             if (id != tbIndServiciodet.Id)
             {
                 return NotFound();
@@ -185,7 +185,33 @@ namespace Cms.Controllers
                     {
                         string nombreImagen = file.FileName;
                         string path = "";
+
+                        if (file.Length > 1024 * 1024)
+                        {
+                            // El archivo excede el peso máximo permitido.
+                            ModelState.AddModelError("Imagen", "La imagen no debe superar 1MB de tamaño.");
+                            return View(tbIndServiciodet);
+                        }
+                        // Validar las dimensiones.
+                        using (var image = System.Drawing.Image.FromStream(file.OpenReadStream()))
+                        {
+                            if (image.Width != 1800 || image.Height != 1200)
+                            {
+                                // Las dimensiones no son las recomendadas.
+                                ModelState.AddModelError("Imagen", "La imagen debe tener un tamaño de 1800x1200 píxeles.");
+                                return View(tbIndServiciodet);
+                            }
+                        }
+                        if (nombreImagen != null && nombreImagen.Length > 240)
+                        {
+                            // Agregar un error al ModelState.
+                            ModelState.AddModelError("Imagen", "La imagen no puede tener más de 240 caracteres.");
+                            return View(tbIndServiciodet);
+                        }
+
+
                         path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Images);
+                        //string path2 = await _helperUpload.UploadFilesWebAsync(file, nombreImagen, Providers.Folders.Images);
                         tbIndServiciodet.Imagen = "/images/" + nombreImagen;
                     }
                     
@@ -200,7 +226,7 @@ namespace Cms.Controllers
                 return RedirectToAction("Index", "IserviciosdetCms", new { codigo = tbIndServiciodet.IdCab });
               
             }
-            ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
+            
             return View(tbIndServiciodet);
         }
 

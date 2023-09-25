@@ -17,7 +17,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <form asp-action="Edit">
+                            <form asp-action="Edit" enctype="multipart/form-data" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <div class="row">
@@ -59,13 +59,15 @@
                                         <div class="form-group">
                                             <label asp-for="Imagen" class="control-label"></label>
                                             <input asp-for="Imagen" class="form-control" readonly />
-                                            <span asp-validation-for="Imagen" class="text-danger"></span>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="imagennueva" class="form-label">Escoja la imagen</label>
                                             <input class="form-control-file form-control" id="imagennueva" name="imagennueva" type="file" accept="image/*">
+                                            <small class="form-text text-muted">Tamaño recomendado: 1800x1200 pixels. Peso maximo: 1MB.</small>
+                                            <span asp-validation-for="Imagen" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>

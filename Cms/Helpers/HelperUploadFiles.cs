@@ -29,5 +29,17 @@ namespace Cms.Helpers
 
             return path;
         }
+
+        public async Task<String> UploadFilesWebAsync(IFormFile formFile, string nombreImagen, Folders folder)
+        {
+            string path = this.pathProvider.MapPathWeb(nombreImagen, folder);
+
+            using (Stream stream = new FileStream(path, FileMode.Create))
+            {
+                await formFile.CopyToAsync(stream);
+            }
+
+            return path;
+        }
     }
 }

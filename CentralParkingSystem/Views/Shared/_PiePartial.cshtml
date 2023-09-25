@@ -5,11 +5,20 @@
 @inject IHttpContextAccessor HttpContextAccessor;
 
 @{
+    List<TbConfPiepaginacab> listaPie = null;
     string pieJson = HttpContextAccessor.HttpContext.Session.GetString("piepagina");
-    List<TbConfPiepaginacab> listaPie = JsonSerializer.Deserialize<List<TbConfPiepaginacab>>(pieJson);
+    if (!string.IsNullOrEmpty(pieJson))
+    {
+        listaPie = JsonSerializer.Deserialize<List<TbConfPiepaginacab>>(pieJson);
+    }
 
+    List<TbConfPiepaginadet> listaPiedet = null;
     string piedetJson = HttpContextAccessor.HttpContext.Session.GetString("piepaginadet");
-    List<TbConfPiepaginadet> listaPiedet = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(piedetJson);
+    if (!string.IsNullOrEmpty(piedetJson))
+    {
+        listaPiedet = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(piedetJson);
+    }
+    
 
     string nameAcceder = "Acceder";
     var rutaAcceder = "https://localhost:7063/DashbordCms/Index";
@@ -17,180 +26,188 @@
 <div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
     <div class="container">
         <div class="row g-5">
-            @foreach (var pie in listaPie)
+            @if (listaPie != null && listaPie.Any())
             {
-                if (pie.Id == Constantes.codigoPieEmpresa)
+                @foreach (var pie in listaPie)
                 {
-                    <div class="col-lg-3 col-md-6">
-                        @foreach (var piedet in listaPiedet)
-                        {
-                            if (piedet.PiepaginaId==pie.Id)
+                    if (pie.Id == Constantes.codigoPieEmpresa)
+                    {
+                        <div class="col-lg-3 col-md-6">
+                            @if (listaPiedet != null && listaPiedet.Any())
                             {
-                                if (piedet.Id == Constantes.codigoPieDetLogo)
+                                @foreach (var piedet in listaPiedet)
                                 {
-                                    <img src="@piedet.Imagen" style="width: 80%;" alt="Logo CPS" draggable="false" loading="lazy">
-                                    <h1></h1>
-                                    <h1></h1>
-                                    <h1></h1>
-                                }
-                                else if(piedet.Id == Constantes.codigoPieDetDireccion)
-                                {
-                                    <p class="mb-2">
-                                        <i class="@piedet.Icono me-3"></i>@piedet.Titulo
-                                    </p>
-                                }
+                                    if (piedet.PiepaginaId == pie.Id)
+                                    {
+                                        if (piedet.Id == Constantes.codigoPieDetLogo)
+                                        {
+                                            <img src="@piedet.Imagen" style="width: 80%;" alt="Logo CPS" draggable="false" loading="lazy">
+                                            <h1></h1>
+                                            <h1></h1>
+                                            <h1></h1>
+                                        }
+                                        else if (piedet.Id == Constantes.codigoPieDetDireccion)
+                                        {
+                                            <p class="mb-2">
+                                                <i class="@piedet.Icono me-3"></i>@piedet.Titulo
+                                            </p>
+                                        }
 
-                                else if (piedet.Id == Constantes.codigoPieDetTelefono)
-                                {
-                                    <p class="mb-2"><i class="@piedet.Icono me-3"></i>@piedet.Titulo</p>
-                                }
+                                        else if (piedet.Id == Constantes.codigoPieDetTelefono)
+                                        {
+                                            <p class="mb-2"><i class="@piedet.Icono me-3"></i>@piedet.Titulo</p>
+                                        }
 
-                                else if (piedet.Id == Constantes.codigoPieDetCorreo)
-                                {
-                                    <p class="mb-2"><i class="@piedet.Icono me-3"></i>@piedet.Titulo</p>
-                                }
-                                else
-                                {
-                                    if (piedet.TipoRuta == 1)
-                                    {
-                                        <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                    }
-                                    else if (piedet.TipoRuta == 2)
-                                    {
-                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                    }
-                                } 
-                            }
-                        }
-                        <a href="https://localhost:7063/DashbordCms/Index" class="btn btn-primary py-2 px-lg-3 d-none d-lg-block">
-                            @nameAcceder <i class="fa fa-arrow-right ms-3"></i>
-                        </a>
-                    </div>
-                }
-
-                if (pie.Id == Constantes.codigoPieNosotros)
-                {
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-light mb-4">@pie.Titulo</h4>
-                        @foreach (var piedet in listaPiedet)
-                        {
-                            if (piedet.PiepaginaId == pie.Id)
-                            {
-                                if (piedet.Id == Constantes.codigoPieDetTrabaja)
-                                {
-                                    <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if(piedet.Id == Constantes.codigoPieDetColaboradores)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if(piedet.Id == Constantes.codigoPieDetProveedores)
-                                {
-                                    <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else
-                                {
-                                    if (piedet.TipoRuta == 1)
-                                    {
-                                        <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                    }
-                                    else if (piedet.TipoRuta == 2)
-                                    {
-                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                        else if (piedet.Id == Constantes.codigoPieDetCorreo)
+                                        {
+                                            <p class="mb-2"><i class="@piedet.Icono me-3"></i>@piedet.Titulo</p>
+                                        }
+                                        else
+                                        {
+                                            if (piedet.TipoRuta == 1)
+                                            {
+                                                <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                            }
+                                            else if (piedet.TipoRuta == 2)
+                                            {
+                                                <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    </div>
-                }
+                            
+                            <a href="https://localhost:7063/DashbordCms/Index" class="btn btn-primary py-2 px-lg-3 d-none d-lg-block">
+                                @nameAcceder <i class="fa fa-arrow-right ms-3"></i>
+                            </a>
+                        </div>
+                    }
 
-                if (pie.Id == Constantes.codigoPieAtencion)
-                {
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-light mb-4">@pie.Titulo</h4>
-                        @foreach (var piedet in listaPiedet)
-                        {
-                            if (piedet.PiepaginaId == pie.Id)
+                    if (pie.Id == Constantes.codigoPieNosotros)
+                    {
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-light mb-4">@pie.Titulo</h4>
+                            @foreach (var piedet in listaPiedet)
                             {
-                                if (piedet.Id == Constantes.codigoPieDetContactanos)
+                                if (piedet.PiepaginaId == pie.Id)
                                 {
-                                    <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if (piedet.Id == Constantes.codigoPieDetComprobantes)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                
-                                else if(piedet.Id == Constantes.codigoPieDetParking)
-                                {
-                                    <!--  <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>-->
-                                }
-                                else if(piedet.Id == Constantes.codigoPieDetHojareclama)
-                                {
-                                    <a class="" href="@piedet.Ruta" style="display: flex;justify-content: center; align-items: center; " draggable="false">
-                                        <img src="@piedet.Imagen" style="width: 50%;filter: invert(100%);" alt="Libro de Reclamaciones" draggable="false" loading="lazy">
-                                    </a>
-                                }
-                                else
-                                {
-                                    if (piedet.TipoRuta==1)
+                                    if (piedet.Id == Constantes.codigoPieDetTrabaja)
                                     {
                                         <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
                                     }
-                                    else if (piedet.TipoRuta == 2)
+                                    else if (piedet.Id == Constantes.codigoPieDetColaboradores)
                                     {
                                         <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
                                     }
-                                }
-                            }
-                        }
-                    </div>
-                }
-
-                if (pie.Id == Constantes.codigoPiePolitica)
-                {
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-light mb-4">@pie.Titulo</h4>
-                        @foreach (var piedet in listaPiedet)
-                        {
-                            if (piedet.PiepaginaId == pie.Id)
-                            {
-                                if (piedet.Id == Constantes.codigoPieDetCondiciones)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if (piedet.Id == Constantes.codigoPieDetCookies)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if (piedet.Id == Constantes.codigoPieDetPrivacidad)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if (piedet.Id == Constantes.codigoPieDetLegal)
-                                {
-                                    <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else if(piedet.Id == Constantes.codigoPieDetCalidad)
-                                {
-                                    <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
-                                }
-                                else
-                                {
-                                    if (piedet.TipoRuta == 1)
+                                    else if (piedet.Id == Constantes.codigoPieDetProveedores)
                                     {
                                         <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
                                     }
-                                    else if (piedet.TipoRuta == 2)
+                                    else
                                     {
-                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                        if (piedet.TipoRuta == 1)
+                                        {
+                                            <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
+                                        else if (piedet.TipoRuta == 2)
+                                        {
+                                            <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
                                     }
                                 }
                             }
-                        }
-                    </div>
+                        </div>
+                    }
+
+                    if (pie.Id == Constantes.codigoPieAtencion)
+                    {
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-light mb-4">@pie.Titulo</h4>
+                            @foreach (var piedet in listaPiedet)
+                            {
+                                if (piedet.PiepaginaId == pie.Id)
+                                {
+                                    if (piedet.Id == Constantes.codigoPieDetContactanos)
+                                    {
+                                        <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetComprobantes)
+                                    {
+                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+
+                                    else if (piedet.Id == Constantes.codigoPieDetParking)
+                                    {
+                                        <!--  <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>-->
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetHojareclama)
+                                    {
+                                        <a class="" href="@piedet.Ruta" style="display: flex;justify-content: center; align-items: center; " draggable="false">
+                                            <img src="@piedet.Imagen" style="width: 50%;filter: invert(100%);" alt="Libro de Reclamaciones" draggable="false" loading="lazy">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        if (piedet.TipoRuta == 1)
+                                        {
+                                            <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
+                                        else if (piedet.TipoRuta == 2)
+                                        {
+                                            <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+
+                    if (pie.Id == Constantes.codigoPiePolitica)
+                    {
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-light mb-4">@pie.Titulo</h4>
+                            @foreach (var piedet in listaPiedet)
+                            {
+                                if (piedet.PiepaginaId == pie.Id)
+                                {
+                                    if (piedet.Id == Constantes.codigoPieDetCondiciones)
+                                    {
+                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetCookies)
+                                    {
+                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetPrivacidad)
+                                    {
+                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetLegal)
+                                    {
+                                        <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else if (piedet.Id == Constantes.codigoPieDetCalidad)
+                                    {
+                                        <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                    }
+                                    else
+                                    {
+                                        if (piedet.TipoRuta == 1)
+                                        {
+                                            <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
+                                        else if (piedet.TipoRuta == 2)
+                                        {
+                                            <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="@piedet.Ruta">@piedet.Titulo</a>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
                 }
             }
+            
         </div>
     </div>
 </div>
