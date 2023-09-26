@@ -105,13 +105,13 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input required pattern="[0-9]{9}" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
+                                    <input required pattern="[0-9]{9}" maxlength="9"  title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
                                     <label for="celular">Celular</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input pattern="[0-9]{7}" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
+                                    <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
                                     <label for="telefono">Teléfono</label>
                                 </div>
                             </div>
@@ -136,6 +136,21 @@
 </div>
 
 <script>
+
+    celular.addEventListener('keypress', function (event) {
+        const key = event.key;
+        if (!/^[0-9]$/.test(key)) {
+            event.preventDefault(); 
+        }
+    });
+    telefono.addEventListener('keypress', function (event) {
+        const key = event.key;
+        if (!/^[0-9]$/.test(key)) {
+            event.preventDefault();
+        }
+    });
+
+
   function validarcantidad() {
     var campo = document.getElementById("cantidad");
     if (campo.value < 1) {
@@ -143,23 +158,6 @@
     }
   }
   document.getElementById("cantidad").addEventListener("blur", validarcantidad);
-
-  function mascaraDeCelular(event) {
-    var campo = event.target;
-    var valor = campo.value.replace(/\D/g, '');
-    var mascara = valor.length === 9 ? valor : '999-999-999';
-    campo.value = valor.replace(/(\d{3})(\d{3})(\d{3})/, mascara);
-  }
-  document.getElementById("celular").addEventListener("input", mascaraDeCelular);
-
-  function mascaraDeTelefono(event) {
-    var campo = event.target;
-    var valor = campo.value.replace(/\D/g, '');
-    var mascara = valor.length === 7 ? valor : '999-9999';
-    campo.value = valor.replace(/(\d{3})(\d{4})/, mascara);
-  }
-  document.getElementById("telefono").addEventListener("input", mascaraDeTelefono);
-  
 </script>
 
 <!-- Cuerpo page End -->
