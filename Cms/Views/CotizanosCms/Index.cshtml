@@ -12,7 +12,15 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Cotizaciones @{
-                                if (ViewBag.TipoServicio == 3)
+                                if (ViewBag.TipoServicio == 1)
+                                {
+                                    <span>Administración de Estacionamiento</span>
+                                }
+                                else if (ViewBag.TipoServicio == 2)
+                                {
+                                    <span>Gestión de Abonados</span>
+                                }
+                                else if (ViewBag.TipoServicio == 3)
                                 {
                                     <span>Valet Parking</span>
                                 }
@@ -36,11 +44,7 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.TipoServicio)
-                                    </th>
-                                  
+                                <tr>                                  
                                     <th>
                                         @Html.DisplayNameFor(model => model.Distrito)
                                     </th>
@@ -90,9 +94,6 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TipoServicio)
-                                        </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Distrito)
                                         </td>
