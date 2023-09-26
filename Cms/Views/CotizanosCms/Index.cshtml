@@ -12,7 +12,15 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Cotizaciones @{
-                                if (ViewBag.TipoServicio == 3)
+                                if (ViewBag.TipoServicio == 1)
+                                {
+                                    <span>Administración de Estacionamiento</span>
+                                }
+                                else if (ViewBag.TipoServicio == 2)
+                                {
+                                    <span>Gestión de Abonados</span>
+                                }
+                                else if (ViewBag.TipoServicio == 3)
                                 {
                                     <span>Valet Parking</span>
                                 }
@@ -36,23 +44,35 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.TipoServicio)
-                                    </th>
-                                  
+                                <tr>                                  
                                     <th>
                                         @Html.DisplayNameFor(model => model.Distrito)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Direccion)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Ruc)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.RazonSocial)
-                                    </th>
+                                    @{
+                                        if (ViewBag.TipoServicio == 2)
+                                        {
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.TipoAbonado)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Estacionamiento)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Cantidad)
+                                            </th>
+                                        } else                                        
+                                        {
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Direccion)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Ruc)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.RazonSocial)
+                                            </th>
+                                        }
+                                    }
                                     <th>
                                         @Html.DisplayNameFor(model => model.Contacto)
                                     </th>
@@ -91,20 +111,34 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TipoServicio)
-                                        </td>
-                                        <td>
                                             @Html.DisplayFor(modelItem => item.Distrito)
                                         </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Direccion)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ruc)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.RazonSocial)
-                                        </td>
+                                        @{
+                                            if (ViewBag.TipoServicio == 2)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.TipoAbonado)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Estacionamiento)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Direccion)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Ruc)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.RazonSocial)
+                                                </td>
+                                            }
+                                        }                                       
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Contacto)
                                         </td>

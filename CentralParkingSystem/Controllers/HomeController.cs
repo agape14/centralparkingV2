@@ -336,6 +336,44 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosAdministracion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Administración de Estacionamiento llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    {
+
+        var contacto = new CotizanosService(new HttpClient());
+
+        if (ModelState.IsValid)
+        {
+            string mensaje = "Recibimos su cotización de Gestión de Abonados llenada en el formulario, nos pondremos en contacto a la brevedad.";
+            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+
+            return RedirectToAction("Index", "Home");
+        }
+        return View(tbFormCotizano);
+    }
+
+    
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosValetParking([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
 
