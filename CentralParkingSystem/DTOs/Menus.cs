@@ -34,8 +34,7 @@ namespace CentralParkingSystem.DTOs
         public int CreationOptions { get; set; }
         public object AsyncState { get; set; }
         public bool IsFaulted { get; set; }
-
-
+        public object AsyncProyecto { get; set; }
 
     }
 }

@@ -9,6 +9,7 @@
         public int Acceso { get; set; }
         public int Padre { get; set; }
         public int Estado { get; set; }
+        public string? TipoProyecto { get; set; }
         public object? IdtipomenuNavigation { get; set; }
         public List<object>? TbConfPermisos { get; set; }
     }

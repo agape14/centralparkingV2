@@ -40,6 +40,7 @@ public class HomeController : Controller
 
         var menu = new MenusService(new HttpClient());
         var listMenu =await  menu.ListarMenus();
+        listMenu = listMenu.Where(item => item.TipoProyecto == "web").ToList();
         if (listMenu.Count == 0)
         {
             Result objResult = new Result();
