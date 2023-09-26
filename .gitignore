@@ -368,3 +368,4 @@ FodyWeavers.xsd
 .log
 *.log
 Cms/wwwroot/images/
+Cms/wwwroot/docs/
