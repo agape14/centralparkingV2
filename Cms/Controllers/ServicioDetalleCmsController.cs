@@ -65,6 +65,11 @@ namespace Cms.Controllers
         public async Task<IActionResult> Create(TbServDetalle tbServDetalle)
         {
             var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            if (tbServDetalle.IdBtnSolicitalo == 0)
+            {
+                tbServDetalle.IdBtnSolicitalo = null;
+            }
+
             if (ModelState.IsValid)
             {
                 await serviciodetalle.crearServicioDetalle(tbServDetalle);
@@ -79,7 +84,7 @@ namespace Cms.Controllers
         {
 
             var serviciodetalle = new ServicioDetalleService(new HttpClient());
-           
+         
 
             if (id == 0)
             {
@@ -109,7 +114,9 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, TbServDetalle tbServDetalle)
         {
             var serviciodetalle = new ServicioDetalleService(new HttpClient());
-          
+            if (tbServDetalle.IdBtnSolicitalo == 0) {
+                tbServDetalle.IdBtnSolicitalo = null;
+            }
 
             if (id != tbServDetalle.Id)
             {
