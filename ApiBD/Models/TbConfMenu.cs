@@ -22,4 +22,5 @@ public partial class TbConfMenu
     public virtual TbConfTipomenu IdtipomenuNavigation { get; set; }
 
     public virtual ICollection<TbConfPermiso> TbConfPermisos { get; set; } = new List<TbConfPermiso>();
+    public string TipoMenu { get; set; }
 }

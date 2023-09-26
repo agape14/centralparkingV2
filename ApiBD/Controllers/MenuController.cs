@@ -47,8 +47,8 @@ namespace ApiBD.Controllers
         public async Task<ActionResult<List<TbConfMenu>>> Get()
         {
             var listMenus = from datos in _dbContext.TbConfMenus
-                              where datos.Padre == 0 && datos.Estado == 1
-                              select datos;
+                              where datos.Padre == 0 && datos.Estado == 1 && datos.TipoMenu == "web"
+                            select datos;
 
             var menus = await listMenus.ToListAsync();
 
@@ -62,8 +62,8 @@ namespace ApiBD.Controllers
         {
             var listSubMenu = from datos in this._dbContext.TbConfMenus
                                   where datos.Padre != 0
-                                  && datos.Estado == 1
-                                  select datos;
+                                  && datos.Estado == 1 && datos.TipoMenu == "web"
+                              select datos;
             var subMenus = await listSubMenu.ToListAsync();
 
             return Ok(subMenus);
