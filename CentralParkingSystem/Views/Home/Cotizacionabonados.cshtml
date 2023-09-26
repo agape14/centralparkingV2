@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select id="tipoAbonado" asp-for="TipoAbonado" class="form-control border-0 bg-light mb-4" placeholder="Tipo de Abonado">
+                            <select id="tipoAbonado" asp-for="TipoAbonado" class="form-control border-0 bg-light mb-4" required placeholder="Tipo de Abonado">
                                 <option value="Personas">Personas</option>
                                 <option value="Empresas">Empresas</option>
                             </select>
@@ -76,7 +76,7 @@
                     <div class="row g-3">
                         <div class="col-md-8">
                             <div class="form-floating">
-                                <select id="estacionamiento" asp-for="Estacionamiento" class="form-control border-0 bg-light " placeholder="Estacionamientos">
+                                <select id="estacionamiento" asp-for="Estacionamiento" class="form-control border-0 bg-light " required placeholder="Estacionamientos">
                                     <option value="Hotel Sheraton">Hotel Sheraton</option>
                                     <option value="Hotel Pullman Miraflores">Hotel Pullman Miraflores</option>
                                     <option value="Clinica Stella Maris">Clinica Stella Maris</option>
@@ -92,13 +92,13 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" >
+                                <input type="number" required class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" asp-for="Cantidad">
                                 <label for="cantidad">Cantidad</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating">
-                                <input required type="text" class="form-control border-0 bg-light mb-4" id="contacto" name="contacto" placeholder="Nombres y Apellidos" asp-for="Contacto">
+                                <input required type="text" class="form-control border-0 bg-light " id="contacto" name="contacto" placeholder="Nombres y Apellidos" asp-for="Contacto">
                                 <label for="contacto">Nombres y Apellidos</label>
                             </div>
                         </div>
