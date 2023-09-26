@@ -24,6 +24,7 @@
     if (!string.IsNullOrEmpty(menuJson))
     {
         listaMenu = JsonSerializer.Deserialize<List<TbConfMenu>>(menuJson);
+        //listaMenu = listaMenu.Where(item => item.tipoProyecto == "web").ToList();
     }
 
     List<TbConfMenu> listaSubmenu = null;
@@ -31,6 +32,7 @@
     if (!string.IsNullOrEmpty(submenuJson))
     {
         listaSubmenu = JsonSerializer.Deserialize<List<TbConfMenu>>(submenuJson);
+        
     }
 
     string nameAcceder = "Acceder";

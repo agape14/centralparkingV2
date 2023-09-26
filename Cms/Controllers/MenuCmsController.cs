@@ -76,7 +76,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado")] TbConfMenu tbConfMenu)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto")] TbConfMenu tbConfMenu)
         {
             var menu = new MenuCmsService(new HttpClient());
             var tipoMenuLista = await menu.listarTipoMenu();
@@ -129,7 +129,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado")] TbConfMenu tbConfMenu)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto")] TbConfMenu tbConfMenu)
         {
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();

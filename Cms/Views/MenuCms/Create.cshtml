@@ -71,7 +71,17 @@
                                             <span asp-validation-for="Estado" class="text-danger"></span>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="TipoProyecto" class="control-label">Tipo Proyecto</label>
+                                            <select class="form-control" asp-for="TipoProyecto" >
+                                                <option value="web">Menu en la web</option>
+                                                <option value="cms">Menu en el CMS</option>
+                                            </select>
 
+                                            <span asp-validation-for="TipoProyecto" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         @*<input type="submit" value="Create" class="btn btn-primary" />*@
                                         <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |

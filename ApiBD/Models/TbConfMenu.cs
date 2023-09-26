@@ -18,9 +18,10 @@ public partial class TbConfMenu
     public int? Padre { get; set; }
 
     public int? Estado { get; set; }
+    public string TipoProyecto { get; set; }
 
     public virtual TbConfTipomenu IdtipomenuNavigation { get; set; }
 
     public virtual ICollection<TbConfPermiso> TbConfPermisos { get; set; } = new List<TbConfPermiso>();
-    public string TipoMenu { get; set; }
+   
 }
