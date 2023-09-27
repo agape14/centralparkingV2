@@ -1,8 +1,8 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ApiBD.Controllers
 {
@@ -21,16 +21,26 @@ namespace ApiBD.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TbConfEntidad>>> Get()
         {
-            var listEntidad = from datos in _dbContext.TbConfEntidads
-                              select datos;
+            //var listEntidad = from datos in _dbContext.TbConfEntidadsselect datos;
+            var listEntidad = await _dbContext.TbConfEntidads.ToListAsync();
+            //var entidades = await listEntidad.ToListAsync();
 
-            var entidades = await listEntidad.ToListAsync();
-
-            return Ok(entidades);
+            return Ok(listEntidad);
         }
 
-       
+        [HttpGet]
+        [Route("getEntidades")]
+        public async Task<ActionResult<List<TbConfEntidad>>> GetEntidades()
+        {
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64
+            };
 
+            var listEntidades = await _dbContext.TbConfEntidads.ToListAsync();
+            return new JsonResult(listEntidades, options);
+        }
 
 
         // GET: api/entidades/{id}

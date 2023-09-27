@@ -35,8 +35,8 @@ public partial class TbConfEntidad
 
     public bool? RedesSociales { get; set; }
 
-    public string Server { get; set; }
-    public int Puerto { get; set; }
+    public string Servidor { get; set; }
+    public int? Puerto { get; set; }
     public string CorreoNotifica { get; set; }
     public string ClaveNotifica { get; set; }
     public string CorreoConCopia { get; set; }

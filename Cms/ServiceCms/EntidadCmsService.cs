@@ -19,7 +19,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/entidades";
+                var url = "http://localhost:82/api/entidades/getEntidades";
 
                 var response = await _httpClient.GetAsync(url);
 
