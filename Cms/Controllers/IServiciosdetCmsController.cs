@@ -169,6 +169,7 @@ namespace Cms.Controllers
 
             var servicioCab = new ServiciosCabsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
+            ViewData["vServicioId"] = tbIndServiciodet.IdCab;
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             if (id != tbIndServiciodet.Id)
             {
