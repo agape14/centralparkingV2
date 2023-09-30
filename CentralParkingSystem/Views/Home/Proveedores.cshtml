@@ -67,7 +67,7 @@
                                     RUC
                                 </label>
                                 <div class="col-sm-4">
-                                    <input asp-for="FRuc" class="form-control" required placeholder="RUC" pattern="[0-9]{11}" type="text"  />
+                                    <input asp-for="FRuc" id="FRuc" class="form-control" required placeholder="RUC" pattern="[0-9]{11}" maxlength="11"  type="text" />
                                    
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="cbxTipoPersona">
@@ -89,7 +89,7 @@
                                     DNI
                                 </label>
                                 <div class="col-sm-5">
-                                    <input asp-for="FDni" class="form-control"  required placeholder="DNI" pattern="[0-9]{8}" type="text" />
+                                    <input asp-for="FDni" id="FDni" class="form-control" required placeholder="DNI" pattern="[0-9]{8}" maxlength="8" type="text" />
                             
                                 </div>
                             </div>
@@ -533,3 +533,18 @@
     </div>
 </div>
 <!-- Cuerpo page End -->
+
+<script>
+    FRuc.addEventListener('keypress', function (event) {
+        const key = event.key;
+        if (!/^[0-9]$/.test(key)) {
+            event.preventDefault();
+        }
+    });
+    FDni.addEventListener('keypress', function (event) {
+        const key = event.key;
+        if (!/^[0-9]$/.test(key)) {
+            event.preventDefault();
+        }
+    });
+</script>

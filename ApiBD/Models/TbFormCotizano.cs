@@ -26,6 +26,9 @@ public partial class TbFormCotizano
     public DateTime? FechaEvento { get; set; }
     public string CorreoElectronico { get; set; }
     public string Comentario { get; set; }
+    public string TipoAbonado { get; set; }
+    public string Estacionamiento { get; set; }
+    public int Cantidad { get; set; }
 
     public virtual TbIndServiciodet TipoServicioNavigation { get; set; }
 }

@@ -3,6 +3,7 @@ using System;
 using ApiBD.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiBD.Migrations
 {
     [DbContext(typeof(CentralParkingContext))]
-    partial class CentralParkingContextModelSnapshot : ModelSnapshot
+    [Migration("20230926125812_AddColumnsToTbFormCotizanos")]
+    partial class AddColumnsToTbFormCotizanos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,7 +181,7 @@ namespace ApiBD.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("nameComercial");
 
-                    b.Property<int?>("Puerto")
+                    b.Property<int>("Puerto")
                         .HasColumnType("int");
 
                     b.Property<bool?>("RedesSociales")
@@ -194,7 +197,7 @@ namespace ApiBD.Migrations
                         .HasColumnType("text")
                         .HasColumnName("rutaPagWeb");
 
-                    b.Property<string>("Servidor")
+                    b.Property<string>("Server")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Telefono")
@@ -249,7 +252,9 @@ namespace ApiBD.Migrations
                         .HasColumnName("ruta");
 
                     b.Property<string>("TipoProyecto")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)")
+                        .HasColumnName("tipoProyecto");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -1006,7 +1011,8 @@ namespace ApiBD.Migrations
                         .HasColumnName("id");
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("cantidad");
 
                     b.Property<string>("Celular")
                         .HasMaxLength(100)
@@ -1039,7 +1045,9 @@ namespace ApiBD.Migrations
                         .HasColumnName("distrito");
 
                     b.Property<string>("Estacionamiento")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("estacionamiento");
 
                     b.Property<DateTime?>("FechaEvento")
                         .HasColumnType("datetime")
@@ -1061,7 +1069,9 @@ namespace ApiBD.Migrations
                         .HasColumnName("telefono");
 
                     b.Property<string>("TipoAbonado")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("tipoAbonado");
 
                     b.Property<int?>("TipoServicio")
                         .HasColumnType("int(11)")

@@ -133,70 +133,137 @@ namespace Cms.Controllers
               {
                     if (Request.Form.Files != null && Request.Form.Files.Count > 0)
                     {
-                        var file1 = Request.Form.Files?[0];
-
-                        if (file1 != null)
+                        if (Request.Form.Files.Count == 1)
                         {
-                            string nombreImagen1 = file1.FileName;
-                            if (file1.Length > 1024 * 1024)
+                            var file1 = Request.Form.Files?[0];
+                            if (file1.Name== "ImagenMisionNueva")
                             {
-                                // El archivo excede el peso máximo permitido.
-                                ModelState.AddModelError("Imagen", "La imagen no debe superar 1MB de tamaño.");
-                                return View(tbConfPaginascab);
-                            }
-                            // Validar las dimensiones.
-                            using (var image1 = System.Drawing.Image.FromStream(file1.OpenReadStream()))
-                            {
-                                if (image1.Width != 1800 || image1.Height != 1200)
+                                string nombreImagen1 = file1.FileName;
+                                if (file1.Length > 1024 * 1024)
                                 {
-                                    // Las dimensiones no son las recomendadas.
-                                    ModelState.AddModelError("Imagen", "La imagen debe tener un tamaño de 1800x1200 píxeles.");
+                                    // El archivo excede el peso máximo permitido.
+                                    ModelState.AddModelError("ImagenMision", "La imagen no debe superar 1MB de tamaño.");
                                     return View(tbConfPaginascab);
                                 }
-                            }
-                            if (nombreImagen1 != null && nombreImagen1.Length > 240)
-                            {
-                                // Agregar un error al ModelState.
-                                ModelState.AddModelError("Imagen", "La imagen no puede tener más de 240 caracteres.");
-                                return View(tbConfPaginascab);
-                            }
-                            string path1 = await _helperUpload.UploadFilesAsync(file1, nombreImagen1, Providers.Folders.Images);
-                            //string path11 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen1, Providers.Folders.Images);
-                            tbConfPaginascab.ImagenMision = "/images/" + nombreImagen1;
-                        }
-
-                        var file2 = Request.Form.Files?[1];
-
-                        if (file2 != null)
-                        {
-                            string nombreImagen2 = file2.FileName;
-                            if (file2.Length > 1024 * 1024)
-                            {
-                                // El archivo excede el peso máximo permitido.
-                                ModelState.AddModelError("Imagen", "La imagen no debe superar 1MB de tamaño.");
-                                return View(tbConfPaginascab);
-                            }
-                            // Validar las dimensiones. 
-                            using (var image2 = System.Drawing.Image.FromStream(file2.OpenReadStream()))
-                            {
-                                if (image2.Width != 1140 || image2.Height != 712)
+                                // Validar las dimensiones.
+                                using (var image1 = System.Drawing.Image.FromStream(file1.OpenReadStream()))
                                 {
-                                    // Las dimensiones no son las recomendadas.
-                                    ModelState.AddModelError("Imagen", "La imagen debe tener un tamaño de 1140x712 píxeles.");
+                                    if (image1.Width != 1140 || image1.Height != 712)
+                                    {
+                                        // Las dimensiones no son las recomendadas.
+                                        ModelState.AddModelError("ImagenMision", "La imagen debe tener un tamaño de 1140x712 píxeles.");
+                                        return View(tbConfPaginascab);
+                                    }
+                                }
+                                if (nombreImagen1 != null && nombreImagen1.Length > 240)
+                                {
+                                    // Agregar un error al ModelState.
+                                    ModelState.AddModelError("ImagenMision", "La imagen no puede tener más de 240 caracteres.");
                                     return View(tbConfPaginascab);
                                 }
+                                string path1 = await _helperUpload.UploadFilesAsync(file1, nombreImagen1, Providers.Folders.Images);
+                                //string path11 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen1, Providers.Folders.Images);
+                                tbConfPaginascab.ImagenMision = "/images/" + nombreImagen1;
                             }
-                            if (nombreImagen2 != null && nombreImagen2.Length > 240)
+                            else if (file1.Name == "ImagenValoresNueva")
                             {
-                                // Agregar un error al ModelState.
-                                ModelState.AddModelError("Imagen", "La imagen no puede tener más de 240 caracteres.");
-                                return View(tbConfPaginascab);
+                                string nombreImagen2 = file1.FileName;
+                                if (file1.Length > 1024 * 1024)
+                                {
+                                    // El archivo excede el peso máximo permitido.
+                                    ModelState.AddModelError("ImagenValores", "La imagen no debe superar 1MB de tamaño.");
+                                    return View(tbConfPaginascab);
+                                }
+                                // Validar las dimensiones. 
+                                using (var image2 = System.Drawing.Image.FromStream(file1.OpenReadStream()))
+                                {
+                                    if (image2.Width != 1140 || image2.Height != 712)
+                                    {
+                                        // Las dimensiones no son las recomendadas.
+                                        ModelState.AddModelError("ImagenValores", "La imagen debe tener un tamaño de 1140x712 píxeles.");
+                                        return View(tbConfPaginascab);
+                                    }
+                                }
+                                if (nombreImagen2 != null && nombreImagen2.Length > 240)
+                                {
+                                    // Agregar un error al ModelState.
+                                    ModelState.AddModelError("ImagenValores", "La imagen no puede tener más de 240 caracteres.");
+                                    return View(tbConfPaginascab);
+                                }
+                                string path2 = await _helperUpload.UploadFilesAsync(file1, nombreImagen2, Providers.Folders.Images);
+                                //string path22 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen2, Providers.Folders.Images);
+                                tbConfPaginascab.ImagenValores = "/images/" + nombreImagen2;
                             }
-                            string path2 = await _helperUpload.UploadFilesAsync(file2, nombreImagen2, Providers.Folders.Images);
-                            //string path22 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen2, Providers.Folders.Images);
-                            tbConfPaginascab.ImagenValores = "/images/" + nombreImagen2;
+                        }else if (Request.Form.Files.Count == 2)
+                        {
+                            var file1 = Request.Form.Files?[0];
+
+                            if (file1 != null)
+                            {
+                                string nombreImagen1 = file1.FileName;
+                                if (file1.Length > 1024 * 1024)
+                                {
+                                    // El archivo excede el peso máximo permitido.
+                                    ModelState.AddModelError("ImagenMision", "La imagen no debe superar 1MB de tamaño.");
+                                    return View(tbConfPaginascab);
+                                }
+                                // Validar las dimensiones.
+                                using (var image1 = System.Drawing.Image.FromStream(file1.OpenReadStream()))
+                                {
+                                    if (image1.Width != 1140 || image1.Height != 712)
+                                    {
+                                        // Las dimensiones no son las recomendadas.
+                                        ModelState.AddModelError("ImagenMision", "La imagen debe tener un tamaño de 1140x712 píxeles.");
+                                        return View(tbConfPaginascab);
+                                    }
+                                }
+                                if (nombreImagen1 != null && nombreImagen1.Length > 240)
+                                {
+                                    // Agregar un error al ModelState.
+                                    ModelState.AddModelError("ImagenMision", "La imagen no puede tener más de 240 caracteres.");
+                                    return View(tbConfPaginascab);
+                                }
+                                string path1 = await _helperUpload.UploadFilesAsync(file1, nombreImagen1, Providers.Folders.Images);
+                                //string path11 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen1, Providers.Folders.Images);
+                                tbConfPaginascab.ImagenMision = "/images/" + nombreImagen1;
+                            }
+
+                            var file2 = Request.Form.Files?[1];
+
+                            if (file2 != null)
+                            {
+                                string nombreImagen2 = file2.FileName;
+                                if (file2.Length > 1024 * 1024)
+                                {
+                                    // El archivo excede el peso máximo permitido.
+                                    ModelState.AddModelError("ImagenValores", "La imagen no debe superar 1MB de tamaño.");
+                                    return View(tbConfPaginascab);
+                                }
+                                // Validar las dimensiones. 
+                                using (var image2 = System.Drawing.Image.FromStream(file2.OpenReadStream()))
+                                {
+                                    if (image2.Width != 1140 || image2.Height != 712)
+                                    {
+                                        // Las dimensiones no son las recomendadas.
+                                        ModelState.AddModelError("ImagenValores", "La imagen debe tener un tamaño de 1140x712 píxeles.");
+                                        return View(tbConfPaginascab);
+                                    }
+                                }
+                                if (nombreImagen2 != null && nombreImagen2.Length > 240)
+                                {
+                                    // Agregar un error al ModelState.
+                                    ModelState.AddModelError("ImagenValores", "La imagen no puede tener más de 240 caracteres.");
+                                    return View(tbConfPaginascab);
+                                }
+                                string path2 = await _helperUpload.UploadFilesAsync(file2, nombreImagen2, Providers.Folders.Images);
+                                //string path22 = await _helperUpload.UploadFilesWebAsync(file1, nombreImagen2, Providers.Folders.Images);
+                                tbConfPaginascab.ImagenValores = "/images/" + nombreImagen2;
+                            }
+
                         }
-                       
+
+
+
                     }
 
                     await paginaCabs.modificarPagina(id, tbConfPaginascab);
