@@ -95,9 +95,8 @@ namespace ApiBD.Controllers
             };
 
 
-            var menu = await _dbContext.TbConfMenus
-                            .Include(t => t.IdtipomenuNavigation)
-                            .FirstOrDefaultAsync(m => m.Id == id); 
+            var menu = await _dbContext.TbConfMenus.Include(t => t.IdtipomenuNavigation).FirstOrDefaultAsync(m => m.Id == id);
+            //var li = await _dbContext.TbConfMenus.Include(t => t.IdtipomenuNavigation).OrderByDescending(t => t.Id).ToListAsync();
             if (menu == null)
             {
                 return NotFound();

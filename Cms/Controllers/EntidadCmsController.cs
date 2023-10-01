@@ -24,6 +24,22 @@ namespace Cms.Controllers
                         Problem("Entity set 'CentralparkingContext.TbConfEntidads'  is null.");
         }
 
+        public async Task<IActionResult> Indexcorreo()
+        {
+            var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await entidad.listarEntidades();
+            if (entidadLista.Count == 0)
+            {
+                TbConfEntidad objEntidad = new TbConfEntidad();
+                entidadLista.Add(objEntidad);
+                return View(entidadLista);
+            }
+
+            return entidadLista != null ?
+                        View(entidadLista) :
+                        Problem("Entity set 'CentralparkingContext.TbConfEntidads'  is null.");
+        }
+
         // GET: Entidad/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -86,6 +102,24 @@ namespace Cms.Controllers
             return View(tbConfEntidad);
         }
 
+        public async Task<IActionResult> Correo(int id)
+        {
+            var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await entidad.listarEntidades();
+
+            if (id == 0 || entidadLista == null)
+            {
+                return NotFound();
+            }
+
+            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            if (tbConfEntidad == null)
+            {
+                return NotFound();
+            }
+            return View(tbConfEntidad);
+        }
+
         // POST: Entidad/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -116,7 +150,7 @@ namespace Cms.Controllers
             }
             return View(tbConfEntidad);
         }
-        
+
         // GET: Entidad/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
@@ -162,7 +196,7 @@ namespace Cms.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCorreo(int id, [Bind("Id,Server,Puerto,CorreoNotifica,ClaveNotifica,CorreoConCopia")] TbConfEntidad tbConfEntidad)
+        public async Task<IActionResult> EditCorreo(int id, [Bind("Id,Name,NameComercial,Ruc,Direccion,Horario,Telefono,Celular,Correo,Favicon,LogoBlanco,LogoOscuro,LogoMini,RutaPagWeb,RedesSociales,Servidor,Puerto,CorreoNotifica,ClaveNotifica,CorreoConCopia")] TbConfEntidad tbConfEntidad)
         {
             var entidad = new EntidadCmsService(new HttpClient());
             if (id != tbConfEntidad.Id)
@@ -183,7 +217,7 @@ namespace Cms.Controllers
                     return NotFound();
 
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Indexcorreo));
             }
             return View(tbConfEntidad);
         }

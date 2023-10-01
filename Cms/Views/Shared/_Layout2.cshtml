@@ -197,11 +197,13 @@
                                 <li class="nav-item"> <a class="nav-link" href="~/UsuarioCms">Usuarios</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/RolCms">Roles</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/PermisoCms">Permisos</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="~/MenuCms">Menu</a></li>
+                                @*<li class="nav-item"> <a class="nav-link" href="~/MenuCms">Menu</a></li>*@
+                                <li class="nav-item"> <a class="nav-link"  href="@Url.Action("Index", "MenuCms", new { tipoProyecto = "web" })">Menu</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/PiePaginaCms">Pie Pagina</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/ModaleCms">Modales</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/RedesSocialesCms">Redes Sociales</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="~/RedesSocialesCms">Correo</a></li>
+                                @*<li class="nav-item"> <a class="nav-link" href="~/EntidadCms">Correo</a></li>*@
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Indexcorreo", "EntidadCms")">Correo</a></li>
                             </ul>
                         </div>
                     </li>

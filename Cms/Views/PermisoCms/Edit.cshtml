@@ -20,25 +20,18 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-none">
                                         <div class="form-group">
                                             <label asp-for="Permiso" class="control-label"></label>
                                             <input asp-for="Permiso" class="form-control" />
                                             <span asp-validation-for="Permiso" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-none">
                                         <div class="form-group">
                                             <label asp-for="Descripcion" class="control-label"></label>
                                             <input asp-for="Descripcion" class="form-control" />
                                             <span asp-validation-for="Descripcion" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Menu" class="control-label"></label>
-                                            <select asp-for="MenuId" class="form-control" asp-items="ViewBag.MenuId"></select>
-                                            <span asp-validation-for="MenuId" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -49,6 +42,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Menu" class="control-label"></label>
+                                            <select asp-for="MenuId" class="form-control" asp-items="ViewBag.MenuId"></select>
+                                            <span asp-validation-for="MenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6  d-none">
                                         <div class="form-group">
                                             <label asp-for="Estado" class="control-label"></label>
                                             <select class="form-control" asp-for="Estado">
@@ -68,6 +68,41 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <ul>
+                            @foreach (var menu in ViewBag.MenuList)
+                            {
+                                @if (@menu.Padre == 0)
+                                {
+                                    <li>
+                                        <div>
+                                            <input type="checkbox" id="menu-@menu.Id" data-menu-id="@menu.Id" class="menu-checkbox" />
+                                            <label for="menu-@menu.Id">@menu.Nombre</label>
+                                        </div>
+                                        <ul>
+
+                                            @foreach (var submenu in ViewBag.SubMenuList)
+                                            {
+                                                @if (@menu.Id == @submenu.Padre)
+                                                {
+                                                    <li>
+                                                        <div class="submenu">
+                                                            <input type="checkbox" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
+                                                            <label for="submenu-@submenu.Id">@submenu.Nombre</label>
+                                                        </div>
+                                                    </li>
+                                                }
+
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                
+                                
+                            }
+                        </ul>
+
+                    </div>
                 </div>
             </div>
         </div>

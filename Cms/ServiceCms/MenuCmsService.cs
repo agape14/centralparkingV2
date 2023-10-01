@@ -192,5 +192,34 @@ namespace Cms.ServiceCms
             }
         }
 
+        public async Task<List<TbConfMenu>> ListarSubMenus()
+        {
+            List<TbConfMenu> subMenus = new List<TbConfMenu>();
+
+            try
+            {
+                var url = "http://localhost:82/api/menu/subMenus";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    subMenus = JsonSerializer.Deserialize<List<TbConfMenu>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return subMenus;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return subMenus;
+        }
+
     }
 }

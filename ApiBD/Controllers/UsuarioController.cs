@@ -36,7 +36,8 @@ namespace ApiBD.Controllers
             }
 
             // Usuario no válido
-            return BadRequest("Usuario no válido");
+            ModelState.AddModelError("Password", "Nombre de usuario o contraseña incorrectos.");
+            return BadRequest(ModelState);
         }
 
         public static string GetSHA256(string str)
@@ -91,6 +92,8 @@ namespace ApiBD.Controllers
         [HttpPost]
         public async Task<ActionResult<TbConfUser>> Create(TbConfUser usuario)
         {
+            string newpass = GetSHA256("$C3P4Sy" + usuario.Password);
+            usuario.Password = newpass;
             _dbContext.TbConfUsers.Add(usuario);
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = usuario.Id }, usuario);
@@ -103,6 +106,8 @@ namespace ApiBD.Controllers
             {
                 return BadRequest();
             }
+            string newpass = GetSHA256("$C3P4Sy" + usuario.Password);
+            usuario.Password = newpass;
             _dbContext.Entry(usuario).State = EntityState.Modified;
             try
             {

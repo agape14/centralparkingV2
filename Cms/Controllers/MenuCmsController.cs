@@ -12,11 +12,16 @@ namespace Cms.Controllers
         
       
         // GET: Menu ok
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string tipoProyecto)
         {
             
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
+            // Filtrar menús según el tipo de proyecto
+            if (!string.IsNullOrEmpty(tipoProyecto))
+            {
+                menuLista = menuLista.Where(menu => menu.TipoProyecto == tipoProyecto).ToList();
+            }
             if (menuLista.Count == 0)
             {
                 TbConfMenu objMenu = new TbConfMenu();
@@ -76,7 +81,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto")] TbConfMenu tbConfMenu)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto,Icono")] TbConfMenu tbConfMenu)
         {
             var menu = new MenuCmsService(new HttpClient());
             var tipoMenuLista = await menu.listarTipoMenu();
@@ -88,7 +93,8 @@ namespace Cms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
-            return View(tbConfMenu);
+            return RedirectToAction(nameof(Index), new { tipoProyecto = tbConfMenu.TipoProyecto });
+            //return View(tbConfMenu);
         }
       
         // GET: Menu/Edit/5 ok
@@ -129,7 +135,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto")] TbConfMenu tbConfMenu)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto,Icono")] TbConfMenu tbConfMenu)
         {
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
@@ -156,7 +162,8 @@ namespace Cms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Id", tbConfMenu.Idtipomenu);
-            return View(tbConfMenu);
+            //return View(tbConfMenu);
+            return RedirectToAction(nameof(Index), new { tipoProyecto = tbConfMenu.TipoProyecto });
         }
          
         // GET: Menu/Delete/5 ok

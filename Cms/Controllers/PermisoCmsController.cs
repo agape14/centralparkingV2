@@ -50,6 +50,7 @@ namespace Cms.Controllers
             var rolLista = await rol.listarRoles();
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
+            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
 
             ViewData["MenuId"] = new SelectList(menuLista, "Id", "Nombre");
             ViewData["RolId"] = new SelectList(rolLista, "Id", "Rol");
@@ -89,8 +90,16 @@ namespace Cms.Controllers
             var rolLista = await rol.listarRoles();
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
-
+            var menuListaCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
             if (id == 0 || permisoLista == null)
+            {
+                return NotFound();
+            }
+
+            var subMenu = new MenuCmsService(new HttpClient());
+            var listSubMenuCms = await subMenu.ListarSubMenus();
+            listSubMenuCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
+            if (listSubMenuCms.Count == 0)
             {
                 return NotFound();
             }
@@ -100,7 +109,9 @@ namespace Cms.Controllers
             {
                 return NotFound();
             }
-            ViewData["MenuId"] = new SelectList(menuLista, "Id", "Nombre", tbConfPermiso.MenuId);
+            ViewData["MenuList"] = menuListaCms;
+            ViewData["SubMenuList"] = listSubMenuCms;
+            ViewData["MenuId"] = new SelectList(menuListaCms, "Id", "Nombre", tbConfPermiso.MenuId);
             ViewData["RolId"] = new SelectList(rolLista, "Id", "Rol", tbConfPermiso.RolId);
             return View(tbConfPermiso);
         }

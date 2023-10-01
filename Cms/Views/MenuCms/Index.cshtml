@@ -18,6 +18,16 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Listado de menu</h4>
+
+                        <div>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    <a class="btn btn-primary btn-sm active" data-toggle="tipomenu" data-title="web" id="enlaceWeb">WEB</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="tipomenu" data-title="cms" id="enlaceCMS">CMS</a>
+                                </div>
+                                <input type="hidden" name="tipomenu" id="tipomenu">
+                            </div>
+                        </div>
                         <a class="btn btn-primary " href="/MenuCms/Create">
                             <i class="ti-plus"></i>  Nuevo menu
                         </a>
@@ -127,3 +137,72 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    var url = new URL(window.location.href);
+
+    // Obtén el valor del parámetro "tipoProyecto"
+    var tipoProyecto = url.searchParams.get("tipoProyecto");
+
+    if (tipoProyecto) {
+        // El parámetro "tipoProyecto" está presente en la URL
+        console.log("Valor de tipoProyecto:", tipoProyecto);
+        var sel = tipoProyecto;
+        var tog = 'tipomenu';
+        console.log('Ahiqw=>', sel, tog);
+        $('#' + tog).prop('value', sel);
+
+        $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+        $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+    } else {
+        // El parámetro "tipoProyecto" no está presente en la URL
+        console.log("El parámetro tipoProyecto no está presente en la URL.");
+    }
+
+    $('#radioBtn a').on('click', function () {
+        var sel = $(this).data('title');
+        var tog = $(this).data('toggle');
+        console.log('Ahiqw=>',sel,tog);
+        $('#' + tog).prop('value', sel);
+
+        $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+        $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+        
+    });
+
+    //var buttons = $("#radioBtn a");
+
+    //// Manejar el clic en cualquiera de los botones
+    //buttons.on("click", function () {
+    //    // Cambiar la clase "active" al botón clicado
+    //    buttons.removeClass("active");
+    //    $(this).addClass("active");
+
+    //    // Cambiar la clase "notActive" al otro botón
+    //    buttons.not(this).addClass("notActive");
+
+    //    // Actualizar el valor del input hidden
+    //    $("#tipomenu").val($(this).data("title"));
+    //});
+
+
+
+    $(document).ready(function () {
+        $("#enlaceWeb").click(function (e) {
+            e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+            var url = '@Url.Action("Index", "MenuCms", new { tipoProyecto = "web" })';
+            window.location.href = url;
+        });
+
+        $("#enlaceCMS").click(function (e) {
+            e.preventDefault();
+            var url = '@Url.Action("Index", "MenuCms", new { tipoProyecto = "cms" })';
+            window.location.href = url;
+        });
+    });
+
+       
+
+
+
+</script>
