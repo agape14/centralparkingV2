@@ -81,6 +81,61 @@ namespace Cms.Controllers
             return View(tbConfPermiso);
         }
 
+        [HttpPost]
+        [Route("Crearpermisos")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Createpermisos([FromBody] List<TbConfPermiso> selectedPermissions)
+        {
+            if (selectedPermissions == null || !selectedPermissions.Any())
+            {
+                return BadRequest("No se han proporcionado permisos seleccionados.");
+            }
+
+            try
+            {
+                // Procesar la lista de permisos y crear o actualizar registros según sea necesario
+                foreach (var permission in selectedPermissions)
+                {
+                    // Verificar si el permiso ya existe en la base de datos
+                    var permiso = new PermisoCmsService(new HttpClient());
+                    var permisoLista = await permiso.listarPermisos();
+                    permisoLista = permisoLista.Where(menu => menu.MenuId == permission.MenuId).ToList();
+                    //var existingPermission = await _dbContext.TbConfPermiso.FirstOrDefaultAsync(p => p.MenuId == permission.MenuId && p.SubmenuId == permission.SubmenuId);
+
+                    //if (existingPermission != null)
+                    //{
+                    //    // El permiso ya existe, realiza la actualización si es necesario
+                    //    // Por ejemplo, actualiza la descripción o el estado si es diferente
+                    //    existingPermission.Descripcion = permission.Descripcion;
+                    //    existingPermission.Estado = permission.Estado;
+                    //    existingPermission.Modificacion = DateTime.Now;
+                    //}
+                    //else
+                    //{
+                    //    // El permiso no existe, crea uno nuevo
+                    //    var newPermission = new TbConfPermiso
+                    //    {
+                    //        MenuId = permission.MenuId,
+                    //        SubmenuId = permission.SubmenuId,
+                    //        Descripcion = permission.Descripcion,
+                    //        Estado = permission.Estado,
+                    //        Creacion = DateTime.Now,
+                    //        Modificacion = DateTime.Now
+                    //    };
+
+                    //    _dbContext.TbConfPermiso.Add(newPermission);
+                    //}
+                }
+
+                //await _dbContext.SaveChangesAsync();
+                return Ok("Datos guardados correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al guardar los datos: " + ex.Message);
+            }
+        }
+
         // GET: Permiso/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -121,7 +176,7 @@ namespace Cms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Permiso,Descripcion,MenuId,RolId,Estado,Creacion,Modificacion")] TbConfPermiso tbConfPermiso)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Permiso,Descripcion,MenuId,RolId,Estado,Creacion,Modificacion")] TbConfPermiso tbConfPermiso, [FromBody] List<TbConfPermiso> selectedPermissions)
         {
             var permiso = new PermisoCmsService(new HttpClient());
             var rol = new RolCmsService(new HttpClient());

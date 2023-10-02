@@ -62,6 +62,7 @@
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                    <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
                                     <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
                                 </div>
                             </form>
@@ -87,7 +88,7 @@
                                                 {
                                                     <li>
                                                         <div class="submenu">
-                                                            <input type="checkbox" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
+                                                            <input type="checkbox" data-submenu-id="@submenu.Id" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
                                                             <label for="submenu-@submenu.Id">@submenu.Nombre</label>
                                                         </div>
                                                     </li>
@@ -108,3 +109,49 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $('.menu-checkbox').change(function () {
+            var menuId = $(this).data('menu-id');
+            var isChecked = $(this).prop('checked');
+            $(`.submenu-checkbox[data-menu-id=${menuId}]`).prop('checked', isChecked);
+        });
+        
+        $('#actualizar-btn').click(function () {
+            // Aquí puedes enviar los datos al servidor para guardar las selecciones del usuario
+            
+
+            var selectedPermissions = [];
+
+            $('.menu-checkbox:checked').each(function () {
+                var menuId = $(this).data('menu-id');
+                selectedPermissions.push({ MenuId: menuId, SubmenuId: 0 });
+            });
+
+            $('.submenu-checkbox:checked').each(function () {
+                var submenuId = $(this).data('submenu-id');
+                selectedPermissions.push({ MenuId: submenuId, SubmenuId: 0 });
+            });
+            console.log('actualizar-btn',selectedPermissions); //return;
+            $.ajax({
+                type: 'POST',
+                url: '/PermisoCms/Edit', // Reemplaza '/Controlador' con la ruta correcta a tu controlador
+                data: JSON.stringify(selectedPermissions),
+                contentType: 'application/json',
+                success: function (response) {
+                    // Maneja la respuesta del servidor si es necesario
+                    console.log('Datos guardados correctamente.');
+                },
+                error: function (error) {
+                    // Maneja cualquier error de la solicitud AJAX
+                    console.error('Error al enviar los datos al servidor.');
+                }
+            });
+        });
+
+
+    });
+
+</script>
