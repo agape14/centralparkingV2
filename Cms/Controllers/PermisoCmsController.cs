@@ -13,6 +13,7 @@ namespace Cms.Controllers
         {
             var permiso = new PermisoCmsService(new HttpClient());
             var permisoLista = await permiso.listarPermisos();
+            permisoLista = permisoLista.Where(permiso => permiso.Menu.TipoProyecto == "cms").ToList();
             if (permisoLista.Count == 0)
             {
                 TbConfPermiso objPermiso = new TbConfPermiso();
@@ -82,53 +83,53 @@ namespace Cms.Controllers
         }
 
         [HttpPost]
-        [Route("Crearpermisos")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Createpermisos([FromBody] List<TbConfPermiso> selectedPermissions)
         {
+            var permisogeneral = new PermisoCmsService(new HttpClient());
+            var permisoListagral = await permisogeneral.listarPermisos();
+            if (permisoListagral.Count == 0)
+            {
+                TbConfPermiso objPermiso = new TbConfPermiso();
+                permisoListagral.Add(objPermiso);
+                return View(permisoListagral);
+            }
+
             if (selectedPermissions == null || !selectedPermissions.Any())
             {
-                return BadRequest("No se han proporcionado permisos seleccionados.");
+                ModelState.AddModelError("Estado", "No ha seleccionado ningun registro.");
+                return View(permisoListagral);
             }
 
             try
             {
                 // Procesar la lista de permisos y crear o actualizar registros según sea necesario
+                var existingPermission=0;
                 foreach (var permission in selectedPermissions)
                 {
                     // Verificar si el permiso ya existe en la base de datos
                     var permiso = new PermisoCmsService(new HttpClient());
                     var permisoLista = await permiso.listarPermisos();
                     permisoLista = permisoLista.Where(menu => menu.MenuId == permission.MenuId).ToList();
-                    //var existingPermission = await _dbContext.TbConfPermiso.FirstOrDefaultAsync(p => p.MenuId == permission.MenuId && p.SubmenuId == permission.SubmenuId);
+                    existingPermission = permisoLista.Where(p => p.MenuId == permission.MenuId && p.RolId == permission.RolId).Count();
 
-                    //if (existingPermission != null)
-                    //{
-                    //    // El permiso ya existe, realiza la actualización si es necesario
-                    //    // Por ejemplo, actualiza la descripción o el estado si es diferente
-                    //    existingPermission.Descripcion = permission.Descripcion;
-                    //    existingPermission.Estado = permission.Estado;
-                    //    existingPermission.Modificacion = DateTime.Now;
-                    //}
-                    //else
-                    //{
-                    //    // El permiso no existe, crea uno nuevo
-                    //    var newPermission = new TbConfPermiso
-                    //    {
-                    //        MenuId = permission.MenuId,
-                    //        SubmenuId = permission.SubmenuId,
-                    //        Descripcion = permission.Descripcion,
-                    //        Estado = permission.Estado,
-                    //        Creacion = DateTime.Now,
-                    //        Modificacion = DateTime.Now
-                    //    };
-
-                    //    _dbContext.TbConfPermiso.Add(newPermission);
-                    //}
+                    if (existingPermission == 0)
+                    {
+                        
+                        var newPermission = new TbConfPermiso
+                        {
+                            MenuId = permission.MenuId,
+                            RolId = permission.RolId,
+                            Descripcion = "Agregado multiple",
+                            Estado = 1,
+                            Creacion = DateTime.Now,
+                        };
+                        await permiso.crearPermiso(newPermission);
+                        
+                    }
                 }
-
-                //await _dbContext.SaveChangesAsync();
-                return Ok("Datos guardados correctamente.");
+                return RedirectToAction(nameof(Index));
+                //return Ok("Datos guardados correctamente.");
             }
             catch (Exception ex)
             {

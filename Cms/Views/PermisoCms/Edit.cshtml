@@ -62,7 +62,6 @@
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
-                                    <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
                                     <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
                                 </div>
                             </form>
@@ -70,39 +69,45 @@
                     </div>
 
                     <div class="row">
-                        <ul>
-                            @foreach (var menu in ViewBag.MenuList)
-                            {
-                                @if (@menu.Padre == 0)
+                        <form asp-action="Createpermisos">
+                            <ul>
+                                @foreach (var menu in ViewBag.MenuList)
                                 {
-                                    <li>
-                                        <div>
-                                            <input type="checkbox" id="menu-@menu.Id" data-menu-id="@menu.Id" class="menu-checkbox" />
-                                            <label for="menu-@menu.Id">@menu.Nombre</label>
-                                        </div>
-                                        <ul>
+                                    @if (@menu.Padre == 0)
+                                    {
+                                        <li>
+                                            <div>
+                                                <input type="checkbox" id="menu-@menu.Id" data-menu-id="@menu.Id" class="menu-checkbox" />
+                                                <label for="menu-@menu.Id">@menu.Nombre</label>
+                                            </div>
+                                            <ul>
 
-                                            @foreach (var submenu in ViewBag.SubMenuList)
-                                            {
-                                                @if (@menu.Id == @submenu.Padre)
+                                                @foreach (var submenu in ViewBag.SubMenuList)
                                                 {
-                                                    <li>
-                                                        <div class="submenu">
-                                                            <input type="checkbox" data-submenu-id="@submenu.Id" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
-                                                            <label for="submenu-@submenu.Id">@submenu.Nombre</label>
-                                                        </div>
-                                                    </li>
+                                                    @if (@menu.Id == @submenu.Padre)
+                                                    {
+                                                        <li>
+                                                            <div class="submenu">
+                                                                <input type="checkbox" data-submenu-id="@submenu.Id" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
+                                                                <label for="submenu-@submenu.Id">@submenu.Nombre</label>
+                                                            </div>
+                                                        </li>
+                                                    }
+
                                                 }
-
-                                            }
-                                        </ul>
-                                    </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                
+                                
                                 }
-                                
-                                
-                            }
-                        </ul>
-
+                            </ul>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
+                                <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -112,7 +117,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        
+        var token = $('[name=__RequestVerificationToken]').val();
         $('.menu-checkbox').change(function () {
             var menuId = $(this).data('menu-id');
             var isChecked = $(this).prop('checked');
@@ -127,19 +132,22 @@
 
             $('.menu-checkbox:checked').each(function () {
                 var menuId = $(this).data('menu-id');
-                selectedPermissions.push({ MenuId: menuId, SubmenuId: 0 });
+                selectedPermissions.push({ MenuId: menuId, RolId: 1 });
             });
 
             $('.submenu-checkbox:checked').each(function () {
                 var submenuId = $(this).data('submenu-id');
-                selectedPermissions.push({ MenuId: submenuId, SubmenuId: 0 });
+                selectedPermissions.push({ MenuId: submenuId, RolId: 1 });
             });
             console.log('actualizar-btn',selectedPermissions); //return;
             $.ajax({
                 type: 'POST',
-                url: '/PermisoCms/Edit', // Reemplaza '/Controlador' con la ruta correcta a tu controlador
+                url: '/PermisoCms/Createpermisos', // Reemplaza '/Controlador' con la ruta correcta a tu controlador
                 data: JSON.stringify(selectedPermissions),
                 contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': token
+                },
                 success: function (response) {
                     // Maneja la respuesta del servidor si es necesario
                     console.log('Datos guardados correctamente.');
