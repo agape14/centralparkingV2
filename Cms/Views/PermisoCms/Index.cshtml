@@ -17,21 +17,14 @@
                         <div>
                             <div class="input-group">
                                 <div id="radioBtn" class="btn-group">
-                                    @foreach (var roles in ViewBag.rolLista)
+                                     @foreach (var roles in ViewBag.rolLista)
                                     {
-                                        
-                                        @if (roles.Id == 1)
-                                        {
-                                            <a class="btn btn-primary btn-sm active" data-toggle="@roles.Rol" data-title="@roles.Rol" id="enlaceWeb">@roles.Rol</a>
-                                        }
-                                        else
-                                        {
-                                            <a class="btn btn-primary btn-sm notActive" data-toggle="@roles.Rol" data-title="@roles.Rol" id="enlaceWeb">@roles.Rol</a>
-                                        }
+                                        <a class="btn btn-primary btn-sm @((roles.Id == 1) ? "active" : "notActive")"
+                                           data-toggle="tiporol"
+                                           data-title="@roles.Rol"
+                                           data-id="@roles.Id"
+                                           id="enlace_@roles.Id">@roles.Rol</a>
                                     }
-                                   @*  <a class="btn btn-primary btn-sm active" data-toggle="tipomenu" data-title="web" id="enlaceWeb">WEB</a>
-                                    <a class="btn btn-primary btn-sm notActive" data-toggle="tipomenu" data-title="api" id="enlaceCMS">API</a>
-                                    <a class="btn btn-primary btn-sm notActive" data-toggle="tipomenu" data-title="cms" id="enlaceCMS">CMS</a> *@
                                 </div>
                                 <input type="hidden" name="tiporol" id="tiporol">
                             </div>
@@ -103,3 +96,30 @@
 </div>
 
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    let idTipoRolSel = 1;
+
+    $(document).ready(function () {
+        // Manejar el clic en los enlaces
+        $('#radioBtn a').click(function (e) {
+            e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+            var sel = $(this).data('title');
+            var tog = $(this).data('toggle');
+            //idTipoRolSel = $(this).data('id');
+            
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+            // Obtener el valor de data-id
+            var idTipoRolSel = $(this).data('id');
+
+            // Construir la URL del controlador con el valor de idTipoRolSel
+            var url = '@Url.Action("Index", "PermisoCms")' + '?tipoRol=' + idTipoRolSel;
+            console.log('Ahiqw=>', sel, tog, idTipoRolSel, url);
+            // Redirigir a la URL
+            window.location.href = url;
+        });
+    });
+</script>

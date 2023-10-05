@@ -9,20 +9,30 @@ namespace Cms.Controllers
     public class PermisoCmsController : Controller
     {
         // GET: Permiso
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int tipoRol)
         {
             var permiso = new PermisoCmsService(new HttpClient());
             var permisoLista = await permiso.listarPermisos();
-            permisoLista = permisoLista.Where(permiso => permiso.Menu.TipoProyecto == "cms").ToList();
+
+            var rol = new RolCmsService(new HttpClient());
+            var rolLista = await rol.listarRoles();
+            ViewData["rolLista"] = rolLista;
+            if (tipoRol != 0)
+            {
+                permisoLista = permisoLista.Where(permiso => permiso.Menu.TipoProyecto == "cms" && permiso.RolId == tipoRol).ToList();
+            }
+            else
+            {
+                permisoLista = permisoLista.Where(permiso => permiso.Menu.TipoProyecto == "cms").ToList();
+            }
+            
             if (permisoLista.Count == 0)
             {
                 TbConfPermiso objPermiso = new TbConfPermiso();
                 permisoLista.Add(objPermiso);
                 return View(permisoLista);
             }
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            ViewData["rolLista"] = rolLista;
+            
             return View(permisoLista);
         }
 
@@ -77,7 +87,7 @@ namespace Cms.Controllers
             {
 
                 await permiso.crearPermiso(tbConfPermiso);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { tipoRol = tbConfPermiso.RolId });
             }
             ViewData["MenuId"] = new SelectList(menuLista, "Id", "Id", tbConfPermiso.MenuId);
             ViewData["RolId"] = new SelectList(rolLista, "Id", "Id", tbConfPermiso.RolId);

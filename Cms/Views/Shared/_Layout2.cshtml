@@ -196,7 +196,8 @@
                                 <li class="nav-item"> <a class="nav-link" href="~/EntidadCms">Entidad</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/UsuarioCms">Usuarios</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/RolCms">Roles</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="~/PermisoCms">Permisos</a></li>
+                               @*  <li class="nav-item"> <a class="nav-link" href="~/PermisoCms">Permisos</a></li> *@
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "PermisoCms", new { tipoRol = 1 })">Permisos</a></li>
                                 @*<li class="nav-item"> <a class="nav-link" href="~/MenuCms">Menu</a></li>*@
                                 <li class="nav-item"> <a class="nav-link"  href="@Url.Action("Index", "MenuCms", new { tipoProyecto = "web" })">Menu</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/PiePaginaCms">Pie Pagina</a></li>
