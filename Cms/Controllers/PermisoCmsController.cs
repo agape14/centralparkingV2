@@ -20,8 +20,10 @@ namespace Cms.Controllers
                 permisoLista.Add(objPermiso);
                 return View(permisoLista);
             }
-
-             return View(permisoLista);
+            var rol = new RolCmsService(new HttpClient());
+            var rolLista = await rol.listarRoles();
+            ViewData["rolLista"] = rolLista;
+            return View(permisoLista);
         }
 
         // GET: Permiso/Details/5
@@ -29,7 +31,7 @@ namespace Cms.Controllers
         {
             var permiso = new PermisoCmsService(new HttpClient());
             var permisoLista = await permiso.listarPermisos();
-
+            
             if (id == 0 || permisoLista == null)
             {
                 return NotFound();

@@ -13,6 +13,30 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">@ViewData["Title"]</h4>
+
+                        <div>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    @foreach (var roles in ViewBag.rolLista)
+                                    {
+                                        
+                                        @if (roles.Id == 1)
+                                        {
+                                            <a class="btn btn-primary btn-sm active" data-toggle="@roles.Rol" data-title="@roles.Rol" id="enlaceWeb">@roles.Rol</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-primary btn-sm notActive" data-toggle="@roles.Rol" data-title="@roles.Rol" id="enlaceWeb">@roles.Rol</a>
+                                        }
+                                    }
+                                   @*  <a class="btn btn-primary btn-sm active" data-toggle="tipomenu" data-title="web" id="enlaceWeb">WEB</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="tipomenu" data-title="api" id="enlaceCMS">API</a>
+                                    <a class="btn btn-primary btn-sm notActive" data-toggle="tipomenu" data-title="cms" id="enlaceCMS">CMS</a> *@
+                                </div>
+                                <input type="hidden" name="tiporol" id="tiporol">
+                            </div>
+                        </div>
+
                         <a class="btn btn-primary " href="/PermisoCms/Create">
                             <i class="ti-plus"></i>  Nuevo
                         </a>
