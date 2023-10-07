@@ -20,49 +20,13 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <div class="row">
-                                    <div class="col-md-6 d-none">
-                                        <div class="form-group">
-                                            <label asp-for="Permiso" class="control-label"></label>
-                                            <input asp-for="Permiso" class="form-control" />
-                                            <span asp-validation-for="Permiso" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 d-none">
-                                        <div class="form-group">
-                                            <label asp-for="Descripcion" class="control-label"></label>
-                                            <input asp-for="Descripcion" class="form-control" />
-                                            <span asp-validation-for="Descripcion" class="text-danger"></span>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Rol" class="control-label"></label>
-                                            <select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId"></select>
+                                            <select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId" readonly></select>
                                             <span asp-validation-for="RolId" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Menu" class="control-label"></label>
-                                            <select asp-for="MenuId" class="form-control" asp-items="ViewBag.MenuId"></select>
-                                            <span asp-validation-for="MenuId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6  d-none">
-                                        <div class="form-group">
-                                            <label asp-for="Estado" class="control-label"></label>
-                                            <select class="form-control" asp-for="Estado">
-                                                <option value="1">Activo</option>
-                                                <option value="0">Inactivo</option>
-                                            </select>
-                                            <span asp-validation-for="Estado" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6"></div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
-                                    <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
                                 </div>
                             </form>
                         </div>
@@ -77,7 +41,7 @@
                                     {
                                         <li>
                                             <div>
-                                                <input type="checkbox" id="menu-@menu.Id" data-menu-id="@menu.Id" class="menu-checkbox" />
+                                                <input type="checkbox" id="menu-@menu.Id" data-menu-id="@menu.Id" data-menu-sel="@menu.Acceso" class="menu-checkbox" @(menu.Acceso == 1 ? "checked" : "") />
                                                 <label for="menu-@menu.Id">@menu.Nombre</label>
                                             </div>
                                             <ul>
@@ -88,7 +52,7 @@
                                                     {
                                                         <li>
                                                             <div class="submenu">
-                                                                <input type="checkbox" data-submenu-id="@submenu.Id" id="submenu-@submenu.Id" data-menu-id="@menu.Id" class="submenu-checkbox" />
+                                                                <input type="checkbox" data-submenu-id="@submenu.Id" id="submenu-@submenu.Id" data-menu-id="@menu.Id" data-menu-sel="@submenu.Acceso" class="submenu-checkbox" @(submenu.Acceso == 1 ? "checked" : "") />
                                                                 <label for="submenu-@submenu.Id">@submenu.Nombre</label>
                                                             </div>
                                                         </li>
@@ -98,14 +62,14 @@
                                             </ul>
                                         </li>
                                     }
-                                
-                                
+
+
                                 }
                             </ul>
                             <span asp-validation-for="Estado" class="text-danger"></span>
                             <div class="form-group">
                                 <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
-                                <a class="btn btn-danger " asp-action="Index"><i class="ti-back-left"></i> Regresar</a>
+                                <a class="btn btn-danger " id="btnRegresarPermiso"><i class="ti-back-left"></i> Regresar</a>
                             </div>
                         </form>
                     </div>
@@ -123,10 +87,10 @@
             var isChecked = $(this).prop('checked');
             $(`.submenu-checkbox[data-menu-id=${menuId}]`).prop('checked', isChecked);
         });
-        
+
         $('#actualizar-btn').click(function () {
             // Aquí puedes enviar los datos al servidor para guardar las selecciones del usuario
-            var rol_id=$("#RolId").val();
+            var rol_id = $("#RolId").val();
 
             var selectedPermissions = [];
 
@@ -139,7 +103,7 @@
                 var submenuId = $(this).data('submenu-id');
                 selectedPermissions.push({ MenuId: submenuId, RolId: 1 });
             });
-            console.log('actualizar-btn',selectedPermissions); //return;
+            console.log('actualizar-btn', selectedPermissions); //return;
             $.ajax({
                 type: 'POST',
                 url: '/PermisoCms/Createpermisos', // Reemplaza '/Controlador' con la ruta correcta a tu controlador
@@ -163,7 +127,8 @@
             });
         });
 
-
+        $("#btnRegresarPermiso").attr("href", "/PermisoCms/Index?tipoRol=" + $("#RolId").val());
+        document.getElementById("RolId").disabled = true;
     });
 
 </script>

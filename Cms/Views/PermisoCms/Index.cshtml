@@ -29,10 +29,12 @@
                                 <input type="hidden" name="tiporol" id="tiporol">
                             </div>
                         </div>
-
-                        <a class="btn btn-primary " href="/PermisoCms/Create">
-                            <i class="ti-plus"></i>  Nuevo
+                        <a href="#" id="editarLink" class="btn btn-warning">
+                            <i class="ti-pencil"></i> Editar
                         </a>
+                        @*<a class="btn btn-primary " href="/PermisoCms/Create">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>*@
                     </div>
 
                     <div class="table-responsive">
@@ -78,7 +80,6 @@
                                         
                                         @if(item.Id != 0){
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="ti-pencil"></i> </a> |
                                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
                                             </td>
                                         }
@@ -141,5 +142,7 @@
             // Redirigir a la URL
             window.location.href = url;
         });
+
+        $("#editarLink").attr("href", "/PermisoCms/GetEditar/" + tipoRol);
     });
 </script>
