@@ -21,7 +21,7 @@
                                     {
                                         <a class="btn btn-primary btn-sm @((roles.Id == 1) ? "active" : "notActive")"
                                            data-toggle="tiporol"
-                                           data-title="@roles.Rol"
+                                           data-title="@roles.Id"
                                            data-id="@roles.Id"
                                            id="enlace_@roles.Id">@roles.Rol</a>
                                     }
@@ -98,9 +98,29 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    let idTipoRolSel = 1;
+    
 
     $(document).ready(function () {
+        var url = new URL(window.location.href);
+        var tipoRol = url.searchParams.get("tipoRol");
+        if (tipoRol) {
+            // El parámetro "tipoProyecto" está presente en la URL
+            console.log("Valor de tipoProyecto:", tipoRol);
+            var sel = tipoRol;
+            var tog = "tiporol";
+            //idTipoRolSel = $(this).data('id');
+            console.log('rOOOOOOOOOOOOOOOL=>', sel, tog);
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+        } else {
+            // El parámetro "tipoProyecto" no está presente en la URL
+            console.log("El parámetro tipoProyecto no está presente en la URL.");
+        }
+
+        let idTipoRolSel = 1;
+
         // Manejar el clic en los enlaces
         $('#radioBtn a').click(function (e) {
             e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
