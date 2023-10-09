@@ -7,6 +7,9 @@ using Cms.Service;
 using Cms.ServiceCms;
 using ApiBD.Controllers;
 using CentralParkingSystem.Services;
+using Microsoft.CodeAnalysis.Options;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Cms.Controllers
 {
@@ -31,7 +34,9 @@ namespace Cms.Controllers
 
                 if (usuario != null)
                 {
-                    HttpContext.Session.SetString("Usuario", usuario.Username);
+                    HttpContext.Session.SetInt32("IdUsuario",(Int32) usuario.Id);
+                    HttpContext.Session.SetString("UsuarioName", usuario.Name);
+                    HttpContext.Session.SetInt32("UsuarioRol", (Int32) usuario.RolId);
                     ViewData["result"] = "1";
               
                     return RedirectToAction("Inicio", "DashbordCms");
@@ -56,6 +61,7 @@ namespace Cms.Controllers
 
         public async Task<IActionResult> Inicio()
         {
+            int usuarioRol = HttpContext.Session.GetInt32("UsuarioRol") ?? 0;
             var usuario = new UsuarioCmsService(new HttpClient());
             var usuarioLista = await usuario.listarUsuarios();
             int contadorUsuarios = 0;
@@ -127,8 +133,21 @@ namespace Cms.Controllers
             {
                 contadorVacantes = vacanteCollection.Count;
             }
+            var permiso = new PermisoCmsService(new HttpClient());
+            var tbConfPermiso = await permiso.listarPermisos();
+            var permisosss = tbConfPermiso.Where(per => per.RolId == usuarioRol).ToList();
 
+            var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await menu.listarMenus();
+            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms")
+                .OrderBy(menu => menu.Id)
+                .ToList();
 
+            var option = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true,
+            };
             ViewData["countUsuarios"] = contadorUsuarios;
             ViewData["countContactos"] = contadorContactos;
             ViewData["countCotizanos"] = contadorCotizanos;
@@ -137,6 +156,8 @@ namespace Cms.Controllers
             ViewData["countParking"] = contadorParking;
             ViewData["countVacantes"] = contadorVacantes;
             ViewData["countServicios"] = contadorServicios;
+            ViewData["menuLista"] = menuLista;
+            HttpContext.Session.SetString("menuLista", JsonSerializer.Serialize(menuLista, option));
             return View();
         }
     }

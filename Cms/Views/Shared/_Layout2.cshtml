@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -22,6 +21,26 @@
     <link rel="shortcut icon" href="~/images/icono.ico" />
 </head>
 <body>
+    @using Cms.Controllers;
+    @using System.Text.Json;
+    @using Microsoft.AspNetCore.Http;
+    @using ApiBD.Models;
+    @inject IHttpContextAccessor HttpContextAccessor;
+    @{
+        //subMenuLista
+
+        List<TbConfMenu> listaMenucms = null;
+        string menuJson = HttpContextAccessor.HttpContext.Session.GetString("menuLista");
+        int idUsuario = (int)HttpContextAccessor.HttpContext.Session.GetInt32("IdUsuario");
+        string usuarioName = HttpContextAccessor.HttpContext.Session.GetString("UsuarioName");
+        int usuarioRol = (int)HttpContextAccessor.HttpContext.Session.GetInt32("UsuarioRol");
+
+        if (!string.IsNullOrEmpty(menuJson))
+        {
+            listaMenucms = JsonSerializer.Deserialize<List<TbConfMenu>>(menuJson);
+        }
+
+    }
     <div class="container-scroller">
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class=" bg-dark text-center navbar-brand-wrapper d-flex align-items-center justify-content-center ">
@@ -36,16 +55,10 @@
 
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            Usuario
+                            @usuarioName
                             <img src="~/images/faces/userperfil.png" alt="Perfil" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <!-- 
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i>
-                                Configuracion
-                            </a>
-                            -->
                             <a class="dropdown-item" href="~/DashbordCms">
                                 <i class="ti-power-off text-primary"></i>
                                 Salir
@@ -63,7 +76,51 @@
             <!-- partial -->
             <nav class="sidebar bg-dark sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-                    <li class="nav-item">
+                    @if (listaMenucms != null && listaMenucms.Any())
+                    {
+                        @foreach (var menues in listaMenucms)
+                        {
+                            @if (menues.Padre == 0 && menues.Idtipomenu==1)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@menues.Ruta">
+                                        <i class="@menues.Icono menu-icon"></i>
+                                        <span class="menu-title">@menues.Nombre</span>
+                                    </a>
+                                </li>
+                            }
+                            else if (menues.Idtipomenu == 5)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="collapse" href="#ui-@menues.Nombre.Replace(" ", "").ToLower()" aria-expanded="false" aria-controls="ui-@menues.Nombre.Replace(" ", "").ToLower()">
+                                        <i class="@menues.Icono menu-icon"></i>
+                                        <span class="menu-title">@menues.Nombre</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="collapse" id="ui-@menues.Nombre.Replace(" ", "").ToLower()">
+                                        <ul class="nav flex-column sub-menu">
+                                            @foreach (var submenu in listaMenucms)
+                                            {
+                                                @if (@menues.Id == @submenu.Padre)
+                                                {
+                                                    <li class="nav-item"> <a class="nav-link" href="@submenu.Ruta">@submenu.Nombre</a></li>
+                                                }
+
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+
+                        }
+                    }
+
+                    
+
+                   
+
+
+                   @* <li class="nav-item">
                         <a class="nav-link" href="~/DashbordCms/Inicio">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Panel Control</span>
@@ -196,18 +253,15 @@
                                 <li class="nav-item"> <a class="nav-link" href="~/EntidadCms">Entidad</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/UsuarioCms">Usuarios</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/RolCms">Roles</a></li>
-                               @*  <li class="nav-item"> <a class="nav-link" href="~/PermisoCms">Permisos</a></li> *@
                                 <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "PermisoCms", new { tipoRol = 1 })">Permisos</a></li>
-                                @*<li class="nav-item"> <a class="nav-link" href="~/MenuCms">Menu</a></li>*@
                                 <li class="nav-item"> <a class="nav-link"  href="@Url.Action("Index", "MenuCms", new { tipoProyecto = "web" })">Menu</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/PiePaginaCms">Pie Pagina</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/ModaleCms">Modales</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="~/RedesSocialesCms">Redes Sociales</a></li>
-                                @*<li class="nav-item"> <a class="nav-link" href="~/EntidadCms">Correo</a></li>*@
                                 <li class="nav-item"> <a class="nav-link" href="@Url.Action("Indexcorreo", "EntidadCms")">Correo</a></li>
                             </ul>
                         </div>
-                    </li>
+                    </li>*@
                 </ul>
             </nav>
             <!-- partial -->

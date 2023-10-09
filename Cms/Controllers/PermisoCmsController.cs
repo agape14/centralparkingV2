@@ -123,17 +123,27 @@ namespace Cms.Controllers
             try
             {
                 // Procesar la lista de permisos y crear o actualizar registros según sea necesario
-                var existingPermission=0;
+                //var existingPermission=0;
+                var permiso = new PermisoCmsService(new HttpClient());
+                var permisoLista = await permiso.listarPermisos();
+                var primerRolId = selectedPermissions[0].RolId;
+                var permisoListaDel = await permiso.listarPermisos();
+                var permisosDelete = permisoListaDel.Where(menu => menu.RolId == primerRolId).ToList();
+
+                foreach (var permisoEliminar in permisosDelete)
+                {
+                    await permiso.eliminarPermiso(permisoEliminar.Id);
+                }
+
                 foreach (var permission in selectedPermissions)
                 {
-                    // Verificar si el permiso ya existe en la base de datos
-                    var permiso = new PermisoCmsService(new HttpClient());
-                    var permisoLista = await permiso.listarPermisos();
-                    permisoLista = permisoLista.Where(menu => menu.MenuId == permission.MenuId).ToList();
-                    existingPermission = permisoLista.Where(p => p.MenuId == permission.MenuId && p.RolId == permission.RolId).Count();
-                    rolId = (int) permission.RolId;
-                    if (existingPermission == 0)
-                    {
+                    //var existingPermission = false;// permisoLista.Any(p => p.MenuId == permission.MenuId && p.RolId == permission.RolId);
+                    //rolId = (int)permission.RolId;
+
+                    ////existingPermission = permisoLista.Where(p => p.MenuId == permission.MenuId && p.RolId == permission.RolId).Count();
+                    ////rolId = (int) permission.RolId;
+                    //if (!existingPermission)
+                    //{
                         
                         var newPermission = new TbConfPermiso
                         {
@@ -145,7 +155,7 @@ namespace Cms.Controllers
                         };
                         await permiso.crearPermiso(newPermission);
                         
-                    }
+                    //}
                 }
                 //return RedirectToAction(nameof(Index), new { tipoRol = rolId });
                 //return Ok("Datos guardados correctamente.");
