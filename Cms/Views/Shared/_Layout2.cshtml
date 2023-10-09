@@ -31,9 +31,9 @@
 
         List<TbConfMenu> listaMenucms = null;
         string menuJson = HttpContextAccessor.HttpContext.Session.GetString("menuLista");
-        int idUsuario = (int)HttpContextAccessor.HttpContext.Session.GetInt32("IdUsuario");
-        string usuarioName = HttpContextAccessor.HttpContext.Session.GetString("UsuarioName");
-        int usuarioRol = (int)HttpContextAccessor.HttpContext.Session.GetInt32("UsuarioRol");
+        int idUsuario = HttpContextAccessor.HttpContext.Session.GetInt32("idUsuario") ?? 0;
+        string usuarioName = HttpContextAccessor.HttpContext.Session.GetString("usuarioName") ?? "Usuario";
+        int usuarioRol = HttpContextAccessor.HttpContext.Session.GetInt32("usuarioRol") ?? 0;
 
         if (!string.IsNullOrEmpty(menuJson))
         {

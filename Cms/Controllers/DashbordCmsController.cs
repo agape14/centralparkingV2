@@ -10,6 +10,7 @@ using CentralParkingSystem.Services;
 using Microsoft.CodeAnalysis.Options;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Cms.Controllers
 {
@@ -61,7 +62,10 @@ namespace Cms.Controllers
 
         public async Task<IActionResult> Inicio()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            string usuarioName = HttpContext.Session.GetString("UsuarioName") ?? "";
             int usuarioRol = HttpContext.Session.GetInt32("UsuarioRol") ?? 0;
+
             var usuario = new UsuarioCmsService(new HttpClient());
             var usuarioLista = await usuario.listarUsuarios();
             int contadorUsuarios = 0;
@@ -158,6 +162,10 @@ namespace Cms.Controllers
             ViewData["countServicios"] = contadorServicios;
             ViewData["menuLista"] = menuLista;
             HttpContext.Session.SetString("menuLista", JsonSerializer.Serialize(menuLista, option));
+            HttpContext.Session.SetString("idUsuario", JsonSerializer.Serialize(idUsuario, option));
+            HttpContext.Session.SetString("usuarioName", JsonSerializer.Serialize(usuarioName, option));
+            HttpContext.Session.SetString("usuarioRol", JsonSerializer.Serialize(usuarioRol, option));
+
             return View();
         }
     }
