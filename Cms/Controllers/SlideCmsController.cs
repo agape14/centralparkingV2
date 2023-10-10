@@ -11,10 +11,11 @@ namespace Cms.Controllers
     public class SlideCmsController : Controller
     {
         private readonly HelperUploadFiles _helperUpload;
-
-        public SlideCmsController(HelperUploadFiles helperUpload)
+        private readonly CopiarImagenes _helperCopia;
+        public SlideCmsController(HelperUploadFiles helperUpload, CopiarImagenes helperCopia)
         {
             _helperUpload = helperUpload;
+            _helperCopia = helperCopia;
         }
 
         // GET: Slide
@@ -106,6 +107,7 @@ namespace Cms.Controllers
                     tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                 }
                 await slide.CreateSlide(tbIndSlidecab);
+                _helperCopia.enviaimagen();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -197,6 +199,7 @@ namespace Cms.Controllers
 
                    
                     await slide.UpdateSlide(id,tbIndSlidecab);
+                    _helperCopia.enviaimagen();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

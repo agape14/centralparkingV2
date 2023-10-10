@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tblHojaReclamo" >
                             <thead>
                                 <tr>
                                     <th>
@@ -105,3 +105,20 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tblHojaReclamo').DataTable({
+                // Opciones de DataTables
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    text: 'Exportar a Excel', // Cambia el texto del botón si es necesario
+                    className: 'btn btn-primary', // Agrega la clase 'btn btn-primary' al botón
+                    filename: 'Reporte de Hoja de Reclamaciones ' // Define el nombre del archivo aquí
+                }]
+            });
+            $('#tblHojaReclamo_wrapper .dt-buttons .btn').addClass('mr-2');
+        });
+    </script>
+}

@@ -143,7 +143,7 @@ namespace Cms.Controllers
 
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
-            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms")
+            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms") //&& permisosss.Any(p => p.MenuId == menu.Id))
                 .OrderBy(menu => menu.Id)
                 .ToList();
 
