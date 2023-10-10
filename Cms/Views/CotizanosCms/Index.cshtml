@@ -11,7 +11,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
+                        <input type="hidden" id="txtTipoCotizacion" value="@ViewBag.TipoServicio" />
                         <h4 class="card-title">Cotizaciones @{
+                                
                                 if (ViewBag.TipoServicio == 1)
                                 {
                                     <span>Administración de Estacionamiento</span>
@@ -42,7 +44,7 @@
 
 
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tblCotizacion">
                             <thead>
                                 <tr>                                  
                                     <th>
@@ -179,3 +181,50 @@
     </div>
 </div>
 
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var tipoCotiza=$('#txtTipoCotizacion').val();
+            var strcotiza="";
+            switch (tipoCotiza) {
+                case "1":
+                    strcotiza = "Administración de Estacionamiento";
+                    break;
+
+                case "2":
+                    strcotiza = "Gestión de Abonados";
+                    break;
+
+                case "3":
+                    strcotiza = "Valet Parking";
+                    break;
+                case "4":
+                    strcotiza = "Eventos";
+                    break;
+                case "5":
+                    strcotiza = "Prevención";
+                    break;
+                case "6":
+                    strcotiza = "Rentabilización de Terrenos";
+                    break;
+                default:
+                    strcotiza = "Reporte de cotizacion";
+                    break;
+
+            }
+
+            $('#tblCotizacion').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    text: 'Exportar a Excel', // Cambia el texto del botón si es necesario
+                    className: 'btn btn-primary',
+                    filename: 'Cotizacion ' + strcotiza
+                }]
+            });
+            $('#tblCotizacion_wrapper .dt-buttons .btn').addClass('mr-2');
+        });
+    </script>
+}

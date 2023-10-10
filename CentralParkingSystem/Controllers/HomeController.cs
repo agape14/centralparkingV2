@@ -146,6 +146,15 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ParkingCard(TbFormParkingcard tbFormParkingcard)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var servicio = new ParkingCardService(new HttpClient());
         if (ModelState.IsValid)
         {
@@ -156,7 +165,7 @@ public class HomeController : Controller
                 tbFormParkingcard.FecRegistro = DateTime.Now;
                 tbFormParkingcard.Notificado = 1;
                 await servicio.crearParkingCardRegistro(tbFormParkingcard);
-                enviarEmail(tbFormParkingcard.Correo, mensaje);
+                enviarEmail(tbFormParkingcard.Correo, mensaje, primerRegistro);
                
             }catch (Exception ex)
             {
@@ -319,14 +328,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Contactanos([Bind("Id,Nombre,CorreoElectronico,Asunto,Mensaje,TipoServicio")] TbFormContactano tbFormContactano)
     {
-        
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new ContactanoService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su solicitud llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearContactoRegistro(tbFormContactano);
-            enviarEmail(tbFormContactano.CorreoElectronico,mensaje);
+            enviarEmail(tbFormContactano.CorreoElectronico,mensaje,primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -339,14 +356,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosAdministracion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Administración de Estacionamiento llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -357,14 +382,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Gestión de Abonados llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -377,14 +410,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosValetParking([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Valet Parking llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -395,14 +436,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosEventos([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,FechaEvento,CorreoElectronico,Comentario,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Eventos llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -413,14 +462,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosPrevencion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Prevención llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -431,14 +488,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosRentabilizacion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
 
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Rentabilización de Terrenos llenada en el formulario, nos pondremos en contacto a la brevedad.";
             await contacto.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje);
+            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -487,13 +552,22 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Postulacion([Bind("Id,TipoDocumento,Nombre,Apellido,FechaNacimiento,CorreoElectronico,Departamento,Provincia,Distrito,Puesto,InformacionAdicional,NumeroDocumento,Celular,Medio")] TbFormTbcnosotro tbFormTbcnosotro)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         var postulacion = new PostulacionService(new HttpClient());
         
         if (ModelState.IsValid)
         {
             string mensaje= $"Su solicitud de postulación para, {tbFormTbcnosotro.Puesto} ah sido registrada";
             await postulacion.crearPostulacion(tbFormTbcnosotro);
-            enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje);
+            enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -552,6 +626,15 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> HojaReclamaciones(TbFormHojareclamacione tbFormHojareclamacione)
     {
+        var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistro = listEntidad.FirstOrDefault();
         tbFormHojareclamacione.Fecha = DateTime.Now;
         var servicio = new HojaReclamacioneService(new HttpClient());
 
@@ -560,7 +643,7 @@ public class HomeController : Controller
            
             string mensaje = "Su solicitud de reclamación ah sido registrada con éxito";
             await servicio.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
-            enviarEmail(tbFormHojareclamacione.Correo, mensaje);
+            enviarEmail(tbFormHojareclamacione.Correo, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
         }
@@ -569,21 +652,21 @@ public class HomeController : Controller
     }
 
 
-    private void enviarEmail(string correoDestinatario,string mensaje)
+    private void enviarEmail(string correoDestinatario,string mensaje, Entidades entidades)
     {
+        
+        string server = entidades.Servidor?? "smtp.gmail.com";
+        int port = entidades.Puerto?? 465;
+        string correo = entidades.CorreoNotifica?? "centralparking153@gmail.com";
+        string pass = entidades.ClaveNotifica?? "mwabukzuumewdbhn";
 
-        string server = "smtp.gmail.com";
-        int port = 465;
-        string correo = "centralparking153@gmail.com";
-        string pass = "mwabukzuumewdbhn";
 
-
-        string correoCC = "carlos.soraluz@gmail.com";
+        string correoCC =entidades.CorreoConCopia?? "adelacruzcarlos@gmail.com";
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Remitente", correo));
         message.To.Add(new MailboxAddress("Destinatario", correoDestinatario));
-        //message.Cc.Add(new MailboxAddress("CC", correoCC));
+        message.Cc.Add(new MailboxAddress("Copia", correoCC));
         message.Subject = "Agencia CentralParking Perú";
 
         var bodyBuilder = new BodyBuilder();

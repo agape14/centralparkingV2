@@ -20,7 +20,7 @@
 
 
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tblContactos" >
                             <thead>
                                 <tr>
                                     <th>
@@ -75,3 +75,20 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tblContactos').DataTable({
+                // Opciones de DataTables
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    text: 'Exportar a Excel', // Cambia el texto del botón si es necesario
+                    className: 'btn btn-primary', // Agrega la clase 'btn btn-primary' al botón
+                    filename: 'Reporte de Contactanos '
+                }]
+            });
+            $('#tblContactos_wrapper .dt-buttons .btn').addClass('mr-2');
+        });
+    </script>
+}

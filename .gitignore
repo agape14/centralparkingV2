@@ -367,5 +367,9 @@ FodyWeavers.xsd
 .gitignore
 .log
 *.log
+CentralParkingSystem/wwwroot/images/
 Cms/wwwroot/images/
 Cms/wwwroot/docs/
+*.jpg
+*.png
+*.png

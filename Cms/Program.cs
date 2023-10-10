@@ -18,7 +18,7 @@ builder.Services.AddMvc()
 builder.Services.AddSession();
 builder.Services.AddSingleton<PathProvider>();
 builder.Services.AddSingleton<HelperUploadFiles>();
-
+builder.Services.AddSingleton<CopiarImagenes>();
 
 var app = builder.Build();
 
