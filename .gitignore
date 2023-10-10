@@ -370,3 +370,6 @@ FodyWeavers.xsd
 CentralParkingSystem/wwwroot/images/
 Cms/wwwroot/images/
 Cms/wwwroot/docs/
+*.jpg
+*.png
+*.png
