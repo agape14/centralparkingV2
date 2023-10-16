@@ -38,14 +38,15 @@ namespace Cms.Controllers
                     HttpContext.Session.SetInt32("IdUsuario",(Int32) usuario.Id);
                     HttpContext.Session.SetString("UsuarioName", usuario.Name);
                     HttpContext.Session.SetInt32("UsuarioRol", (Int32) usuario.RolId);
-                    ViewData["result"] = "1";
-              
+                    ViewData["resultado"] = "1";
                     return RedirectToAction("Inicio", "DashbordCms");
                 }
                 else
                 {
-                    ViewData["result"] = "0";
+                    ModelState.AddModelError("Campo1", "Se encontraron errores en el formulario.");
+                    ViewData["resultado"] = "0";
                     return RedirectToAction("Index", "DashbordCms");
+
                 }
 
             }
@@ -143,7 +144,7 @@ namespace Cms.Controllers
 
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
-            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms") //&& permisosss.Any(p => p.MenuId == menu.Id))
+            menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms" && permisosss.Any(p => p.MenuId == menu.Id))
                 .OrderBy(menu => menu.Id)
                 .ToList();
 

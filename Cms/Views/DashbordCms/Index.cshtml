@@ -46,6 +46,18 @@
 
                             <h4>¡Hola! empecemos</h4>
                             <h6 class="font-weight-light">Inicia sesión para continuar.</h6>
+                            
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div id="errorMessage"  class="alert alert-danger">
+                                    <ul>
+                                        @foreach (var error in ViewData.ModelState["Campo1"].Errors)
+                                        {
+                                            <li>@error.ErrorMessage</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
                             @using (Html.BeginForm("Index", "DashbordCms", FormMethod.Post))
                             {
                                 <div class="form-group">
@@ -59,7 +71,7 @@
                                     <input type="submit" class="btn btn-block btn-dark text-warning btn-lg font-weight-medium auth-form-btn" value="INICIAR SESION" />
                                 </div>
                                 <div id="msgError"></div>
-
+                                
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
                                         <label class="form-check-label text-muted">
@@ -100,21 +112,16 @@
     <!-- Custom js for this page-->
     <script src="~/js/dashboard.js"></script>
     <script src="~/js/Chart.roundedBarCharts.js"></script>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript">
-
-        $(function () {
-            var msg = '@ViewData["result"]';
-            if (msg == '1') {
-                window.location.href = "@Url.Action("Inicio", "DashbordCms")";
-
-            } else if (msg == '0') {
-                document.getElementById("msgError").innerHTML = '<div class="alert alert-danger mt-2" role="alert">Error al ingresar el Usuario y Contraseña</div >';
-                $("#msgError").fadeOut(5500);
-
-            }
-            $(this).find('input[type="text"]').focus();
+        $(document).ready(function () {
+            // Ocultar el mensaje de error después de 5 segundos
+            setTimeout(function () {
+                $("#errorMessage").fadeOut("slow");
+            }, 5500);
         });
+        $(this).find('input[type="text"]').focus();
+       
     </script>
 </body>
 </html>

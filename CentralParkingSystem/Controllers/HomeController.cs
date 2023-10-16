@@ -11,6 +11,7 @@ using MimeKit;
 using CentralParkingSystem.DTOs;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ApiBD.Controllers;
+using System.Linq;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -261,11 +262,45 @@ public class HomeController : Controller
         }
         return View(objeto);
     }
-    public IActionResult Cotizacionabonados()
+    public async Task<IActionResult> Cotizacionabonados()
     {
+        var cotizanoServicio = new CotizanosService(new HttpClient());
+        var distritos = await cotizanoServicio.obtenerDistritos("1501");
+        if (distritos == null)
+        {
+            return NotFound();
+        }
+
+        var hoteldistritos = await cotizanoServicio.obtenerHotelDistritos();
+        if (hoteldistritos == null)
+        {
+            return NotFound();
+        }
+        var codigosDistritoDistintos = hoteldistritos
+        .Select(h => h.CodDistrito)
+        .Distinct()
+        .ToList();
+
+        distritos = distritos
+        .Where(d => codigosDistritoDistintos.Any(h => h == d.CodUbi))
+        .ToList();
+
+        ViewData["Distritos"] = new SelectList(distritos, "CodUbi", "Dist");
         return View();
     }
-
+    public async Task<IActionResult> GetHotelPorDistrito(string cod)
+    {
+        var cotizanoServicio = new CotizanosService(new HttpClient());
+        var hoteldistritos = await cotizanoServicio.obtenerHotelDistritos();
+        if (hoteldistritos == null)
+        {
+            return NotFound();
+        }
+        var codigosDistritoDistintos = hoteldistritos
+        .Where(h=>h.CodDistrito== cod)
+        .ToList();
+        return Json(codigosDistritoDistintos);
+    }
     // ============================ Otros servicios ============================
     public async Task<IActionResult> Otrosservicios()
     {
@@ -282,8 +317,14 @@ public class HomeController : Controller
         return View(servicios);
     }
     //----------------------------------------
-    public IActionResult ValetParking()
+    public async Task<IActionResult> ValetParking()
     {
+        var cotizanoServicio = new CotizanosService(new HttpClient());
+        var distritos = await cotizanoServicio.obtenerDistritos("1501");
+        if (distritos == null)
+        {
+            return NotFound();
+        }
         return View();
     }
     public IActionResult CotizacionValetParking()
@@ -380,7 +421,7 @@ public class HomeController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
         var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await entidad.ListarEntidades();

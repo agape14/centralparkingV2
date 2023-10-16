@@ -46,7 +46,10 @@
                     <div class="table-responsive">
                         <table class="table" id="tblCotizacion">
                             <thead>
-                                <tr>                                  
+                                <tr>    
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Id)
+                                    </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Distrito)
                                     </th>
@@ -113,6 +116,9 @@
                                 {
                                     <tr>
                                         <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
                                             @Html.DisplayFor(modelItem => item.Distrito)
                                         </td>
                                         @{
@@ -140,10 +146,18 @@
                                                     @Html.DisplayFor(modelItem => item.RazonSocial)
                                                 </td>
                                             }
-                                        }                                       
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Contacto)
-                                        </td>
+                                        }
+                                        @if (item.Contacto!=null)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Contacto)
+                                            </td>
+                                        }else{
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RazonSocial)
+                                            </td>
+                                        }
+                                        
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Celular)
                                         </td>
@@ -222,7 +236,11 @@
                     text: 'Exportar a Excel', // Cambia el texto del botón si es necesario
                     className: 'btn btn-primary',
                     filename: 'Cotizacion ' + strcotiza
-                }]
+                }],
+                order: [[0, 'desc']],
+                columnDefs: [
+                    { targets: [0], visible: false } // Ocultar la primera columna (columna 0)
+                ]
             });
             $('#tblCotizacion_wrapper .dt-buttons .btn').addClass('mr-2');
         });

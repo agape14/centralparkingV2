@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using System.Data;
 using System.Net;
 using System.Text.Json;
 
@@ -113,6 +114,54 @@ namespace CentralParkingSystem.Services
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 return false;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+        public async Task<List<TbConfUbigeo>> obtenerDistritos(string cod)
+        {
+            List<TbConfUbigeo> distritos = new List<TbConfUbigeo>();
+            var url = $"http://localhost:82/api/ubigeo/distritos/{cod}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                distritos = JsonSerializer.Deserialize<List<TbConfUbigeo>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return distritos;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("La característica no fue encontrada.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+        public async Task<List<HotelDistrito>> obtenerHotelDistritos()
+        {
+            List<HotelDistrito> hotteldistritos = new List<HotelDistrito>();
+            var url = $"http://localhost:82/api/hoteldistritos";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                hotteldistritos = JsonSerializer.Deserialize<List<HotelDistrito>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return hotteldistritos;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("La característica no fue encontrada.");
             }
             else
             {

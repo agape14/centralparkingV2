@@ -63,12 +63,12 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="Distrito">
-                                <option value="Cercado de Lima">Cercado de Lima</option>
-                                <option value="Miraflores">Miraflores</option>
-                                <option value="Pueblo Libre">Pueblo Libre</option>
-                                <option value="San Isidro">San Isidro</option>
-                                <option value="Surco">Surco</option>
+                            <select required name="Distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="Distrito">
+                                <option value="">Seleccione un distrito</option>
+                                @foreach (var item in (SelectList)ViewData["Distritos"])
+                                {
+                                    <option value="@item.Text" data-id="@item.Value">@item.Text</option>
+                                }
                             </select>
                             <label for="distrito">Distrito</label>
                         </div>
@@ -76,16 +76,8 @@
                     <div class="row g-3">
                         <div class="col-md-8">
                             <div class="form-floating">
-                                <select id="estacionamiento" asp-for="Estacionamiento" class="form-control border-0 bg-light " required placeholder="Estacionamientos">
-                                    <option value="Hotel Sheraton">Hotel Sheraton</option>
-                                    <option value="Hotel Pullman Miraflores">Hotel Pullman Miraflores</option>
-                                    <option value="Clinica Stella Maris">Clinica Stella Maris</option>
-                                    <option value="Hotel Pullman San Isidro">Hotel Pullman San Isidro</option>
-                                    <option value="Pacifico Seguros">Pacifico Seguros</option>
-                                    <option value="CC. Polo II">CC. Polo II</option>
-                                    <option value="Sagrado Corazón de Jesus">Sagrado Corazón de Jesus</option>
-                                    <option value="Edificio More">Edificio More</option>
-                                    <option value="Clinica Tezza">Clinica Tezza</option>
+                                <select id="estacionamiento" asp-for="Estacionamiento" class="form-control border-0 bg-light " required placeholder="Seleccione Estacionamiento">
+
                                 </select>
                                 <label for="estacionamiento">Estacionamientos</label>
                             </div>
@@ -96,10 +88,22 @@
                                 <label for="cantidad">Cantidad</label>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="divContacto">
                             <div class="form-floating">
-                                <input required type="text" class="form-control border-0 bg-light " id="contacto" name="contacto" placeholder="Nombres y Apellidos" asp-for="Contacto">
-                                <label for="contacto">Nombres y Apellidos</label>
+                                <input type="text" class="form-control border-0 bg-light " placeholder="Nombres y Apellidos" asp-for="Contacto" maxlength="100">
+                                <label for="Contacto">Nombres y Apellidos</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="divRuc">
+                            <div class="form-floating">
+                                    <input type="text" class="form-control border-0 bg-light " placeholder="Ruc" asp-for="Ruc" maxlength="11">
+                                <label for="Ruc">RUC</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8" id="divRazonSocial">
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-0 bg-light" placeholder="Razon Social" asp-for="RazonSocial" maxlength="255">
+                                <label for="RazonSocial">Razon Social</label>
                             </div>
                         </div>
                         <div class="row g-3">
@@ -117,7 +121,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="CorreoElectronico">
+                                    <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="CorreoElectronico" maxlength="100">
                                     <label for="correoElectronico">Correo electrónico</label>
                                 </div>
                             </div>
@@ -134,7 +138,7 @@
         </div>
     </div>
 </div>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
 
     celular.addEventListener('keypress', function (event) {
@@ -158,6 +162,49 @@
     }
   }
   document.getElementById("cantidad").addEventListener("blur", validarcantidad);
-</script>
 
+    $(document).ready(function () {
+        mostrarFormTipoPersona("Personas");
+        $("#distrito").change(function () {
+            //var selectedDistrito = $(this).val();
+            var selectedDistrito = $(this).find(":selected").data("id");
+            $("#estacionamiento").empty();  // Limpiar el segundo select
+            console.log("selectedDistrito",selectedDistrito);
+            if (selectedDistrito) {
+                // Llamar al servicio API para obtener los hoteles relacionados con el distrito seleccionado
+                $.get("/Home/GetHotelPorDistrito?cod=" + selectedDistrito, function (data) {
+                    $("#estacionamiento").append("<option value=''>Seleccione Estacionamiento</option>");
+                    $.each(data, function (index, item) {
+                        $("#estacionamiento").append("<option value='" + item.hotel + "'>" + item.hotel + "</option>");
+                    });
+                });
+            }
+        });
+
+        $("#tipoAbonado").change(function () {
+            var selectedOption = $(this).val();
+            // Rellenar el segundo select según la selección en el primero
+            mostrarFormTipoPersona(selectedOption);
+        });
+
+        function mostrarFormTipoPersona(tipopersona) {
+            console.log('tipopersonaaaa', tipopersona);
+            if (tipopersona === "Personas") {
+                $("#divContacto").show();
+                $("#divRuc").hide();
+                $("#divRazonSocial").hide();
+                $("#Contacto").attr("required", "required");
+                $("#Ruc").removeAttr("required");
+                $("#RazonSocial").removeAttr("required");
+            } else if (tipopersona === "Empresas") {
+                $("#divContacto").hide();
+                $("#divRuc").show();
+                $("#divRazonSocial").show();
+                $("#Contacto").removeAttr("required");
+                $("#Ruc").attr("required", "required");
+                $("#RazonSocial").attr("required", "required");
+            }
+        }
+    });
+</script>
 <!-- Cuerpo page End -->
