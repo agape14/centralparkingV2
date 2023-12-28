@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -9,10 +10,19 @@ namespace Cms.Service
     public class UsuarioService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public UsuarioService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<TbConfUser> validacionUsuario(TbConfUser user)
@@ -21,7 +31,7 @@ namespace Cms.Service
 
             try
             {
-                var url = "http://localhost:82/api/usuario/validacionUser";
+                var url = apiUrl + "/api/usuario/validacionUser";
 
             
 

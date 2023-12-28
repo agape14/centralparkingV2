@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.DTOs;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,9 +12,19 @@ namespace CentralParkingSystem.Services
     public class PuestoService
     {
         private readonly HttpClient _httpClient;
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PuestoService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
 
@@ -24,7 +35,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/puesto";
+                var url = apiUrl+"/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 

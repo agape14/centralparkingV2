@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,9 +8,19 @@ namespace CentralParkingSystem.Services
     public class ServicioDetalleService
     {
         private readonly HttpClient _httpClient;
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ServicioDetalleService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbServDetalle>> listar()
@@ -18,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/servicioDetalle";
+                var url = apiUrl+"/api/servicioDetalle";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -43,7 +54,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<List<TbServDetalle>> obtenerServicioDetalle(int id)
         {
-            var url = $"http://localhost:82/api/servicioDetalle/{id}";
+            var url = $"{apiUrl}/api/servicioDetalle/{id}";
 
             try
             {
@@ -80,7 +91,7 @@ namespace CentralParkingSystem.Services
 
             public async Task<TbServDetalle> obtenerServicioEspecifico(int id)
             {
-                var url = $"http://localhost:82/api/servicioDetalle/serviciodetalle/{id}";
+                var url = $"{apiUrl}/api/servicioDetalle/serviciodetalle/{id}";
 
                 try
                 {
@@ -116,7 +127,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbServDetalle> crearServicioDetalle(TbServDetalle tbServDetalle)
         {
-            var url = "http://localhost:82/api/servicioDetalle";
+            var url = apiUrl+"/api/servicioDetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServDetalle);
 
@@ -134,7 +145,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbServDetalle> modificarServicioDetalle(int id, TbServDetalle tbServDetalle)
         {
-            var url = $"http://localhost:82/api/servicioDetalle/{id}";
+            var url = $"{apiUrl}/api/servicioDetalle/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbServDetalle);
 
@@ -152,7 +163,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarServicioDetalle(int id)
         {
-            var url = $"http://localhost:82/api/servicioDetalle/{id}";
+            var url = $"{apiUrl}/api/servicioDetalle/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

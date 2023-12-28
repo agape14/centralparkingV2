@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Net;
 using System.Text.Json;
@@ -8,10 +9,19 @@ namespace CentralParkingSystem.Services
     public class CotizanosService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public CotizanosService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbFormCotizano>> ListarCotizanos(int codigo)
@@ -20,7 +30,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = $"http://localhost:82/api/cotizanos/tipoServicio/{codigo}";
+                var url = $"{apiUrl}/api/cotizanos/tipoServicio/{codigo}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -45,7 +55,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormCotizano> obtenerCotizanoDetalle(int id)
         {
-            var url = $"http://localhost:82/api/cotizanos/{id}";
+            var url = $"{apiUrl}/api/cotizanos/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -67,7 +77,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormCotizano> crearCotizanoRegistro(TbFormCotizano tbFormCotizanos)
         {
-            var url = "http://localhost:82/api/cotizanos";
+            var url = apiUrl+ "/api/cotizanos";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormCotizanos);
 
@@ -85,7 +95,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormCotizano> modificarCotizano(int id, TbFormCotizano tbFormCotizanos)
         {
-            var url = $"http://localhost:82/api/cotizanos/{id}";
+            var url = $"{apiUrl}/ api/cotizanos/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormCotizanos);
 
@@ -103,7 +113,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarCotizano(int id)
         {
-            var url = $"http://localhost:82/api/cotizanos/{id}";
+            var url = $"{apiUrl}/api/cotizanos/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -125,7 +135,7 @@ namespace CentralParkingSystem.Services
         public async Task<List<TbConfUbigeo>> obtenerDistritos(string cod)
         {
             List<TbConfUbigeo> distritos = new List<TbConfUbigeo>();
-            var url = $"http://localhost:82/api/ubigeo/distritos/{cod}";
+            var url = $"{apiUrl}/ api/ubigeo/distritos/{cod}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -149,7 +159,7 @@ namespace CentralParkingSystem.Services
         public async Task<List<HotelDistrito>> obtenerHotelDistritos()
         {
             List<HotelDistrito> hotteldistritos = new List<HotelDistrito>();
-            var url = $"http://localhost:82/api/hoteldistritos";
+            var url = $"{apiUrl}/ api/hoteldistritos";
 
             var response = await _httpClient.GetAsync(url);
 

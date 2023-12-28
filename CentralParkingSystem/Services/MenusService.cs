@@ -1,4 +1,5 @@
 ﻿using CentralParkingSystem.DTOs;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,10 +11,19 @@ namespace CentralParkingSystem.Services
     public class MenusService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public MenusService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<Result>> ListarMenus()
@@ -22,7 +32,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/menu";
+                var url = apiUrl+"/api/menu";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -51,7 +61,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/menu/subMenus";
+                var url = apiUrl+"/api/menu/subMenus";
 
                 var response = await _httpClient.GetAsync(url);
 

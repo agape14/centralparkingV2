@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace Cms.ServiceCms
     public class PiePaginaCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PiePaginaCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfPiepaginacab>> listarPiePaginasCab()
@@ -19,7 +29,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/piepagina/listaPiePaginas";
+                var url = apiUrl+"/api/piepagina/listaPiePaginas";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> obtenerPiePaginaCabsDetalle(int id)
         {
-            var url = $"http://localhost:82/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/piepagina/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> crearPiePaginaCab(TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var url = "http://localhost:82/api/piepagina"; 
+            var url = apiUrl + "/api/piepagina"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPiepaginacab);
 
@@ -84,7 +94,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginacab> modificarPiePaginaCab(int id, TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var url = $"http://localhost:82/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/piepagina/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPiepaginacab);
 
@@ -102,7 +112,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPiePaginaCab(int id)
         {
-            var url = $"http://localhost:82/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/piepagina/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

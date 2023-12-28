@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace CentralParkingSystem.Services
     public class ModaleDetalleService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ModaleDetalleService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
        
@@ -21,7 +31,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = $"http://localhost:82/api/modaldetalle/detalle/{id}";
+                var url = $"{apiUrl}/api/modaldetalle/detalle/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -46,7 +56,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> obtenerModalDetalle(int id)
         {
-            var url = $"http://localhost:82/api/modaldetalle/{id}";
+            var url = $"{apiUrl}/api/modaldetalle/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -68,7 +78,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> crearModalDetRegistro(TbConfModaldet tbConfModaldet)
         {
-            var url = "http://localhost:82/api/modaldetalle";
+            var url = apiUrl+"/api/modaldetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfModaldet);
 
@@ -86,7 +96,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModaldet> modificarModalDet(int id, TbConfModaldet tbConfModaldet)
         {
-            var url = $"http://localhost:82/api/modaldetalle/{id}";
+            var url = $"{apiUrl}/api/modaldetalle/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfModaldet);
 
@@ -104,7 +114,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarModalDet(int id)
         {
-            var url = $"http://localhost:82/api/modaldetalle/{id}";
+            var url = $"{apiUrl}/api/modaldetalle/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

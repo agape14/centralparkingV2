@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace Cms.ServiceCms
     public class PuestoCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PuestoCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbTraPuesto>> puestoListar()
@@ -19,7 +29,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/puesto";
+                var url = apiUrl+"/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> obtenerPuestoDetalle(int id)
         {
-            var url = $"http://localhost:82/api/puesto/{id}"; 
+            var url = $"{apiUrl}/api/puesto/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> crearPuesto(TbTraPuesto tbTraPuesto)
         {
-            var url = "http://localhost:82/api/puesto"; 
+            var url = apiUrl + "/api/puesto"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbTraPuesto);
 
@@ -84,7 +94,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> modificarPuesto(int id, TbTraPuesto tbTraPuesto)
         {
-            var url = $"http://localhost:82/api/puesto/{id}"; 
+            var url = $"{apiUrl}/api/puesto/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbTraPuesto);
 
@@ -102,7 +112,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPuesto(int id)
         {
-            var url = $"http://localhost:82/api/puesto/{id}"; 
+            var url = $"{apiUrl}/api/puesto/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace CentralParkingSystem.Services
     public class ParkingCardService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ParkingCardService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbFormParkingcard>> ListarParkingCard()
@@ -19,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/parkingcard";
+                var url = apiUrl+"/api/parkingcard";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> obtenerParkingCardDetalle(int id)
         {
-            var url = $"http://localhost:82/api/parkingcard/{id}";
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> crearParkingCardRegistro(TbFormParkingcard tbFormParkingcard)
         {
-            var url = "http://localhost:82/api/parkingcard";
+            var url = apiUrl+"/api/parkingcard";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormParkingcard);
 
@@ -84,7 +94,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> modificarParkingCard(int id, TbFormParkingcard tbFormParkingcard)
         {
-            var url = $"http://localhost:82/api/parkingcard/{id}";
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormParkingcard);
 
@@ -102,7 +112,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarParkingCard(int id)
         {
-            var url = $"http://localhost:82/api/parkingcard/{id}";
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,9 +8,19 @@ namespace Cms.ServiceCms
     public class ServicioCabeceraCmsService
     {
         private readonly HttpClient _httpClient;
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ServicioCabeceraCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbServCabecera>> listarServiciosCabecera()
@@ -18,7 +29,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/servicioCabecera/cms";
+                var url = apiUrl+"/api/servicioCabecera/cms";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -43,7 +54,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> obtenerServicioCabecera(int id)
         {
-            var url = $"http://localhost:82/api/servicioCabecera/{id}";
+            var url = $"{apiUrl}/api/servicioCabecera/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -65,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> crearServicioCabecera(TbServCabecera tbServCabecera)
         {
-            var url = "http://localhost:82/api/servicioCabecera";
+            var url = apiUrl + "/api/servicioCabecera";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServCabecera);
 
@@ -83,7 +94,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServCabecera> modificarServicioCabecera(int id, TbServCabecera tbServCabecera)
         {
-            var url = $"http://localhost:82/api/servicioCabecera/{id}";
+            var url = $"{apiUrl}/api/servicioCabecera/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbServCabecera);
 
@@ -101,7 +112,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarServicioCabecera(int id)
         {
-            var url = $"http://localhost:82/api/servicioCabecera/{id}";
+            var url = $"{apiUrl}/api/servicioCabecera/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

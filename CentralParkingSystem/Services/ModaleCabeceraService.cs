@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace CentralParkingSystem.Services
     public class ModaleCabeceraService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ModaleCabeceraService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
 
@@ -20,7 +30,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/modalcabecera/entrada";
+                var url = apiUrl + "/api/modalcabecera/entrada";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -49,7 +59,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/modalcabecera";
+                var url = apiUrl + "/api/modalcabecera";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -74,7 +84,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModalcab> obtenerModalCabeceraDetalle(int id)
         {
-            var url = $"http://localhost:82/api/modalcabecera/{id}";
+            var url = $"{apiUrl}/api/modalcabecera/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -96,7 +106,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModalcab> obtenerModalCabeceraDetalleFijo(int id)
         {
-            var url = $"http://localhost:82/api/modalcabecera/obtenerCabeceraFija/{id}";
+            var url = $"{apiUrl}/api/modalcabecera/obtenerCabeceraFija/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -118,7 +128,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModalcab> crearModalCabRegistro(TbConfModalcab tbConfModalcab)
         {
-            var url = "http://localhost:82/api/modalcabecera";
+            var url = apiUrl+"/api/modalcabecera";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfModalcab);
 
@@ -136,7 +146,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModalcab> modificarModalCab(int id, TbConfModalcab tbConfModalcab)
         {
-            var url = $"http://localhost:82/api/modalcabecera/{id}";
+            var url = $"{apiUrl}/api/modalcabecera/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfModalcab);
 
@@ -154,7 +164,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarModalCab(int id)
         {
-            var url = $"http://localhost:82/api/modalcabecera/{id}";
+            var url = $"{apiUrl}/api/modalcabecera/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

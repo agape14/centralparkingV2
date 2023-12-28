@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -8,10 +9,19 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PaginasDetCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfPaginasdet>> paginasDetListar()
@@ -20,7 +30,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/paginasdet";
+                var url = apiUrl+"/api/paginasdet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -45,7 +55,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> obtenerPaginaDetDetalle(int id)
         {
-            var response = await _httpClient.GetAsync($"http://localhost:82/api/paginasdet/{id}");
+            var response = await _httpClient.GetAsync($"{apiUrl}/api/paginasdet/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -65,7 +75,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> crearPaginaDet(TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = "http://localhost:82/api/paginasdet";
+            var url = apiUrl + "/api/paginasdet";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginasdet);
 
@@ -83,7 +93,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> modificarPaginaDet(int id, TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = $"http://localhost:82/api/paginasdet/{id}"; 
+            var url = $"{apiUrl}/api/paginasdet/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginasdet);
 
@@ -101,7 +111,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPaginaDet(int id)
         {
-            var url = $"http://localhost:82/api/paginasdet/{id}"; 
+            var url = $"{apiUrl}/api/paginasdet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

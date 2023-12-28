@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace CentralParkingSystem.Services
     public class ProveedorService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ProveedorService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbFormProveedore>> ListarProveedores()
@@ -19,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/proveedor";
+                var url = apiUrl+"/api/proveedor";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> obtenerProveedorDetalle(int id)
         {
-            var url = $"http://localhost:82/api/proveedor/{id}";
+            var url = $"{apiUrl}/api/proveedor/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> crearProveedorRegistro(TbFormProveedore tbFormProveedore)
         {
-            var url = "http://localhost:82/api/proveedor";
+            var url = apiUrl+"/api/proveedor";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormProveedore);
 
@@ -84,7 +94,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormProveedore> modificarProveedor(int id, TbFormProveedore tbFormProveedore)
         {
-            var url = $"http://localhost:82/api/proveedor/{id}";
+            var url = $"{apiUrl}/api/proveedor/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormProveedore);
 
@@ -102,7 +112,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarProveedor(int id)
         {
-            var url = $"http://localhost:82/api/proveedor/{id}";
+            var url = $"{apiUrl}/api/proveedor/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

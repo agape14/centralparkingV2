@@ -3,16 +3,26 @@ using System.Net.Http;
 using System.Net;
 using System.Text.Json;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Cms.ServiceCms
 {
     public class RedesSocialesCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public RedesSocialesCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbIndRedsocial>> listarRedesSociales()
@@ -21,7 +31,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/redsocial";
+                var url = apiUrl+"/api/redsocial";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -46,7 +56,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> obtenerRedSocialDetalle(int id)
         {
-            var url = $"http://localhost:82/api/redsocial/{id}"; 
+            var url = $"{apiUrl}/api/redsocial/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -69,7 +79,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> crearRedSocial(TbIndRedsocial tbIndRedsocial)
         {
-            var url = "http://localhost:82/api/redsocial"; 
+            var url = apiUrl + "/api/redsocial"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbIndRedsocial);
 
@@ -87,7 +97,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndRedsocial> modificarRedSocial(int id, TbIndRedsocial tbIndRedsocial)
         {
-            var url = $"http://localhost:82/api/redsocial/{id}";
+            var url = $"{apiUrl}/api/redsocial/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbIndRedsocial);
 
@@ -105,7 +115,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarRedSocial(int id)
         {
-            var url = $"http://localhost:82/api/redsocial/{id}";
+            var url = $"{apiUrl}/api/redsocial/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

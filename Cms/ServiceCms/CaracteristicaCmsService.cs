@@ -1,6 +1,7 @@
 ﻿using ApiBD.Models;
 using System.Net.Http;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Cms.ServiceCms
 {
@@ -8,15 +9,24 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public CaracteristicaCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<TbIndCaracteristica> obtenerCaracteristicaDetalle(uint id)
         {
-            var url = $"http://localhost:82/api/caracteristica/{id}"; 
+            var url = $"{apiUrl}/api/caracteristica/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -39,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndCaracteristica> crearCaracteristica(TbIndCaracteristica caracteristica)
         {
-            var url = "http://localhost:82/api/caracteristica"; 
+            var url = apiUrl+"/api/caracteristica"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, caracteristica);
 
@@ -57,7 +67,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndCaracteristica> modificarCaracteristica(uint id, TbIndCaracteristica caracteristica)
         {
-            var url = $"http://localhost:82/api/caracteristica/{id}"; 
+            var url = $"{apiUrl}/api/caracteristica/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, caracteristica);
 
@@ -75,7 +85,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarCaracteristica(uint id)
         {
-            var url = $"http://localhost:82/api/caracteristica/{id}"; 
+            var url = $"{apiUrl}/api/caracteristica/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

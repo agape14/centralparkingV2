@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,10 +11,19 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string apiUrl = "";
         public SlideCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+            }
         }
 
         public async Task<TbIndSlidecab> GetDetails(uint id)
@@ -22,7 +32,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"http://localhost:82/api/slide/{id}";
+                var url = $"{apiUrl}/api/slide/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -48,7 +58,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> CreateSlide(TbIndSlidecab tbIndSlidecab)
         {
-            var url = "http://localhost:82/api/slide"; 
+            var url = apiUrl+"/api/slide"; 
 
             try
             {
@@ -76,7 +86,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> DeleteSlide(uint id)
         {
-            var url = $"http://localhost:82/api/slide/{id}"; 
+            var url = $"{apiUrl}/api/slide/{id}"; 
 
             try
             {
@@ -100,7 +110,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> UpdateSlide(uint id, TbIndSlidecab slide)
         {
-            var url = $"http://localhost:82/api/slide/{id}"; 
+            var url = $"{apiUrl}/api/slide/{id}"; 
 
             try
             {
