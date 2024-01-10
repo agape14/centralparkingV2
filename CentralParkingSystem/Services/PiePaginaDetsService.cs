@@ -12,7 +12,7 @@ namespace CentralParkingSystem.Services
     public class PiePaginaDetsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("CentralParkingSystem", "Properties", "launchSettings.json");
         private string apiUrl = "";
         public PiePaginaDetsService(HttpClient httpClient)
         {
@@ -23,7 +23,7 @@ namespace CentralParkingSystem.Services
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
             }
         }
 
