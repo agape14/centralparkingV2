@@ -59,7 +59,7 @@ namespace Cms.Controllers
         // GET: PiePaginaDet/Create
         public async Task<IActionResult> Create(int codigo)
         {
-            var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
+            var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
             var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
@@ -123,7 +123,7 @@ namespace Cms.Controllers
             var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
             var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
 
-            var piePaginaCabs = new PiePaginaCabsService(new HttpClient());
+            var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
             var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
 
             var menu = new MenuCmsService(new HttpClient());

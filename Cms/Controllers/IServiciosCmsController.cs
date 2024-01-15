@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios
         public async Task<IActionResult> Index()
         {
-            var servicios = new ServiciosCabsService(new HttpClient());
+            var servicios = new IServicioCmsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
             if (lista.Count == 0)
             {
@@ -37,7 +37,7 @@ namespace CentralParkingSystem.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new ServiciosCabsService(new HttpClient());
+            var servicios = new IServicioCmsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
             if (id == 0 || lista == null)
             {
@@ -99,7 +99,7 @@ namespace CentralParkingSystem.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new ServiciosCabsService(new HttpClient());
+            var servicios = new IServicioCmsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
@@ -172,7 +172,7 @@ namespace CentralParkingSystem.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new ServiciosCabsService(new HttpClient());
+            var servicios = new IServicioCmsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
 
             if (id == 0 || lista == null)
@@ -195,7 +195,7 @@ namespace CentralParkingSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new ServiciosCabsService(new HttpClient());
+            var servicios = new IServicioCmsService(new HttpClient());
             var lista = await servicios.ListarServiciosCabs();
 
             if (lista == null)

@@ -12,7 +12,7 @@ namespace Cms.Controllers
         // GET: Caracteristica
         public async Task<IActionResult> Index()
         {
-            var caracteristica = new CaracteristicasService(new HttpClient());
+            var caracteristica = new CaracteristicaCmsService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
 
             if (caracteristicaLista.Count == 0)
@@ -30,7 +30,7 @@ namespace Cms.Controllers
         // GET: Caracteristica/Details/5
         public async Task<IActionResult> Details(uint id)
         {
-            var caracteristica = new CaracteristicasService(new HttpClient());
+            var caracteristica = new CaracteristicaCmsService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
             var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
             if (id == 0 || caracteristicaLista == null)
@@ -99,7 +99,7 @@ namespace Cms.Controllers
                 "Text"
             );
 
-            var caracteristica = new CaracteristicasService(new HttpClient());
+            var caracteristica = new CaracteristicaCmsService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
             var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 
@@ -149,7 +149,7 @@ namespace Cms.Controllers
         // GET: Caracteristica/Delete/5
         public async Task<IActionResult> Delete(uint id)
         {
-            var caracteristica = new CaracteristicasService(new HttpClient());
+            var caracteristica = new CaracteristicaCmsService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
             var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 
@@ -174,7 +174,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(uint id)
         {
-            var caracteristica = new CaracteristicasService(new HttpClient());
+            var caracteristica = new CaracteristicaCmsService(new HttpClient());
             var caracteristicaLista = await caracteristica.ListarCaracteristicas();
             var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 

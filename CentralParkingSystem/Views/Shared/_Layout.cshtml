@@ -1,4 +1,6 @@
-﻿@using CentralParkingSystem.Services;
+﻿@using ApiBD.Models;
+@using CentralParkingSystem.Services;
+@model ApiBD.Models.Home.IndexVM;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,49 +53,49 @@
     </div>
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado1 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc1 = new ModaleCabeceraService(new HttpClient());
-        var objeto1 = await servicioc1.obtenerModalCabeceraDetalle(2);
-        var serviciod1 = new ModaleDetalleService(new HttpClient());
-        var listaColaboradores = await serviciod1.listarModalDetalle(6);
-        combinado1.modalCab = objeto1;
-        combinado1.listModalDet = listaColaboradores;
+        //var servicioc1 = new ModaleCabeceraService(new HttpClient());
+        //var objeto1 = await _ser;// servicioc1.obtenerModalCabeceraDetalle(2);
+        // var serviciod1 = new ModaleDetalleService(new HttpClient());
+        // var listaColaboradores = await serviciod1.listarModalDetalle(6);
+        combinado1.modalCab2 = Model.ModalCabs2;
+        combinado1.listModalDet6 = Model.ListModalDet6;
     }
     @Html.Partial("ModalColaboradores",combinado1)
 
 
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado2 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc2 = new ModaleCabeceraService(new HttpClient());
-        var objeto2 = await servicioc2.obtenerModalCabeceraDetalle(5);
-        var serviciod2 = new ModaleDetalleService(new HttpClient());
-        var listaComprobantes = await serviciod2.listarModalDetalle(9);
-        combinado2.modalCab = objeto2;
-        combinado2.listModalDet = listaComprobantes;
+        // var servicioc2 = new ModaleCabeceraService(new HttpClient());
+        // var objeto2 = await servicioc2.obtenerModalCabeceraDetalle(5);
+        // var serviciod2 = new ModaleDetalleService(new HttpClient());
+        // var listaComprobantes = await serviciod2.listarModalDetalle(9);
+        combinado2.modalCab5 = Model.ModalCabs5;
+        combinado2.listModalDet9 = Model.ListModalDet9;
     }
     @Html.Partial("ModalComprobantes",combinado2)
 
 
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado3 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc3 = new ModaleCabeceraService(new HttpClient());
-        var objeto3 = await servicioc3.obtenerModalCabeceraDetalle(7);
-        var serviciod3 = new ModaleDetalleService(new HttpClient());
-        var listaCondicionesUso = await serviciod3.listarModalDetalle(12);
-        combinado3.modalCab = objeto3;
-        combinado3.listModalDet = listaCondicionesUso;
+        // var servicioc3 = new ModaleCabeceraService(new HttpClient());
+        // var objeto3 = await servicioc3.obtenerModalCabeceraDetalle(7);
+        // var serviciod3 = new ModaleDetalleService(new HttpClient());
+        // var listaCondicionesUso = await serviciod3.listarModalDetalle(12);
+        combinado3.modalCab7 = Model.ModalCabs7;
+        combinado3.listModalDet12 = Model.ListModalDet12;
     }
-    @Html.Partial("ModalCondUso",combinado3)
+    @Html.Partial("ModalCondUso", Model)
 
 
 
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado4 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc4 = new ModaleCabeceraService(new HttpClient());
-        var objeto4 = await servicioc4.obtenerModalCabeceraDetalle(8);
-        var serviciod4 = new ModaleDetalleService(new HttpClient());
-        var listaCookies = await serviciod4.listarModalDetalle(13);
-        combinado4.modalCab = objeto4;
-        combinado4.listModalDet = listaCookies;
+        // var servicioc4 = new ModaleCabeceraService(new HttpClient());
+        // var objeto4 = await servicioc4.obtenerModalCabeceraDetalle(8);
+        // var serviciod4 = new ModaleDetalleService(new HttpClient());
+        // var listaCookies = await serviciod4.listarModalDetalle(13);
+        combinado4.modalCab8 = Model.ModalCabs8;
+        combinado4.listModalDet13 = Model.ListModalDet13;
     }
     @Html.Partial("ModalPolCookies",combinado4)
 
@@ -101,24 +103,24 @@
 
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado5 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc5 = new ModaleCabeceraService(new HttpClient());
-        var objeto5 = await servicioc5.obtenerModalCabeceraDetalle(9);
-        var serviciod5 = new ModaleDetalleService(new HttpClient());
-        var listaPoliticas = await serviciod5.listarModalDetalle(14);
-        combinado5.modalCab = objeto5;
-        combinado5.listModalDet = listaPoliticas;
+        // var servicioc5 = new ModaleCabeceraService(new HttpClient());
+        // var objeto5 = await servicioc5.obtenerModalCabeceraDetalle(9);
+        // var serviciod5 = new ModaleDetalleService(new HttpClient());
+        // var listaPoliticas = await serviciod5.listarModalDetalle(14);
+        combinado5.modalCab9 = Model.ModalCabs9;
+        combinado5.listModalDet14 = Model.ListModalDet14;
     }
     @Html.Partial("ModalPolPriv",combinado5)
 
 
     @{
         CentralParkingSystem.ViewModel.ModalCombinadoCabDet combinado6 = new CentralParkingSystem.ViewModel.ModalCombinadoCabDet();
-        var servicioc6 = new ModaleCabeceraService(new HttpClient());
-        var objeto6 = await servicioc6.obtenerModalCabeceraDetalle(10);
-        var serviciod6 = new ModaleDetalleService(new HttpClient());
-        var listaInfoLegal = await serviciod6.listarModalDetalle(15);
-        combinado6.modalCab = objeto6;
-        combinado6.listModalDet = listaInfoLegal;
+        // var servicioc6 = new ModaleCabeceraService(new HttpClient());
+        // var objeto6 = await servicioc6.obtenerModalCabeceraDetalle(10);
+        // var serviciod6 = new ModaleDetalleService(new HttpClient());
+        // var listaInfoLegal = await serviciod6.listarModalDetalle(15);
+        combinado6.modalCab10 = Model.ModalCabs10;
+        combinado6.listModalDet15 = Model.ListModalDet15;
     }
     @Html.Partial("ModalInfoLegal",combinado6)
 

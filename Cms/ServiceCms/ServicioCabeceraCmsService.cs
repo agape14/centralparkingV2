@@ -8,7 +8,7 @@ namespace Cms.ServiceCms
     public class ServicioCabeceraCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public ServicioCabeceraCmsService(HttpClient httpClient)
         {
@@ -19,7 +19,7 @@ namespace Cms.ServiceCms
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
 
@@ -131,5 +131,33 @@ namespace Cms.ServiceCms
             }
         }
 
+        public async Task<List<TbIndServiciocab>> ListarServiciosCabs()
+        {
+            List<TbIndServiciocab> serviciosCabs = new List<TbIndServiciocab>();
+
+            try
+            {
+                var url = apiUrl + "/api/servicios";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    serviciosCabs = JsonSerializer.Deserialize<List<TbIndServiciocab>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return serviciosCabs;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return serviciosCabs;
+        }
     }
 }

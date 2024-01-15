@@ -10,7 +10,7 @@ namespace Cms.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
             var lista = await contactos.ListarContactos();
             if (lista.Count == 0)
             {
@@ -24,7 +24,7 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
             var lista = contactos.ListarContactos();
 
             if (id == 0 || lista == null)
@@ -55,7 +55,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbFormContactano tbFormContactano)
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
                 await contactos.crearContactoRegistro(tbFormContactano);
@@ -68,7 +68,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
             var lista = contactos.ListarContactos();
 
             if (id == 0 || lista == null)
@@ -92,7 +92,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbFormContactano tbFormContactano)
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
 
 
             if (id != tbFormContactano.Id)
@@ -121,7 +121,7 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
 
             var lista = await contactos.ListarContactos();
 
@@ -144,7 +144,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contactos = new ContactanoService(new HttpClient());
+            var contactos = new ContactanoCmsService(new HttpClient());
             var lista = await contactos.ListarContactos();
 
             if (lista == null)

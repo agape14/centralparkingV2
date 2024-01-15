@@ -1,17 +1,16 @@
 ﻿using ApiBD.Models;
-using CentralParkingSystem.DTOs;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
 namespace Cms.ServiceCms
 {
-    public class PiePaginaCmsService
+    public class ParkingCardCmsService
     {
         private readonly HttpClient _httpClient;
         private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
-        public PiePaginaCmsService(HttpClient httpClient)
+        public ParkingCardCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             if (File.Exists(launchSettingsPath))
@@ -23,22 +22,21 @@ namespace Cms.ServiceCms
                 apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
-
-        public async Task<List<TbConfPiepaginacab>> listarPiePaginasCab()
+        public async Task<List<TbFormParkingcard>> ListarParkingCard()
         {
-            List<TbConfPiepaginacab> piePaginasCabs = new List<TbConfPiepaginacab>();
+            List<TbFormParkingcard> lista = new List<TbFormParkingcard>();
 
             try
             {
-                var url = apiUrl+"/api/piepagina/listaPiePaginas";
+                var url = apiUrl + "/api/parkingcard";
 
                 var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    piePaginasCabs = JsonSerializer.Deserialize<List<TbConfPiepaginacab>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return piePaginasCabs;
+                    lista = JsonSerializer.Deserialize<List<TbFormParkingcard>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return lista;
                 }
                 else
                 {
@@ -50,19 +48,19 @@ namespace Cms.ServiceCms
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return piePaginasCabs;
+            return lista;
         }
 
-        public async Task<TbConfPiepaginacab> obtenerPiePaginaCabsDetalle(int id)
+        public async Task<TbFormParkingcard> obtenerParkingCardDetalle(int id)
         {
-            var url = $"{apiUrl}/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
-                var piePaginaCab = await response.Content.ReadFromJsonAsync<TbConfPiepaginacab>();
-                return piePaginaCab;
+                var parkingcard = await response.Content.ReadFromJsonAsync<TbFormParkingcard>();
+                return parkingcard;
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -75,16 +73,16 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfPiepaginacab> crearPiePaginaCab(TbConfPiepaginacab tbConfPiepaginacab)
+        public async Task<TbFormParkingcard> crearParkingCardRegistro(TbFormParkingcard tbFormParkingcard)
         {
-            var url = apiUrl + "/api/piepagina"; 
+            var url = apiUrl + "/api/parkingcard";
 
-            var response = await _httpClient.PostAsJsonAsync(url, tbConfPiepaginacab);
+            var response = await _httpClient.PostAsJsonAsync(url, tbFormParkingcard);
 
             if (response.IsSuccessStatusCode)
             {
-                var crearPiePaginaCab= await response.Content.ReadFromJsonAsync<TbConfPiepaginacab>();
-                return crearPiePaginaCab;
+                var parkingcard = await response.Content.ReadFromJsonAsync<TbFormParkingcard>();
+                return parkingcard;
             }
             else
             {
@@ -93,16 +91,16 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<TbConfPiepaginacab> modificarPiePaginaCab(int id, TbConfPiepaginacab tbConfPiepaginacab)
+        public async Task<TbFormParkingcard> modificarParkingCard(int id, TbFormParkingcard tbFormParkingcard)
         {
-            var url = $"{apiUrl}/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
-            var response = await _httpClient.PutAsJsonAsync(url, tbConfPiepaginacab);
+            var response = await _httpClient.PutAsJsonAsync(url, tbFormParkingcard);
 
             if (response.IsSuccessStatusCode)
             {
-                var modificarPiePaginaCab = await response.Content.ReadFromJsonAsync<TbConfPiepaginacab>();
-                return modificarPiePaginaCab;
+                var updatedParkingCard = await response.Content.ReadFromJsonAsync<TbFormParkingcard>();
+                return updatedParkingCard;
             }
             else
             {
@@ -111,9 +109,9 @@ namespace Cms.ServiceCms
             }
         }
 
-        public async Task<bool> eliminarPiePaginaCab(int id)
+        public async Task<bool> eliminarParkingCard(int id)
         {
-            var url = $"{apiUrl}/api/piepagina/{id}"; 
+            var url = $"{apiUrl}/api/parkingcard/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -130,34 +128,6 @@ namespace Cms.ServiceCms
                 var errorContent = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
-        }
-        public async Task<List<PiePaginaCabs>> ListarPiePaginasCabs()
-        {
-            List<PiePaginaCabs> piePaginaCabs = new List<PiePaginaCabs>();
-
-            try
-            {
-                var url = apiUrl + "/api/piepagina";
-
-                var response = await _httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    piePaginaCabs = JsonSerializer.Deserialize<List<PiePaginaCabs>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return piePaginaCabs;
-                }
-                else
-                {
-                    Console.WriteLine("No se ha podido conectar a la API");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-            return piePaginaCabs;
         }
     }
 }

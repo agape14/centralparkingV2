@@ -1,7 +1,7 @@
 ﻿@model ApiBD.Models.Home.IndexVM;
 @{
     ViewData["Title"] = "Nosotros";
-    var paginaCab = Model.PaginaCab;
+    //var paginaCab = Model.PaginaCab;
 }
 
 <!-- Page Header Start -->
@@ -22,45 +22,45 @@
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
             <!-- <h6 class="text-primary text-uppercase mb-2">Nuestro equipo</h6> -->
-            <h1 class="display-6 mb-4">@paginaCab?.Titulo</h1>
+            <h1 class="display-6 mb-4">@Model.PaginaCab?.Titulo</h1>
         </div>
         <div class="row g-0 team-items">
 
-            <h3 class="text"><i class="fa fa-clock   text-primary"></i> @paginaCab?.ReseniaTitulo</h3>
+            <h3 class="text"><i class="fa fa-clock   text-primary"></i> @Model.PaginaCab?.ReseniaTitulo</h3>
             <p>
-                @paginaCab?.ReseniaDetalle
+                @Model.PaginaCab?.ReseniaDetalle
             </p>
             <div class="row g-2 mb-4 pb-2">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h3><i class="fas fa-map-marker-alt   text-primary mt-4"></i> @paginaCab?.MisionTitulo</h3>
+                    <h3><i class="fas fa-map-marker-alt   text-primary mt-4"></i> @Model.PaginaCab?.MisionTitulo</h3>
                     <p>
-                        @paginaCab?.MisionDetalle
+                        @Model.PaginaCab?.MisionDetalle
                     </p>
-                    <h3><i class="fas fa-eye   text-primary"></i> @paginaCab?.VisionTitulo</h3>
+                    <h3><i class="fas fa-eye   text-primary"></i> @Model.PaginaCab?.VisionTitulo</h3>
                     <p>
-                        @paginaCab?.VisionDetalle
+                        @Model.PaginaCab?.VisionDetalle
                     </p>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
-                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@paginaCab?.ImagenMision}")" alt="" style="object-fit: cover;">
+                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@Model.PaginaCab?.ImagenMision}")" alt="" style="object-fit: cover;">
 
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="position-relative overflow-hidden  h-100" style="min-height: 400px;">
-                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@paginaCab?.ImagenValores}")" alt="" style="object-fit: cover;">
+                        <img class="position-absolute w-75 h-75" src="@Url.Content($"~{@Model.PaginaCab?.ImagenValores}")" alt="" style="object-fit: cover;">
 
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h3><i class="fas fa-magic   text-primary mt-4"></i> @paginaCab?.ValoresTitulo</h3>
+                    <h3><i class="fas fa-magic   text-primary mt-4"></i> @Model.PaginaCab?.ValoresTitulo</h3>
                     <p>
-                        @paginaCab?.ValoresDetalle
+                        @Model.PaginaCab?.ValoresDetalle
                     </p>
-                    <h3><i class="fas fa-trophy  text-primary"></i> @paginaCab?.ReconocTitulo</h3>
+                    <h3><i class="fas fa-trophy  text-primary"></i> @Model.PaginaCab?.ReconocTitulo</h3>
                     <p>
-                        @paginaCab?.ReconocDetalle
+                        @Model.PaginaCab?.ReconocDetalle
                     </p>
                 </div>
             </div>

@@ -57,13 +57,13 @@ namespace Cms.Controllers
         // GET: Menu/Create ok
         public async Task<IActionResult> Create()
         {
-            var menuCentralParking = new MenusService(new HttpClient());
+            var menuCentralParking = new MenuCmsService(new HttpClient());
             var menu = new MenuCmsService(new HttpClient());
             var tipoMenuLista = await menu.listarTipoMenu();
 
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion");
 
-            var items = await menuCentralParking.ListarMenus();
+            var items = await menuCentralParking.ListarMenusv2();
             var selectListItems = items.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),
@@ -100,7 +100,7 @@ namespace Cms.Controllers
         // GET: Menu/Edit/5 ok
         public async Task<IActionResult> Edit(int id)
         {
-            var menuCentralParking = new MenusService(new HttpClient());
+            var menuCentralParking = new MenuCmsService(new HttpClient());
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
             var tipoMenuLista = await menu.listarTipoMenu();
@@ -117,7 +117,7 @@ namespace Cms.Controllers
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
 
-            var items = await menuCentralParking.ListarMenus();
+            var items = await menuCentralParking.ListarMenusv2();
             var selectListItems = items.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),

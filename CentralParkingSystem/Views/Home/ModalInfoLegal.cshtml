@@ -1,6 +1,6 @@
 ﻿@model CentralParkingSystem.ViewModel.ModalCombinadoCabDet;
 
-@if (Model.listModalDet.Count!= 0)
+@if (Model.listModalDet15.Count!= 0)
 {
 
     <div class="modal fade" id="informacion_legal" tabindex="-1" aria-labelledby="modalInfoLegal"
@@ -8,7 +8,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content rounded-1">
                 <div class="modal-header ">
-                    <h3 class="modal-title" id="modalInfoLegal">@Model.modalCab.Titulo</h3>
+                    <h3 class="modal-title" id="modalInfoLegal">@Model.modalCab10.Titulo</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -17,7 +17,7 @@
                         <div class="col-lg-12">
                             <div class="accordion" id="accordionInfoLegal">
                                 <div class="accordion" id="accordionInfoLegal">
-                                    @foreach (var item in Model.listModalDet)
+                                    @foreach (var item in Model.listModalDet15)
                                     {
                                         var uniqueId = $"collapse_{Guid.NewGuid()}";
                                         <div >

@@ -4,13 +4,14 @@ using System.Text;
 using System.Text.Json;
 using System.Net.Http.Json;
 using Newtonsoft.Json.Linq;
+using CentralParkingSystem.DTOs;
 
 namespace Cms.ServiceCms
 {
     public class MenuCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public MenuCmsService(HttpClient httpClient)
         {
@@ -21,7 +22,7 @@ namespace Cms.ServiceCms
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
 
@@ -228,6 +229,34 @@ namespace Cms.ServiceCms
             }
 
             return subMenus;
+        }
+        public async Task<List<Result>> ListarMenusv2()
+        {
+            List<Result> menus = new List<Result>();
+
+            try
+            {
+                var url = apiUrl + "/api/menu";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    menus = JsonSerializer.Deserialize<List<Result>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return menus;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return menus;
         }
 
     }

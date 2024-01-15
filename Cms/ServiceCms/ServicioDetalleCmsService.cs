@@ -3,14 +3,14 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
-namespace CentralParkingSystem.Services
+namespace Cms.ServiceCms
 {
-    public class ServicioDetalleService
+    public class ServicioDetalleCmsService
     {
         private readonly HttpClient _httpClient;
         private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
-        public ServicioDetalleService(HttpClient httpClient)
+        public ServicioDetalleCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             if (File.Exists(launchSettingsPath))
@@ -19,7 +19,7 @@ namespace CentralParkingSystem.Services
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
 
@@ -29,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = apiUrl+"/api/servicioDetalle";
+                var url = apiUrl + "/api/servicioDetalle";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -89,45 +89,45 @@ namespace CentralParkingSystem.Services
         }
 
 
-            public async Task<TbServDetalle> obtenerServicioEspecifico(int id)
+        public async Task<TbServDetalle> obtenerServicioEspecifico(int id)
+        {
+            var url = $"{apiUrl}/api/servicioDetalle/serviciodetalle/{id}";
+
+            try
             {
-                var url = $"{apiUrl}/api/servicioDetalle/serviciodetalle/{id}";
+                var response = await _httpClient.GetAsync(url);
 
-                try
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = await _httpClient.GetAsync(url);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var servicio = await response.Content.ReadFromJsonAsync<TbServDetalle>();
-                        return servicio;
-                    }
-                    else if (response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        throw new Exception("El botón no fue encontrado.");
-                    }
-                    else
-                    {
-                        var errorContent = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
-                        throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
-                    }
+                    var servicio = await response.Content.ReadFromJsonAsync<TbServDetalle>();
+                    return servicio;
                 }
-                catch (HttpRequestException ex)
+                else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
-                    throw new Exception("Error en la solicitud HTTP", ex);
+                    throw new Exception("El botón no fue encontrado.");
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"Error al obtener el botón: {ex.Message}");
-                    throw;
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+                    throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
                 }
             }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                throw new Exception("Error en la solicitud HTTP", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener el botón: {ex.Message}");
+                throw;
+            }
+        }
 
         public async Task<TbServDetalle> crearServicioDetalle(TbServDetalle tbServDetalle)
         {
-            var url = apiUrl+"/api/servicioDetalle";
+            var url = apiUrl + "/api/servicioDetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServDetalle);
 
@@ -181,6 +181,5 @@ namespace CentralParkingSystem.Services
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
         }
-
     }
 }

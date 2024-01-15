@@ -10,7 +10,7 @@ namespace Cms.ServiceCms
     public class RedesSocialesCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public RedesSocialesCmsService(HttpClient httpClient)
         {
@@ -21,7 +21,7 @@ namespace Cms.ServiceCms
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
 

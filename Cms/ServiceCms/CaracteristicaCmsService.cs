@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace Cms.ServiceCms
 {
@@ -9,7 +10,7 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("..", "ApiBD", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public CaracteristicaCmsService(HttpClient httpClient)
         {
@@ -20,8 +21,36 @@ namespace Cms.ServiceCms
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["ApiBD"]?["applicationUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
+        }
+        public async Task<List<TbIndCaracteristica>> ListarCaracteristicas()
+        {
+            List<TbIndCaracteristica> caracteristicas = new List<TbIndCaracteristica>();
+
+            try
+            {
+                var url = apiUrl + "/api/caracteristica";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    caracteristicas = JsonSerializer.Deserialize<List<TbIndCaracteristica>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return caracteristicas;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return caracteristicas;
         }
 
         public async Task<TbIndCaracteristica> obtenerCaracteristicaDetalle(uint id)

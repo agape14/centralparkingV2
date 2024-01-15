@@ -21,7 +21,7 @@ namespace Cms.Controllers
         // GET: Slide
         public async Task<IActionResult> Index()
         {
-            var slideService = new SlideService(new HttpClient());
+            var slideService = new SlideCmsService(new HttpClient());
             return await slideService.ListarSlide() != null ?
                         View(await slideService.ListarSlide()) :
                         Problem("Entity set 'CentralparkingContext.TbIndSlidecabs'  is null.");
@@ -119,7 +119,7 @@ namespace Cms.Controllers
         // GET: Slide/Edit/5
         public async Task<IActionResult> Edit(uint id)
         {   
-            var slide = new SlideService(new HttpClient());
+            var slide = new SlideCmsService(new HttpClient());
             var slideList = await slide.ListarSlide();
             var slideCms = new SlideCmsService(new HttpClient());
             var boton = new ConfBotonesCmsService(new HttpClient());
@@ -216,7 +216,7 @@ namespace Cms.Controllers
         // GET: Slide/Delete/5
         public async Task<IActionResult> Delete(uint id)
         {
-            var slide = new SlideService(new HttpClient());
+            var slide = new SlideCmsService(new HttpClient());
             var slideList = await slide.ListarSlide();
             var slideCms = new SlideCmsService(new HttpClient());
             if (id == 0 || slideList  == null)
@@ -238,7 +238,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(uint id)
         {
-            var slide = new SlideService(new HttpClient());
+            var slide = new SlideCmsService(new HttpClient());
             var slideList = await slide.ListarSlide();
             var slideCms = new SlideCmsService(new HttpClient());
             if (slideList == null)

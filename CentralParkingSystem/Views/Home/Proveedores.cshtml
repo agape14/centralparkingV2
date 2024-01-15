@@ -1,4 +1,4 @@
-﻿@model ApiBD.Models.TbFormProveedore;
+﻿@model ApiBD.Models.Home.IndexVM;
 @{
     ViewData["Title"] = "Proveedores";
 }
@@ -41,13 +41,13 @@
         <div class="row">
             <div class="accordion_container col-lg-12">
                 <div class="row justify-content-center">
-                    <form asp-action="Proveedores">
+                    <form asp-action="@Model.Proveedor">
                         <div class="form-group row mb-2">
                             <label class="col-sm-2 col-form-label" for="state_id">
                                 Fecha
                             </label>
                             <div class="col-sm-3">
-                                <input asp-for="Fecha" class="form-control" required type="date" value="" />
+                                <input asp-for="@Model.Proveedor.Fecha" class="form-control" required type="date" value="" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -55,7 +55,7 @@
                                 Solicitado por
                             </label>
                             <div class="col-sm-10">
-                                <input asp-for="SolicitadoPor" class="form-control" required placeholder="Ingrese sus nombres completos..." type="text" />
+                                <input asp-for="@Model.Proveedor.SolicitadoPor" class="form-control" required placeholder="Ingrese sus nombres completos..." type="text" />
                             </div>
                         </div>
                         <fieldset class=" border p-2 mb-2">
@@ -67,14 +67,14 @@
                                     RUC
                                 </label>
                                 <div class="col-sm-4">
-                                    <input asp-for="FRuc" id="FRuc" class="form-control" required placeholder="RUC" pattern="[0-9]{11}" maxlength="11"  type="text" />
+                                    <input asp-for="@Model.Proveedor.FRuc" id="FRuc" class="form-control" required placeholder="RUC" pattern="[0-9]{11}" maxlength="11" type="text" />
                                    
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="cbxTipoPersona">
                                     Tipo Persona
                                 </label>
                                 <div class="col-sm-4">
-                                    <select class="form-control" asp-for="FTipoPersona" placeholder="Tipo Persona">
+                                    <select class="form-control" asp-for="@Model.Proveedor.FTipoPersona" placeholder="Tipo Persona">
                                         <option value=1>
                                             NATURAL
                                         </option>
@@ -89,7 +89,7 @@
                                     DNI
                                 </label>
                                 <div class="col-sm-5">
-                                    <input asp-for="FDni" id="FDni" class="form-control" required placeholder="DNI" pattern="[0-9]{8}" maxlength="8" type="text" />
+                                    <input asp-for="@Model.Proveedor.FDni" id="FDni" class="form-control" required placeholder="DNI" pattern="[0-9]{8}" maxlength="8" type="text" />
                             
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input asp-for="FNombre" class="form-control" required placeholder="Nombres o Razon Social..." type="text" />
+                                    <input asp-for="@Model.Proveedor.FNombre" class="form-control" required placeholder="Nombres o Razon Social..." type="text" />
                                     
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                     Direccion
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="FDireccion" required placeholder="Direccion..." type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.FDireccion" required placeholder="Direccion..." type="text" />
 
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                     Distrito
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" asp-for="FDistrito" required placeholder="Distrito">
+                                    <select class="form-control" asp-for="@Model.Proveedor.FDistrito" required placeholder="Distrito">
                                         <option value="LIMA">
                                             LIMA
                                         </option>
@@ -141,7 +141,7 @@
                                     Cod. Postal
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="FCodigoPostal" required placeholder="Cod. Postal" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.FCodigoPostal" required placeholder="Cod. Postal" type="text" />
                                    
                                 </div>
                             </div>
@@ -150,14 +150,14 @@
                                     Telefono
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="FTelefono" required placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.FTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtFax">
                                     Fax
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="FFax" required placeholder="Fax" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.FFax" required placeholder="Fax" type="text" />
                                     
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                                     Rubro
                                 </label>
                                 <div class="col-sm-10">
-                                    <select asp-for="FRubro" class="form-control" required placeholder="Departamento" asp-items="ViewBag.vMenu"></select>
+                                    <select asp-for="@Model.Proveedor.FRubro" class="form-control" required placeholder="Departamento" asp-items="ViewBag.vMenu"></select>
                                 </div>
                             </div>
                         </fieldset>
@@ -179,7 +179,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="RlNombre" required placeholder="Nombres Completos..." type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.RlNombre" required placeholder="Nombres Completos..." type="text" />
                                     
                                 </div>
                             </div>
@@ -188,14 +188,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="RlCargo" required placeholder="Cargo" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.RlCargo" required placeholder="Cargo" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="RlTelefono" required placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.RlTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                             </div>
@@ -204,14 +204,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="RlCelular" required placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.RlCelular" required placeholder="Telf" type="text" />
                                 
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="RlEmail" required placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.RlEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="CcNombre" required placeholder="Nombres Completos..." type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcNombre" required placeholder="Nombres Completos..." type="text" />
                                    
                                 </div>
                             </div>
@@ -234,14 +234,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcCargo" required placeholder="Cargo" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcCargo" required placeholder="Cargo" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcTelefono" required placeholder="Telefono" type="text">
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcTelefono" required placeholder="Telefono" type="text">
                                     
                                 </div>
                             </div>
@@ -250,14 +250,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcCelular" required placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcCelular" required placeholder="Telf" type="text" />
                                  
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcEmail" required placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -438,7 +438,7 @@
                                     Nombres
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" asp-for="CcobranzaNombre" required placeholder="Nombres Completos..." type="text">
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcobranzaNombre" required placeholder="Nombres Completos..." type="text">
                                     
                                 </div>
                             </div>
@@ -447,14 +447,14 @@
                                     Cargo
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcobranzaCargo" required placeholder="Cargo" type="text">
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcobranzaCargo" required placeholder="Cargo" type="text">
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtTelefonorl">
                                     Telefono:
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcobranzaTelefono" required placeholder="Telefono" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcobranzaTelefono" required placeholder="Telefono" type="text" />
                                     
                                 </div>
                             </div>
@@ -463,14 +463,14 @@
                                     Celular
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CcobranzaCelular" required placeholder="Telf" type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcobranzaCelular" required placeholder="Telf" type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtEmail">
                                     Email
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CcobranzaEmail" required placeholder="Email" type="email" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CcobranzaEmail" required placeholder="Email" type="email" />
                                     
                                 </div>
                             </div>
@@ -484,7 +484,7 @@
                                     Banco
                                 </label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" asp-for="CodCuentaBancaria" required placeholder="Banco">
+                                    <select class="form-control" asp-for="@Model.Proveedor.CodCuentaBancaria" required placeholder="Banco">
                                         <option value="1">
                                             Interbank
                                         </option>
@@ -497,7 +497,7 @@
                                     Titular
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CuentaBancariaTitular" required type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CuentaBancariaTitular" required type="text" />
                                     
                                 </div>
                             </div>
@@ -506,14 +506,14 @@
                                     Cuenta
                                 </label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" asp-for="CuentaBancaria" required type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CuentaBancaria" required type="text" />
                                     
                                 </div>
                                 <label class="col-sm-1 col-form-label" for="txtCCI">
                                     CCI
                                 </label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" asp-for="CuentaBancariaCci" required type="text" />
+                                    <input class="form-control" asp-for="@Model.Proveedor.CuentaBancariaCci" required type="text" />
                                 </div>
                             </div>
                         </fieldset>

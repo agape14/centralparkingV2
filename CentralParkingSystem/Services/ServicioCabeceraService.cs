@@ -7,7 +7,7 @@ namespace CentralParkingSystem.Services
     public class ServicioCabeceraService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("CentralParkingSystem", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public ServicioCabeceraService(HttpClient httpClient)
         {

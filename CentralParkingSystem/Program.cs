@@ -1,4 +1,5 @@
 using ApiBD.Models;
+using CentralParkingSystem.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<CentralParkingContext>();
 
+// Agregar configuración para IHttpClientFactory y IConfiguration 
+builder.Services.AddHttpClient<SlideService>();
+builder.Services.AddHttpClient<ServiciosCabsService>();
+builder.Services.AddHttpClient<ServiciosdetsService>();
+builder.Services.AddHttpClient<CaracteristicasService>();
+builder.Services.AddHttpClient<ModaleCabeceraService>();
+builder.Services.AddHttpClient<ModaleDetalleService>();
+builder.Services.AddHttpClient<RedesSocialesService>();
+builder.Services.AddHttpClient<MenusService>();
+builder.Services.AddHttpClient<PiePaginaCabsService>();
+builder.Services.AddHttpClient<PiePaginaDetsService>();
+builder.Services.AddHttpClient<EntidadesService>();
+builder.Services.AddHttpClient<PaginasCabsService>();
+builder.Services.AddHttpClient<PuestoService>();
+builder.Services.AddHttpClient<RubroService>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();

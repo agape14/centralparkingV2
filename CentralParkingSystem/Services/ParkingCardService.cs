@@ -8,7 +8,7 @@ namespace CentralParkingSystem.Services
     public class ParkingCardService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("CentralParkingSystem", "Properties", "launchSettings.json");
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
         public ParkingCardService(HttpClient httpClient)
         {
