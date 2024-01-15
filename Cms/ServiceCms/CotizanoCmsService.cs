@@ -1,17 +1,16 @@
 ﻿using ApiBD.Models;
 using Newtonsoft.Json.Linq;
-using System.Data;
 using System.Net;
 using System.Text.Json;
 
-namespace CentralParkingSystem.Services
+namespace Cms.ServiceCms
 {
-    public class CotizanosService
+    public class CotizanoCmsService
     {
         private readonly HttpClient _httpClient;
         private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
-        public CotizanosService(HttpClient httpClient)
+        public CotizanoCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             if (File.Exists(launchSettingsPath))
@@ -20,10 +19,9 @@ namespace CentralParkingSystem.Services
                 var launchSettings = JObject.Parse(launchSettingsJson);
 
                 // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
             }
         }
-
         public async Task<List<TbFormCotizano>> ListarCotizanos(int codigo)
         {
             List<TbFormCotizano> cotizanos = new List<TbFormCotizano>();
@@ -77,7 +75,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormCotizano> crearCotizanoRegistro(TbFormCotizano tbFormCotizanos)
         {
-            var url = apiUrl+ "/api/cotizanos";
+            var url = apiUrl + "/api/cotizanos";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormCotizanos);
 
@@ -181,4 +179,3 @@ namespace CentralParkingSystem.Services
         }
     }
 }
-

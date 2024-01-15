@@ -11,7 +11,7 @@ namespace Cms.Controllers
     {
         public async Task<IActionResult> Index(int codigo)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
             var servicio = await serviciodetalle.obtenerServicioDetalle(codigo);
 
             if (servicio.Count == 0)
@@ -27,7 +27,7 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
 
             if (id == 0)
             {
@@ -64,7 +64,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbServDetalle tbServDetalle)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
             if (tbServDetalle.IdBtnSolicitalo == 0)
             {
                 tbServDetalle.IdBtnSolicitalo = null;
@@ -83,7 +83,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
          
 
             if (id == 0)
@@ -113,7 +113,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbServDetalle tbServDetalle)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
             if (tbServDetalle.IdBtnSolicitalo == 0) {
                 tbServDetalle.IdBtnSolicitalo = null;
             }
@@ -144,7 +144,7 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
          
             if (id == 0)
             {
@@ -165,7 +165,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var serviciodetalle = new ServicioDetalleService(new HttpClient());
+            var serviciodetalle = new ServicioDetalleCmsService(new HttpClient());
            
             if (id == 0)
             {

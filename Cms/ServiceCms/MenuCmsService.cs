@@ -3,17 +3,27 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http.Json;
-
+using Newtonsoft.Json.Linq;
+using CentralParkingSystem.DTOs;
 
 namespace Cms.ServiceCms
 {
     public class MenuCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public MenuCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfTipomenu>> listarTipoMenu()
@@ -22,7 +32,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/menu/tipoMenu";
+                var url = apiUrl+"/api/menu/tipoMenu";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -51,7 +61,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/menu/menusController";
+                var url = apiUrl + "/api/menu/menusController";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +86,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> obtenerMenuDetalle(int id)
         {
-            var url = $"http://localhost:82/api/menu/{id}"; 
+            var url = $"{apiUrl}/api/menu/{id}"; 
 
             try
             {
@@ -112,7 +122,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> crearMenu(TbConfMenu tbConfMenu)
         {
-            var url = "http://localhost:82/api/menu"; 
+            var url = apiUrl + "/api/menu"; 
 
             try
             {
@@ -146,7 +156,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarMenu(int id)
         {
-            var url = $"http://localhost:82/api/menu/{id}"; 
+            var url = $"{apiUrl}/api/menu/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -167,7 +177,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> modificarMenu(int id, TbConfMenu tbConfMenu)
         {
-            var url = $"http://localhost:82/api/menu/{id}"; 
+            var url = $"{apiUrl}/api/menu/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfMenu), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);
@@ -198,7 +208,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/menu/subMenus";
+                var url = apiUrl + "/api/menu/subMenus";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -219,6 +229,34 @@ namespace Cms.ServiceCms
             }
 
             return subMenus;
+        }
+        public async Task<List<Result>> ListarMenusv2()
+        {
+            List<Result> menus = new List<Result>();
+
+            try
+            {
+                var url = apiUrl + "/api/menu";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    menus = JsonSerializer.Deserialize<List<Result>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return menus;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return menus;
         }
 
     }

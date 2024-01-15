@@ -2,15 +2,26 @@
 using System.Net;
 using System.Text.Json;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Cms.ServiceCms
 {
     public class PiePaginaDetCmsService
     {
         private readonly HttpClient _httpClient;
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PiePaginaDetCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfPiepaginadet>> listarPiePaginaDetPorCodigoId(int id)
@@ -19,7 +30,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"http://localhost:82/api/piepaginadet/piePaginaDetId/{id}";
+                var url = $"{apiUrl}/api/piepaginadet/piePaginaDetId/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -48,7 +59,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/piepaginadet";
+                var url = apiUrl+"/api/piepaginadet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -73,7 +84,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> obtenerPiePaginaDetDetalle(int id)
         {
-            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
+            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
 
             try
             {
@@ -109,7 +120,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> crearPiePaginaDet(TbConfPiepaginadet piePaginaDet)
         {
-            var url = "http://localhost:82/api/piepaginadet"; 
+            var url = apiUrl + "/api/piepaginadet"; 
 
             try
             {
@@ -143,7 +154,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPiePaginaDet(int id)
         {
-            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
+            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -164,7 +175,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> modificarPiePaginaDet(int id, TbConfPiepaginadet boton)
         {
-            var url = $"http://localhost:82/api/piepaginadet/{id}"; 
+            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

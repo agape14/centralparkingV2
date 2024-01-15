@@ -1,6 +1,7 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.DTOs;
 using Microsoft.AspNetCore.Hosting.Server;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace CentralParkingSystem.Services
@@ -8,9 +9,22 @@ namespace CentralParkingSystem.Services
     public class CaracteristicasService
     {
         private readonly HttpClient _httpClient;
-        public CaracteristicasService(HttpClient httpClient)
+        private readonly IConfiguration _configuration;
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
+        public CaracteristicasService(HttpClient httpClient, IConfiguration configuration)
         { 
             _httpClient = httpClient;
+            //if (File.Exists(launchSettingsPath))
+            //{
+            //    var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+            //    var launchSettings = JObject.Parse(launchSettingsJson);
+
+            //    // Acceder al perfil "ApiBD" y obtener la URL
+            //    apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            //}
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
         }
 
 
@@ -20,7 +34,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/caracteristica";
+                var url = apiUrl+"/api/caracteristica";
 
                 var response = await _httpClient.GetAsync(url);
 

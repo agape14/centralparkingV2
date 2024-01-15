@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace CentralParkingSystem.Services
@@ -6,9 +7,19 @@ namespace CentralParkingSystem.Services
     public class ServicioCabeceraService
     {
         private readonly HttpClient _httpClient;
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public ServicioCabeceraService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            }
         }
 
 
@@ -18,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/servicioCabecera";
+                var url = apiUrl+"/api/servicioCabecera";
 
                 var response = await _httpClient.GetAsync(url);
 

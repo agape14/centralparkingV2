@@ -3,30 +3,26 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
-namespace CentralParkingSystem.Services
+namespace Cms.ServiceCms
 {
-    public class ModaleCabeceraService
+    public class ModaleCabeceraCmsService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
         private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
         private string apiUrl = "";
-        public ModaleCabeceraService(HttpClient httpClient, IConfiguration configuration)
+        public ModaleCabeceraCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            //if (File.Exists(launchSettingsPath))
-            //{
-            //    var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-            //    var launchSettings = JObject.Parse(launchSettingsJson);
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
 
-            //    // Acceder al perfil "ApiBD" y obtener la URL
-            //    apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            //}
-            _configuration = configuration;
-            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
+            }
+
         }
-
-
         public async Task<List<TbConfPiepaginadet>> listarEntrada()
         {
             List<TbConfPiepaginadet> lista = new List<TbConfPiepaginadet>();
@@ -131,7 +127,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbConfModalcab> crearModalCabRegistro(TbConfModalcab tbConfModalcab)
         {
-            var url = apiUrl+"/api/modalcabecera";
+            var url = apiUrl + "/api/modalcabecera";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfModalcab);
 

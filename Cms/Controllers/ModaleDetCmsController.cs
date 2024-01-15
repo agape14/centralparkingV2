@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.Services;
+using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Index(int codigo)
         {        
           
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
             var lista = await servicio.listarModalDetalle(codigo);
             if (lista.Count == 0)
             {
@@ -28,7 +29,7 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
             var lista = await servicio.listarModalDetalle(id);
 
             if (id == 0 || lista == null)
@@ -61,7 +62,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int codigo, TbConfModaldet tbConfModaldet)
         {
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
@@ -77,7 +78,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, int codigo)
         {
             ViewData["ModaleCabId"] = codigo;
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
             var lista = await servicio.listarModalDetalle(id);
 
             if (id == 0 || lista == null)
@@ -101,7 +102,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, int codigo, TbConfModaldet tbConfModaldet)
         {
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
            
 
 
@@ -134,7 +135,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Delete(int id, int codigo)
         {
             ViewData["ModaleCabId"] = codigo;
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
          
 
             if (id == 0)
@@ -156,7 +157,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, int codigo)
         {
-            var servicio = new ModaleDetalleService(new HttpClient());
+            var servicio = new ModaleDetalleCmsService(new HttpClient());
            
             var modal = await servicio.obtenerModalDetalle(id);
             if (modal != null)

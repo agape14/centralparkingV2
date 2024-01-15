@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace CentralParkingSystem.Services
     public class HojaReclamacioneService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public HojaReclamacioneService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbFormHojareclamacione>> ListarHojaReclamaciones()
@@ -19,7 +29,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/hojareclamaciones";
+                var url = apiUrl+"/api/hojareclamaciones";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> obtenerHojaReclamacionesDetalle(int id)
         {
-            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
+            var url = $"{apiUrl}/ api/hojareclamaciones/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> crearHojaReclamacioneRegistro(TbFormHojareclamacione tbFormHojareclamacione)
         {
-            var url = "http://localhost:82/api/hojareclamaciones";
+            var url = apiUrl + "/api/hojareclamaciones";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormHojareclamacione);
 
@@ -84,7 +94,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormHojareclamacione> modificarHojaReclamacion(int id, TbFormHojareclamacione tbFormHojareclamacione)
         {
-            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
+            var url = $"{apiUrl}/ api/hojareclamaciones/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormHojareclamacione);
 
@@ -102,7 +112,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarHojaReclamacion(int id)
         {
-            var url = $"http://localhost:82/api/hojareclamaciones/{id}";
+            var url = $"{apiUrl}/api/hojareclamaciones/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

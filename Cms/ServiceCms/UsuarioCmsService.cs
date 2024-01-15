@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,19 @@ namespace Cms.ServiceCms
     public class UsuarioCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public UsuarioCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfUser>> listarUsuarios()
@@ -19,7 +29,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/usuario";
+                var url = apiUrl+"/api/usuario";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -44,7 +54,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> obtenerUsuarioDetalle(ulong id)
         {
-            var url = $"http://localhost:82/api/usuario/{id}"; 
+            var url = $"{apiUrl}/api/usuario/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -66,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> crearUsuario(TbConfUser tbConfUser)
         {
-            var url = "http://localhost:82/api/usuario"; 
+            var url = apiUrl + "/api/usuario"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfUser);
 
@@ -84,7 +94,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfUser> modificarUsuario(ulong id, TbConfUser tbConfUser)
         {
-            var url = $"http://localhost:82/api/usuario/{id}"; 
+            var url = $"{apiUrl}/api/usuario/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfUser);
 
@@ -102,7 +112,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarUsuario(ulong id)
         {
-            var url = $"http://localhost:82/api/usuario/{id}"; 
+            var url = $"{apiUrl}/api/usuario/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

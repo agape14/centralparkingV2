@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.DTOs;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,10 +12,22 @@ namespace CentralParkingSystem.Services
     public class ServiciosdetsService
     {
         private readonly HttpClient _httpClient;
-
-        public ServiciosdetsService(HttpClient httpClient)
+        private readonly IConfiguration _configuration;
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
+        public ServiciosdetsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            //if (File.Exists(launchSettingsPath))
+            //{
+            //    var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+            //    var launchSettings = JObject.Parse(launchSettingsJson);
+
+            //    // Acceder al perfil "ApiBD" y obtener la URL
+            //    apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            //}
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
         }
 
         public async Task<List<TbIndServiciodet>> ListarServiciosdets()
@@ -23,7 +36,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/serviciosdet";
+                var url = apiUrl+"/api/serviciosdet";
 
                 var response = await _httpClient.GetAsync(url);
 

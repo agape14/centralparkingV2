@@ -1,12 +1,12 @@
-﻿@model CentralParkingSystem.ViewModel.ModalCombinadoCabDet;
-@if (Model.listModalDet.Count != 0)
+﻿@model ApiBD.Models.Home.IndexVM;
+@if (Model.ListModalDet12.Count != 0)
 {
 
     <div class="modal fade" id="condiciones_uso" tabindex="-1" aria-labelledby="modalCondicionesUso" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content rounded-1">
                 <div class="modal-header ">
-                    <h3 class="modal-title" id="modalCondicionesUso">@Model.modalCab.Titulo</h3>
+                    <h3 class="modal-title" id="modalCondicionesUso">@Model.ModalCabs7.Titulo</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -14,7 +14,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <div class="accordion" id="accordionExample">
-                                @foreach (var item in Model.listModalDet)
+                                @foreach (var item in Model.ListModalDet12)
                                 {
                                     <div >
                                         <h2 class="accordion-header" id="headingOne">

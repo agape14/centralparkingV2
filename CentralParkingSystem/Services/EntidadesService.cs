@@ -1,4 +1,5 @@
 ﻿using CentralParkingSystem.DTOs;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 
@@ -7,10 +8,22 @@ namespace CentralParkingSystem.Services
     public class EntidadesService
     {
         private readonly HttpClient _httpClient;
-
-        public EntidadesService(HttpClient httpClient)
+        private readonly IConfiguration _configuration;
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
+        public EntidadesService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            //if (File.Exists(launchSettingsPath))
+            //{
+            //    var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+            //    var launchSettings = JObject.Parse(launchSettingsJson);
+
+            //    // Acceder al perfil "ApiBD" y obtener la URL
+            //    apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            //}
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
         }
 
         public async Task<List<Entidades>> ListarEntidades()
@@ -19,7 +32,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = "http://localhost:82/api/entidades";
+                var url = apiUrl+ "/api/entidades";
 
                 var response = await _httpClient.GetAsync(url);
 

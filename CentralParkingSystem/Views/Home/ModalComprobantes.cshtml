@@ -1,12 +1,12 @@
 ﻿@model CentralParkingSystem.ViewModel.ModalCombinadoCabDet;
-@if (Model.listModalDet.Count!= 0)
+@if (Model.listModalDet9.Count!= 0)
 {
 
     <div class="modal fade" id="modal_comprobantes" tabindex="-1" aria-labelledby="modalcomprobantes" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content rounded-1">
                 <div class="modal-header ">
-                    <h3 class="modal-title" id="modalcomprobantes">@Model.modalCab.Titulo</h3>
+                    <h3 class="modal-title" id="modalcomprobantes">@Model.modalCab5.Titulo</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -16,7 +16,7 @@
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#collapseComprob1"
                                         aria-expanded="true" aria-controls="collapseComprob1">
-                                    @Model.modalCab.Titulo
+                                    @Model.modalCab5.Titulo
                                 </button>
                             </h2>
                             <div id="collapseComprob1" class="accordion-collapse collapse"
@@ -24,7 +24,7 @@
                                 <div class="accordion-body">
 
                                     <ul class="list-group">
-                                        @foreach (var item in Model.listModalDet)
+                                        @foreach (var item in Model.listModalDet9)
                                         {
                                             <li class="list-group-item"><a target="_blank" href="@item.Link"><i class="fa fa-file-invoice-dollar me-1"></i>@item.Titulo</a> </li>
 

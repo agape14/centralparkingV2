@@ -19,7 +19,7 @@ namespace Cms.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarEntrada();
             if (lista.Count == 0)
             {
@@ -33,7 +33,7 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
 
 
@@ -65,7 +65,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbConfModalcab tbConfModalcab)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, int tipoRuta)
         {
 
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
 
             if (id == 0 || lista == null)
@@ -123,7 +123,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbConfModalcab tbConfModalcab)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
             var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
 
@@ -164,7 +164,7 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
 
             if (id == 0 || lista == null)
@@ -186,7 +186,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicio = new ModaleCabeceraService(new HttpClient());
+            var servicio = new ModaleCabeceraCmsService(new HttpClient());
             var lista = await servicio.listarModalCabecera();
 
             if (lista == null)

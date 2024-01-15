@@ -75,7 +75,7 @@ namespace Cms.Controllers
                 contadorUsuarios = usuarioCollection.Count;
             }
 
-            var contacto = new ContactanoService(new HttpClient());
+            var contacto = new ContactanoCmsService(new HttpClient());
             var contactoLista = await contacto.ListarContactos();
             int contadorContactos = 0;
             if (contactoLista is ICollection<TbFormContactano> contactoCollection)
@@ -95,7 +95,7 @@ namespace Cms.Controllers
                     int contadorCoti = 0;
                     foreach (var servicio in serviciosCollection)
                     {
-                        var cotizano = new CotizanosService(new HttpClient());
+                        var cotizano = new CotizanoCmsService(new HttpClient());
                         var cotizanoLista = await cotizano.ListarCotizanos(servicio.Id);
 
                         if (cotizanoLista is ICollection<TbFormCotizano> cotizanoCollection)
@@ -108,7 +108,7 @@ namespace Cms.Controllers
                 
             }
             int contadorProvedores = 0;
-            var proveedor = new ProveedorService(new HttpClient());
+            var proveedor = new ProveedorCmsService(new HttpClient());
             var proveedorLista = await proveedor.ListarProveedores();
             if (proveedorLista is ICollection<TbFormProveedore> proveedorCollection)
             {
@@ -116,7 +116,7 @@ namespace Cms.Controllers
             }
 
             int contadorHojaRecla = 0;
-            var hojarecla = new HojaReclamacioneService(new HttpClient());
+            var hojarecla = new HojaReclamacioneCmsService(new HttpClient());
             var hojareclaLista = await hojarecla.ListarHojaReclamaciones();
             if (hojareclaLista is ICollection<TbFormHojareclamacione> hojareclaCollection)
             {
@@ -124,7 +124,7 @@ namespace Cms.Controllers
             }
 
             int contadorParking = 0;
-            var parking = new ParkingCardService(new HttpClient());
+            var parking = new ParkingCardCmsService(new HttpClient());
             var parkingLista = await parking.ListarParkingCard();
             if (parkingLista is ICollection<TbFormParkingcard> parkingCollection)
             {

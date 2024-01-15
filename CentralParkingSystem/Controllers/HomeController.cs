@@ -17,30 +17,75 @@ namespace CentralParkingSystem.Controllers;
 
 public class HomeController : Controller
 {
-    
 
+    private readonly SlideService _slideService;
+    private readonly ServiciosCabsService _serviciosCabsservice;
+    private readonly ServiciosdetsService _serviciosdetsService;
+    private readonly CaracteristicasService _caracteristicasService;
+    private readonly ModaleCabeceraService _modaleCabeceraService;
+    private readonly ModaleDetalleService _modaleDetalleService;
+    private readonly RedesSocialesService _redesSocialesService;
+    private readonly MenusService _menusService;
+    private readonly PiePaginaCabsService _piePaginaCabsService;
+    private readonly PiePaginaDetsService _piePaginaDetsService;
+    private readonly EntidadesService _entidadesService;
+    private readonly PaginasCabsService _paginasCabsService;
+    private readonly PuestoService _puestoService;
+    private readonly RubroService _rubroService;
+
+    public HomeController(SlideService slideService, 
+        ServiciosCabsService serviciosCabsservice,
+        ServiciosdetsService serviciosdetsService,
+        CaracteristicasService caracteristicasService,
+        EntidadesService entidadesService,
+        RedesSocialesService redesSocialesService,
+        MenusService menusService,
+        PiePaginaCabsService piePaginaCabsService,
+        PiePaginaDetsService piePaginaDetsService,
+        ModaleCabeceraService modaleCabeceraService,
+        ModaleDetalleService modalDetalleservice,
+        PaginasCabsService paginasCabsService,
+        PuestoService puestoService,
+        RubroService rubroService
+        )
+    {
+        _slideService = slideService;
+        _serviciosCabsservice = serviciosCabsservice;
+        _serviciosdetsService = serviciosdetsService;
+        _caracteristicasService = caracteristicasService;
+        _entidadesService = entidadesService;
+        _redesSocialesService = redesSocialesService;
+        _menusService = menusService;
+        _piePaginaCabsService = piePaginaCabsService;
+        _piePaginaDetsService = piePaginaDetsService;
+        _modaleCabeceraService = modaleCabeceraService;
+        _modaleDetalleService = modalDetalleservice;
+        _paginasCabsService = paginasCabsService;
+        _puestoService = puestoService;
+        _rubroService=rubroService;
+    }
     public async Task<IActionResult> Index()
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades(); //entidad.ListarEntidades();
 
-        if(listEntidad.Count == 0)
+        if (listEntidad.Count == 0)
         {
             Entidades objEntidad = new Entidades();
             listEntidad.Add(objEntidad);
         }
 
 
-        var redSocial = new RedesSocialesService(new HttpClient());
-        var listRedes = await redSocial.ListarRedSociales();
+        //var redSocial = new RedesSocialesService(new HttpClient());
+        var listRedes = await _redesSocialesService.ListarRedSociales(); //redSocial.ListarRedSociales();
         if(listRedes.Count == 0)
         {
             RedesSociales objRedesSociales = new RedesSociales();
             listRedes.Add(objRedesSociales);
         }
 
-        var menu = new MenusService(new HttpClient());
-        var listMenu =await  menu.ListarMenus();
+        //var menu = new MenusService(new HttpClient());
+        var listMenu = await  _menusService.ListarMenus();// menu.ListarMenus();
         listMenu = listMenu.Where(item => item.TipoProyecto == "web").ToList();
         if (listMenu.Count == 0)
         {
@@ -48,8 +93,8 @@ public class HomeController : Controller
             listMenu.Add(objResult);
         }
 
-        var subMenu = new MenusService(new HttpClient());
-        var listSubMenu = await subMenu.ListarSubMenus();
+        //var subMenu = new MenusService(new HttpClient());
+        var listSubMenu = await _menusService.ListarSubMenus();//subMenu.ListarSubMenus();
         if(listSubMenu.Count == 0)
         {
             SubMenus objSubMenu = new SubMenus();
@@ -57,8 +102,8 @@ public class HomeController : Controller
         }
 
 
-        var PiePaginaCab = new PiePaginaCabsService(new HttpClient());
-        var listPie = await PiePaginaCab.ListarPiePaginasCabs();
+        //var PiePaginaCab = new PiePaginaCabsService(new HttpClient());
+        var listPie = await _piePaginaCabsService.ListarPiePaginasCabs();// PiePaginaCab.ListarPiePaginasCabs();
         if(listPie.Count == 0)
         {
             PiePaginaCabs objPaginaCab = new PiePaginaCabs();
@@ -66,12 +111,12 @@ public class HomeController : Controller
         }
 
 
-        var PieDet = new PiePaginaDetsService(new HttpClient());
-        var listPieDet = await PieDet.ListarPiePaginaDets();
+        //var PieDet = new PiePaginaDetsService(new HttpClient());
+        var listPieDet = await _piePaginaDetsService.ListarPiePaginaDets();// PieDet.ListarPiePaginaDets();
         
 
-        var IServicio = new ServiciosCabsService(new HttpClient());
-        var listIServicios = await IServicio.ListarServiciosCabs();
+        //var IServicio = new ServiciosCabsService(new HttpClient());
+        var listIServicios = await _serviciosCabsservice.ListarServiciosCabs(); //IServicio.ListarServiciosCabs();
 
         if(listIServicios.Count == 0)
         {
@@ -80,8 +125,8 @@ public class HomeController : Controller
         }
 
 
-        var ServicioDet = new ServiciosdetsService(new HttpClient());
-        var listIServiciodets = await ServicioDet.ListarServiciosdets();
+        //var ServicioDet = new ServiciosdetsService(new HttpClient());
+        var listIServiciodets = await _serviciosdetsService.ListarServiciosdets(); //ServicioDet.ListarServiciosdets();
         if(listIServiciodets.Count == 0)
         {
             TbIndServiciodet objIndServicioDet = new TbIndServiciodet();
@@ -109,23 +154,36 @@ public class HomeController : Controller
 
 
 
-        var instancia = new CaracteristicasService(new HttpClient());
-        var caracteristicasLista = await instancia.ListarCaracteristicas();
-        if(caracteristicasLista.Count == 0)
+        //var instancia = new CaracteristicasService(new HttpClient());
+        var caracteristicasLista = await _caracteristicasService.ListarCaracteristicas(); //instancia.ListarCaracteristicas();
+        if (caracteristicasLista.Count == 0)
         {
             TbIndCaracteristica objCaracteristicas = new TbIndCaracteristica();
             caracteristicasLista.Add(objCaracteristicas);
         }
 
-        var Slide = new SlideService(new HttpClient());
-        var listSlide = await Slide.ListarSlide();
+        //var Slide = new SlideService(new HttpClient());
+        var listSlide = await  _slideService.ListarSlide();
         if (listSlide.Count == 0)
         {
             TbIndSlidecab objSlide = new TbIndSlidecab();
             listSlide.Add(objSlide);
         }
 
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
 
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         var model = new IndexVM()
         {
 
@@ -133,7 +191,20 @@ public class HomeController : Controller
             ServiciosDet =  listIServiciodets,
             SlideCad =  listSlide,
             Valores = caracteristicasLista,
-    };
+            ModalCabs2 = modalcab2,
+            ListModalDet6= modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9= modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
 
         return View(model);
 
@@ -147,8 +218,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ParkingCard(TbFormParkingcard tbFormParkingcard)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -190,10 +261,39 @@ public class HomeController : Controller
     
     public async Task<IActionResult> Nosotros()
     {
-        var paginasCab = new PaginasCabsService(new HttpClient());
+        //var paginasCab = new PaginasCabsService(new HttpClient());
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        var nosotros = await _paginasCabsService.paginasCabsPorDefault();
+        // paginasCab.paginasCabsPorDefault(),
         var model = new IndexVM()
         {
-            PaginaCab = await paginasCab.paginasCabsPorDefault()
+            PaginaCab = nosotros, 
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
         };
         if (model.PaginaCab == null)
         {
@@ -369,8 +469,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Contactanos([Bind("Id,Nombre,CorreoElectronico,Asunto,Mensaje,TipoServicio")] TbFormContactano tbFormContactano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades() ;// entidad.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -397,8 +497,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosAdministracion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -423,8 +523,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -451,8 +551,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosValetParking([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -477,8 +577,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosEventos([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,FechaEvento,CorreoElectronico,Comentario,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -503,8 +603,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosPrevencion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -529,8 +629,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CotizanosRentabilizacion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -554,10 +654,37 @@ public class HomeController : Controller
     // ============================ Trabaja con Nosotros ============================
     public async Task<IActionResult> Trabajaconnosotros()
     {
-        var puesto = new PuestoService(new HttpClient());
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
         var model = new IndexVM()
         {
-            Puestos = await puesto.ListarPuestos(),
+            Puestos = await _puestoService.ListarPuestos(), 
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
         };
 
         if (model.Puestos.Count == 0)
@@ -593,8 +720,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Postulacion([Bind("Id,TipoDocumento,Nombre,Apellido,FechaNacimiento,CorreoElectronico,Departamento,Provincia,Distrito,Puesto,InformacionAdicional,NumeroDocumento,Celular,Medio")] TbFormTbcnosotro tbFormTbcnosotro)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {
@@ -619,9 +746,40 @@ public class HomeController : Controller
     public async Task<IActionResult> Proveedores()
     {
 
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        var model = new IndexVM()
+        {
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
         //Listando Rubros
-        var menu = new RubroService(new HttpClient());
-        var menuLista = await menu.ListarRubros();
+        //var menu = new RubroService(new HttpClient());
+        var menuLista = await _rubroService.ListarRubros();//menu.ListarRubros();
         var menuItems = menuLista.Select(m => new SelectListItem
         {
             Value = m.Rubro,
@@ -635,7 +793,7 @@ public class HomeController : Controller
             "Text"
         );
 
-        return View();
+        return View(model);
     }
     
     
@@ -667,8 +825,8 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> HojaReclamaciones(TbFormHojareclamacione tbFormHojareclamacione)
     {
-        var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await entidad.ListarEntidades();
+        //var entidad = new EntidadesService(new HttpClient());
+        var listEntidad = await _entidadesService.ListarEntidades();
 
         if (listEntidad.Count == 0)
         {

@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 
 namespace CentralParkingSystem.Services
@@ -6,16 +7,25 @@ namespace CentralParkingSystem.Services
     public class PostulacionService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PostulacionService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
+            }
         }
 
 
         public async Task<TbFormTbcnosotro> crearPostulacion(TbFormTbcnosotro tbFormTbcnosotro)
         {
-            var url = "http://localhost:82/api/postulacion";
+            var url = apiUrl+"/api/postulacion";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormTbcnosotro);
 

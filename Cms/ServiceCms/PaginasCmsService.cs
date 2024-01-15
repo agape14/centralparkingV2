@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.DTOs;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,10 +11,19 @@ namespace Cms.ServiceCms
     public class PaginasCmsService
     {
         private readonly HttpClient _httpClient;
-
+        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private string apiUrl = "";
         public PaginasCmsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            if (File.Exists(launchSettingsPath))
+            {
+                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
+                var launchSettings = JObject.Parse(launchSettingsJson);
+
+                // Acceder al perfil "ApiBD" y obtener la URL
+                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
+            }
         }
 
         public async Task<List<TbConfPaginascab>> paginasListar()
@@ -22,7 +32,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = "http://localhost:82/api/paginas";
+                var url = apiUrl + "/api/paginas";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -47,7 +57,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> obtenerPaginaDetalle(int id)
         {
-            var response = await _httpClient.GetAsync($"http://localhost:82/api/paginas/{id}");
+            var response = await _httpClient.GetAsync($"{apiUrl}/api/paginas/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -67,7 +77,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> crearPagina(TbConfPaginascab tbConfPaginascab)
         {
-            var url = "http://localhost:82/api/paginas"; 
+            var url = apiUrl + "/api/paginas"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginascab);
 
@@ -86,7 +96,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginascab> modificarPagina(int id, TbConfPaginascab tbConfPaginascab)
         {
-            var url = $"http://localhost:82/api/paginas/{id}"; 
+            var url = $"{apiUrl}/api/paginas/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginascab);
 
@@ -104,7 +114,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPagina(int id)
         {
-            var url = $"http://localhost:82/api/paginas/{id}"; 
+            var url = $"{apiUrl}/api/paginas/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

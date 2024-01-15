@@ -21,7 +21,7 @@ namespace Cms.Controllers
         // GET: IServiciosdet
         public async Task<IActionResult> Index(int codigo)
         {
-            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDet = new IServiciodetCmsService(new HttpClient());
           
 
             var servicioDetLista = await servicioDet.ListarServiciosdets();
@@ -43,7 +43,7 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Details/5
         public async Task<IActionResult> Details(int id, int codigo)
         {
-            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDet = new IServiciodetCmsService(new HttpClient());
             var servicioDetLista = await servicioDet.ListarServiciosdets();
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
@@ -66,7 +66,7 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Create
         public async Task<IActionResult> Create(int? codigo)
         {
-            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
             var menu = new MenuCmsService(new HttpClient());
             var menuLista = await menu.listarMenus();
@@ -91,7 +91,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdCab,Icono,Titulo,Detalle,Ruta,Imagen")] TbIndServiciodet tbIndServiciodet)
         {
-            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
             var servicioDet = new IServiciodetCmsService(new HttpClient());
 
@@ -121,11 +121,11 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Edit/5
         public async Task<IActionResult> Edit(int id, int codigo)
         {
-            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDet = new IServiciodetCmsService(new HttpClient());
             var servicioDetLista = await servicioDet.ListarServiciosdets();
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
-            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
 
             var menu = new MenuCmsService(new HttpClient());
@@ -167,7 +167,7 @@ namespace Cms.Controllers
         {
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
-            var servicioCab = new ServiciosCabsService(new HttpClient());
+            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
             var servicioCabLista = await servicioCab.ListarServiciosCabs();
             ViewData["vServicioId"] = tbIndServiciodet.IdCab;
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
@@ -234,7 +234,7 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Delete/5
         public async Task<IActionResult> Delete(int id, int codigo)
         {
-            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDet = new IServiciodetCmsService(new HttpClient());
             var servicioDetLista = await servicioDet.ListarServiciosdets();
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
@@ -257,7 +257,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicioDet = new ServiciosdetsService(new HttpClient());
+            var servicioDet = new IServiciodetCmsService(new HttpClient());
             var servicioDetLista = await servicioDet.ListarServiciosdets();
             var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
