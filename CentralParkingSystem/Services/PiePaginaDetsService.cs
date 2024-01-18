@@ -18,8 +18,6 @@ namespace CentralParkingSystem.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
-
-            // Acceder al perfil "ApiBD" y obtener la URL
             apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
             _httpClient.BaseAddress = new Uri(apiUrl);
             

@@ -8,19 +8,14 @@ namespace CentralParkingSystem.Services
     public class PaginasCabsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PaginasCabsService(HttpClient httpClient)
+        public PaginasCabsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<TbConfPaginascab> paginasCabsPorDefault()
@@ -29,7 +24,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = apiUrl+"/api/paginas/nosotros";
+                var url = "/api/paginas/nosotros";
 
                 var response = await _httpClient.GetAsync(url);
 

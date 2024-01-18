@@ -12,19 +12,14 @@ namespace CentralParkingSystem.Services
     public class PuestoService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PuestoService(HttpClient httpClient)
+        public PuestoService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
 
@@ -35,7 +30,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = apiUrl+"/api/puesto";
+                var url = "/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 
