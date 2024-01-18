@@ -8,6 +8,13 @@ namespace Cms.Controllers
 {
     public class CotizanosCmsController : Controller
     {
+        private readonly CotizanosService _cotizanosService;
+        public CotizanosCmsController(CotizanosService cotizanosService)
+        {
+
+            _cotizanosService = cotizanosService;
+
+        }
         public async Task<IActionResult> Index(int codigo)
         {
             ViewData["TipoServicio"] = codigo;
@@ -62,8 +69,8 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var contactos = new CotizanosService(new HttpClient());
-            var contacto = await contactos.obtenerCotizanoDetalle(id);
+            //var contactos = new CotizanosService(new HttpClient());
+            var contacto = await _cotizanosService.obtenerCotizanoDetalle(id);
             if (contacto == null)
             {
                 return NotFound();

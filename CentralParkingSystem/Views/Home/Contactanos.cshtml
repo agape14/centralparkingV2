@@ -1,4 +1,4 @@
-﻿@model ApiBD.Models.TbFormContactano;
+﻿@model ApiBD.Models.Home.IndexVM;
 
 @{
     ViewData["Title"] = "Contactanos";
@@ -36,7 +36,7 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="form-floating">
-                                <select class="form-control border-0 bg-light" id="cbxTipoServicio" asp-for="TipoServicio"
+                                <select class="form-control border-0 bg-light" id="cbxTipoServicio" asp-for="@Model.TbFormContactanos.TipoServicio"
                                         placeholder="Tipo Servicio">
                                     <option value="0">Seleccione Tipo de Servicio</option>
                                     <option value="1">ADMINISTRACIÓN DE ESTACIONAMIENTOS</option>
@@ -48,25 +48,25 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres" asp-for="Nombre"> 
+                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres" asp-for="@Model.TbFormContactanos.Nombre">
                                 <label for="name">Nombres</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico" asp-for="CorreoElectronico">
+                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico" asp-for="@Model.TbFormContactanos.CorreoElectronico">
                                 <label for="email">Correo electrónico</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto" asp-for="Asunto">
+                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto" asp-for="@Model.TbFormContactanos.Asunto">
                                 <label for="subject">Asunto</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px" asp-for="Mensaje"></textarea>
+                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px" asp-for="@Model.TbFormContactanos.Mensaje"></textarea>
                                 <label for="message">Mensaje</label>
                             </div>
                         </div>

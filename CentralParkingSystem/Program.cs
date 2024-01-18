@@ -11,6 +11,14 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<CentralParkingContext>();
 
 // Agregar configuración para IHttpClientFactory y IConfiguration 
+builder.Services.AddHttpClient<ContactanoService>();
+builder.Services.AddHttpClient<CotizanosService>();
+builder.Services.AddHttpClient<HojaReclamacioneService>();
+builder.Services.AddHttpClient<ParkingCardService>();
+builder.Services.AddHttpClient<PostulacionService>();
+builder.Services.AddHttpClient<ProveedorService>();
+builder.Services.AddHttpClient<ServicioCabeceraService>();
+builder.Services.AddHttpClient<ServicioDetalleService>();
 builder.Services.AddHttpClient<SlideService>();
 builder.Services.AddHttpClient<ServiciosCabsService>();
 builder.Services.AddHttpClient<ServiciosdetsService>();

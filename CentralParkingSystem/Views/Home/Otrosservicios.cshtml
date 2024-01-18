@@ -1,4 +1,4 @@
-﻿@model  List<ApiBD.Models.TbServCabecera>
+﻿@model ApiBD.Models.Home.IndexVM;
 @{
     ViewData["Title"] = "Otros Servicios";
 }
@@ -21,7 +21,7 @@
     var counter = 0;
 }
 
-@foreach (var valor in Model)
+@foreach (var valor in Model.ListServCabecera)
 {
     @if (valor.Id != 0)
     {
