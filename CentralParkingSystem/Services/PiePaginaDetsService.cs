@@ -13,33 +13,17 @@ namespace CentralParkingSystem.Services
     {
         private readonly HttpClient _httpClient;
         private readonly string apiUrl;
-
-        public PiePaginaDetsService(HttpClient httpClient)
+        private readonly IConfiguration _configuration;
+        public PiePaginaDetsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
 
-            var launchSettingsPath = Path.Combine("CentralParkingSystem", "Properties", "launchSettings.json");
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-
-                if (!string.IsNullOrWhiteSpace(apiUrl))
-                {
-                    _httpClient.BaseAddress = new Uri(apiUrl);
-                }
-                else
-                {
-                    throw new InvalidOperationException("La URL de la API no está configurada correctamente.");
-                }
-            }
-            else
-            {
-                throw new FileNotFoundException("El archivo launchSettings.json no se encontró.");
-            }
+            // Acceder al perfil "ApiBD" y obtener la URL
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
+            
+           
         }
 
         public async Task<List<TbConfPiepaginadet>> ListarPiePaginaDets()
