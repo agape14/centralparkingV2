@@ -334,7 +334,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Adminestacionamiento()
     {
         int contador = 1;
-        ServicioDetalleDtos objeto = new ServicioDetalleDtos();
+        ServiceDetails objeto = new ServiceDetails();
         
         //var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
         var servicio = await _servicioDetalleService.obtenerServicioDetalle(1);
@@ -354,12 +354,80 @@ public class HomeController : Controller
             }
 
         }
-        return View(objeto);
+        //return View(objeto);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            ServicioDetalles = objeto,
+        };
+        return View(model);
     }
 
-    public IActionResult Cotizacionadministracion()
+    public async Task<IActionResult> Cotizacionadministracion()
     {
-        return View();
+        //return View();
+        //return View(objeto);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+        return View(model);
     }
 
     // ============================ Abonados ============================
@@ -1118,7 +1186,7 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult Postulacion(int idpostulacion)
+    public async Task<IActionResult> Postulacion(int idpostulacion)
     {
         TbFormTbcnosotro form = new TbFormTbcnosotro();
         if (idpostulacion == 1)
@@ -1131,7 +1199,41 @@ public class HomeController : Controller
         {
             form.Puesto = "Agente Servicio" ;
         }
-        return View(form);
+       // return View(form);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            TbFormTbcnosotros = form,
+        };
+        return View(model);
     }
 
     // POST: Postulacion/Create

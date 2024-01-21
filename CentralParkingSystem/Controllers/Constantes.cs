@@ -33,5 +33,6 @@
         public const int codigoPieDetPrivacidad = 14;
         public const int codigoPieDetLegal = 15;
         public const int codigoPieDetCalidad = 16;
+        public const int codigoPieDetAcceder = 17;
     }
 }

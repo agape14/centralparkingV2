@@ -27,5 +27,8 @@ public class IndexVM
     public List<TbServCabecera> ListServCabecera { get; set; }
     public TbFormCotizano TbFormCotizanos { get; set; }
     public ServiceDetails ServicioDetalles { get; set; }
-    public TbFormContactano TbFormContactanos { get; set; }
+    public TbFormContactano FormContactanos { get; set; }
+    public TbFormTbcnosotro TbFormTbcnosotros { get; set; }
+    public TbFormHojareclamacione HojaReclamaciones { get; set; }
+    
 }

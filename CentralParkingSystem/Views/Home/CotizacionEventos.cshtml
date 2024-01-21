@@ -1,8 +1,8 @@
 ﻿@{
-    @model ApiBD.Models.TbFormCotizano;
+    @model ApiBD.Models.Home.IndexVM;
     ViewData["Title"] = "Cotizacion de Eventos";
 }
-<!-- Page Header Start -->
+<!-- Page Header Start  -->
 <div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
     <div class="container text-center">
         <h1 class="display-4 text-white animated slideInDown mb-4">Cotizacion de Eventos</h1>
@@ -47,7 +47,7 @@
                 <form asp-action="CotizanosEventos">
                     <div class="col-12">
                         <div class="form-floating">
-                            <select class="form-control border-0 bg-light mb-4" id="tipoServicio"  placeholder="Tipo Servicio" asp-for="TipoServicio">
+                            <select class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="@Model.TbFormCotizanos.TipoServicio">
                                 <option value="4">EVENTOS</option>
                             </select>
                             <label for="tipoServicio">Tipo de Servicio</label>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="Distrito">
+                            <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="@Model.TbFormCotizanos.Distrito">
                                 <option value="Cercado de Lima">Cercado de Lima</option>
                                 <option value="Miraflores">Miraflores</option>
                                 <option value="Pueblo Libre">Pueblo Libre</option>
@@ -67,57 +67,57 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input required type="text" class="form-control border-0 bg-light mb-4" id="direccion" name="direccion" placeholder="Direccion Estacionamiento" asp-for="Direccion">
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="direccion" name="direccion" placeholder="Direccion Estacionamiento" asp-for="@Model.TbFormCotizanos.Direccion">
                             <label for="direccion">Dirección Estacionamiento</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input required pattern="[0-9]{11}" maxlength="11"  title="Ingrese un RUC válido" type="text" class="form-control border-0 bg-light mb-4" id="ruc" name="ruc" placeholder="RUC" asp-for="Ruc">
+                            <input required pattern="[0-9]{11}" maxlength="11" title="Ingrese un RUC válido" type="text" class="form-control border-0 bg-light mb-4" id="ruc" name="ruc" placeholder="RUC" asp-for="@Model.TbFormCotizanos.Ruc">
                             <label for="ruc">RUC</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <input required type="text" class="form-control border-0 bg-light mb-4" id="razonSocial" name="razonSocial" placeholder="Direccion Estacionamiento" asp-for="Direccion">
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="razonSocial" name="razonSocial" placeholder="Direccion Estacionamiento" asp-for="@Model.TbFormCotizanos.Direccion">
                             <label for="razonSocial">Razón Social</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating">
-                            <input required type="text" class="form-control border-0 bg-light mb-4" id="contacto" name="contacto" placeholder="Datos del Contacto" asp-for="Contacto">
+                            <input required type="text" class="form-control border-0 bg-light mb-4" id="contacto" name="contacto" placeholder="Datos del Contacto" asp-for="@Model.TbFormCotizanos.Contacto">
                             <label for="contacto">Datos del Contacto</label>
                         </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input required pattern="[0-9]{9}" maxlength="9" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
+                                <input required pattern="[0-9]{9}" maxlength="9" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="@Model.TbFormCotizanos.Celular">
                                 <label for="celular">Celular</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
+                                <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="@Model.TbFormCotizanos.Telefono">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating">
-                                <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="CorreoElectronico">
+                                <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="@Model.TbFormCotizanos.CorreoElectronico">
                                 <label for="correoElectronico">Correo electrónico</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="date" class="form-control border-0 bg-light mb-4" required min="@DateTime.Now.ToString("yyyy-MM-dd")"  id="fechaEvento" name="fechaEvento" asp-for="FechaEvento" min="">
+                                <input type="date" class="form-control border-0 bg-light mb-4" required min="@DateTime.Now.ToString("yyyy-MM-dd")" id="fechaEvento" name="fechaEvento" asp-for="@Model.TbFormCotizanos.FechaEvento" min="">
                                 <label for="fechaEvento">Fecha del Evento</label>
                                 <small>Todo evento será atendido con una anticipación mínima de 5 días hábiles, cualquier variación en los tiempos será coordinado en interno con el área comercial.</small>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea name="comentario" id="comentario" placeholder="Detalles" cols="30" rows="10" style="height: 250px;" class="form-control border-0 bg-light mb-4" asp-for="Comentario"></textarea>
+                                <textarea name="comentario" id="comentario" placeholder="Detalles" cols="30" rows="10" style="height: 250px;" class="form-control border-0 bg-light mb-4" asp-for="@Model.TbFormCotizanos.Comentario"></textarea>
                                 <label for="comentario">Ingrese los detalles</label>
                             </div>
                         </div>
