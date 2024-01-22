@@ -10,19 +10,14 @@ namespace Cms.ServiceCms
     public class ConfBotonesCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public ConfBotonesCmsService(HttpClient httpClient)
+        public ConfBotonesCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfBotone>> listarBotones()
@@ -31,7 +26,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/botones";
+                var url = "/api/botones";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -60,7 +55,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"{apiUrl}/api/botones/banner/{codigo}";
+                var url = $"/api/botones/banner/{codigo}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -85,7 +80,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> obtenerBotonDetalle(int id)
         {
-            var url = $"{apiUrl}/api/botones/{id}"; 
+            var url = $"/api/botones/{id}"; 
 
             try
             {
@@ -121,7 +116,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> crearBoton(TbConfBotone boton)
         {
-            var url = apiUrl + "/api/botones"; 
+            var url = "/api/botones"; 
 
             try
             {
@@ -155,7 +150,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarBoton(int id)
         {
-            var url = $"{apiUrl}/api/botones/{id}";
+            var url = $"/api/botones/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -176,7 +171,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfBotone> modificarBoton(int id, TbConfBotone boton)
         {
-            var url = $"{apiUrl}/api/botones/{id}"; 
+            var url = $"/api/botones/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

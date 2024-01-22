@@ -11,19 +11,14 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public SlideCmsService(HttpClient httpClient)
+        public SlideCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
         public async Task<List<TbIndSlidecab>> ListarSlide()
         {
@@ -31,7 +26,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/slide";
+                var url = "/api/slide";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -60,7 +55,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"{apiUrl}/api/slide/{id}";
+                var url = $"/api/slide/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -86,7 +81,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> CreateSlide(TbIndSlidecab tbIndSlidecab)
         {
-            var url = apiUrl+"/api/slide"; 
+            var url = "/api/slide"; 
 
             try
             {
@@ -114,7 +109,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> DeleteSlide(uint id)
         {
-            var url = $"{apiUrl}/api/slide/{id}"; 
+            var url = $"/api/slide/{id}"; 
 
             try
             {
@@ -138,7 +133,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndSlidecab> UpdateSlide(uint id, TbIndSlidecab slide)
         {
-            var url = $"{apiUrl}/api/slide/{id}"; 
+            var url = $"/api/slide/{id}"; 
 
             try
             {

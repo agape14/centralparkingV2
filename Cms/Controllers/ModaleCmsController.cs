@@ -11,16 +11,19 @@ namespace Cms.Controllers
     public class ModaleCmsController : Controller
     {
         private readonly HelperUploadFiles _helperUpload;
-
-        public ModaleCmsController(HelperUploadFiles helperUpload)
+        ModaleCabeceraCmsService _modaleCabeceraCmsService;
+        MenuCmsService _menuCmsService;
+        public ModaleCmsController(HelperUploadFiles helperUpload, ModaleCabeceraCmsService modaleCabeceraCmsService, MenuCmsService menuCmsService)
         {
             _helperUpload = helperUpload;
+            _modaleCabeceraCmsService = modaleCabeceraCmsService;
+            _menuCmsService = menuCmsService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarEntrada();
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarEntrada();
             if (lista.Count == 0)
             {
                 TbConfPiepaginadet objPiePaginaDet = new TbConfPiepaginadet();
@@ -33,8 +36,8 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarModalCabecera();
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarModalCabecera();
 
 
             if (id == 0 || lista == null)
@@ -42,7 +45,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
+            var modal = await _modaleCabeceraCmsService.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -65,11 +68,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbConfModalcab tbConfModalcab)
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await servicio.crearModalCabRegistro(tbConfModalcab);
+                await _modaleCabeceraCmsService.crearModalCabRegistro(tbConfModalcab);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbConfModalcab);
@@ -79,15 +82,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, int tipoRuta)
         {
 
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarModalCabecera();
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarModalCabecera();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
+            var modal = await _modaleCabeceraCmsService.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -95,8 +98,8 @@ namespace Cms.Controllers
 
 
             //Listando Menu
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
             {
                 Value = m.Ruta,
@@ -123,9 +126,9 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbConfModalcab tbConfModalcab)
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarModalCabecera();
-            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarModalCabecera();
+            var modal = await _modaleCabeceraCmsService.obtenerModalCabeceraDetalleFijo(id);
 
             tbConfModalcab.IdDetallePie = id;
             id = modal.Id;
@@ -150,7 +153,7 @@ namespace Cms.Controllers
                         path = await _helperUpload.UploadFilesAsync(file, nombreImagen, Providers.Folders.Documents);
                         tbConfModalcab.BtnRuta = "/docs/" + nombreImagen;
                     }
-                    await servicio.modificarModalCab(id, tbConfModalcab);
+                    await _modaleCabeceraCmsService.modificarModalCab(id, tbConfModalcab);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -164,15 +167,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarModalCabecera();
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarModalCabecera();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalCabeceraDetalleFijo(id);
+            var modal = await _modaleCabeceraCmsService.obtenerModalCabeceraDetalleFijo(id);
             if (modal == null)
             {
                 return NotFound();
@@ -186,8 +189,8 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicio = new ModaleCabeceraCmsService(new HttpClient());
-            var lista = await servicio.listarModalCabecera();
+            //var servicio = new ModaleCabeceraCmsService(new HttpClient());
+            var lista = await _modaleCabeceraCmsService.listarModalCabecera();
 
             if (lista == null)
             {
@@ -196,7 +199,7 @@ namespace Cms.Controllers
             
             if (lista != null)
             {
-                await servicio.eliminarModalCab(id);
+                await _modaleCabeceraCmsService.eliminarModalCab(id);
             }
 
 

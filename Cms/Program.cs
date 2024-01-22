@@ -1,7 +1,8 @@
 using ApiBD.Models;
 using Cms.Helpers;
 using Cms.Providers;
-using Microsoft.Extensions.DependencyInjection;
+using Cms.Service;
+using Cms.ServiceCms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,34 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<CentralParkingContext>();
 
+builder.Services.AddHttpClient<CaracteristicaCmsService>();
+builder.Services.AddHttpClient<ConfBotonesCmsService>();
+builder.Services.AddHttpClient<ContactanoCmsService>();
+builder.Services.AddHttpClient<CotizanoCmsService>();
+builder.Services.AddHttpClient<EntidadCmsService>();
+builder.Services.AddHttpClient<HojaReclamacioneCmsService>();
+builder.Services.AddHttpClient<IServicioCmsService>();
+builder.Services.AddHttpClient<IServiciodetCmsService>();
+builder.Services.AddHttpClient<MenuCmsService>();
+builder.Services.AddHttpClient<ModaleCabeceraCmsService>();
+builder.Services.AddHttpClient<ModaleDetalleCmsService>();
+builder.Services.AddHttpClient<PaginasCmsService>();
+builder.Services.AddHttpClient<PaginasDetCmsService>();
+builder.Services.AddHttpClient<ParkingCardCmsService>();
+builder.Services.AddHttpClient<PermisoCmsService>();
+builder.Services.AddHttpClient<PiePaginaCmsService>();
+builder.Services.AddHttpClient<PiePaginaDetCmsService>();
+builder.Services.AddHttpClient<ProveedorCmsService>();
+builder.Services.AddHttpClient<PuestoCmsService>();
+builder.Services.AddHttpClient<RedesSocialesCmsService>();
+builder.Services.AddHttpClient<RolCmsService>();
+builder.Services.AddHttpClient<RubroCmsService>();
+builder.Services.AddHttpClient<ServicioCabeceraCmsService>();
+builder.Services.AddHttpClient<ServicioDetalleCmsService>();
+builder.Services.AddHttpClient<SlideCmsService>();
+builder.Services.AddHttpClient<UsuarioCmsService>();
+builder.Services.AddHttpClient<UsuarioService>();
+
 
 builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();
@@ -19,7 +48,7 @@ builder.Services.AddSession();
 builder.Services.AddSingleton<PathProvider>();
 builder.Services.AddSingleton<HelperUploadFiles>();
 builder.Services.AddSingleton<CopiarImagenes>();
-
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

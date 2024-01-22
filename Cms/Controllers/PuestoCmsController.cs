@@ -8,11 +8,19 @@ namespace Cms.Controllers
 {
     public class PuestoCmsController : Controller
     {
+        PuestoCmsService _puestoCmsService;
+        MenuCmsService _menuCmsService;
+        public PuestoCmsController(PuestoCmsService puestoCmsService, MenuCmsService menuCmsService)
+        {
+
+            _puestoCmsService = puestoCmsService;
+            _menuCmsService= menuCmsService;
+        }
         // GET: TbTraPuesto
         public async Task<IActionResult> Index()
         {
-            var puesto = new PuestoCmsService(new HttpClient());
-            var puestoLista = await puesto.puestoListar();
+            //var puesto = new PuestoCmsService(new HttpClient());
+            var puestoLista = await _puestoCmsService.puestoListar();
             if(puestoLista.Count == 0)
             {
                 TbTraPuesto objPuesto = new TbTraPuesto();
@@ -28,15 +36,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
-            var puestoLista = await puesto.puestoListar();
+            //var puesto = new PuestoCmsService(new HttpClient());
+            var puestoLista = await _puestoCmsService.puestoListar();
 
             if (id == 0 || puestoLista == null)
             {
                 return NotFound();
             }
 
-            var tbTraPuesto = await puesto.obtenerPuestoDetalle(id);
+            var tbTraPuesto = await _puestoCmsService.obtenerPuestoDetalle(id);
 
             if (tbTraPuesto == null)
             {
@@ -51,8 +59,8 @@ namespace Cms.Controllers
         {
 
             //Listando Menu
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuItems = menuLista.Where(m => m.Padre == 3).Select(m => new SelectListItem
             {
                 Value = m.Ruta,
@@ -76,10 +84,10 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Subtitulo,Requisitos,Ruta,Ocupado")] TbTraPuesto tbTraPuesto)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
+            //var puesto = new PuestoCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
-                await puesto.crearPuesto(tbTraPuesto);  
+                await _puestoCmsService.crearPuesto(tbTraPuesto);  
                 return RedirectToAction(nameof(Index));
             }
 
@@ -89,23 +97,23 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
-            var puestoLista = await puesto.puestoListar();
+            //var puesto = new PuestoCmsService(new HttpClient());
+            var puestoLista = await _puestoCmsService.puestoListar();
 
             if (id == 0 || puestoLista == null)
             {
                 return NotFound();
             }
 
-            var tbTraPuesto = await puesto.obtenerPuestoDetalle(id);
+            var tbTraPuesto = await _puestoCmsService.obtenerPuestoDetalle(id);
             if (tbTraPuesto == null)
             {
                 return NotFound();
             }
 
             //Listando Menu
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuItems = menuLista.Where(m => m.Padre == 3).Select(m => new SelectListItem
             {
                 Value = m.Ruta,
@@ -130,7 +138,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Subtitulo,Requisitos,Ruta,Ocupado")] TbTraPuesto tbTraPuesto)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
+            //var puesto = new PuestoCmsService(new HttpClient());
             
             if (id != tbTraPuesto.Id)
             {
@@ -142,7 +150,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await puesto.modificarPuesto(id, tbTraPuesto);
+                    await _puestoCmsService.modificarPuesto(id, tbTraPuesto);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,15 +166,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
-            var puestoLista = await puesto.puestoListar();
+            //var puesto = new PuestoCmsService(new HttpClient());
+            var puestoLista = await _puestoCmsService.puestoListar();
 
             if (id == 0 || puestoLista == null)
             {
                 return NotFound();
             }
 
-            var tbTraPuesto = await puesto.obtenerPuestoDetalle(id);
+            var tbTraPuesto = await _puestoCmsService.obtenerPuestoDetalle(id);
             if (tbTraPuesto == null)
             {
                 return NotFound();
@@ -180,17 +188,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var puesto = new PuestoCmsService(new HttpClient());
-            var puestoLista = await puesto.puestoListar();
+            //var puesto = new PuestoCmsService(new HttpClient());
+            var puestoLista = await _puestoCmsService.puestoListar();
 
             if (puestoLista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var tbTraPuesto = await puesto.obtenerPuestoDetalle(id);
+            var tbTraPuesto = await _puestoCmsService.obtenerPuestoDetalle(id);
             if (tbTraPuesto != null)
             {
-                await puesto.eliminarPuesto(id);
+                await _puestoCmsService.eliminarPuesto(id);
             }
 
            

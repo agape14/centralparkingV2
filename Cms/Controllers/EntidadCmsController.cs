@@ -7,11 +7,17 @@ namespace Cms.Controllers
 {
     public class EntidadCmsController : Controller
     {
-        // GET: Entidad
+        EntidadCmsService _entidadCmsService;
+        public EntidadCmsController(EntidadCmsService entidadCmsService)
+        {
+
+            _entidadCmsService = entidadCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
             if (entidadLista.Count == 0)
             {
                 TbConfEntidad objEntidad = new TbConfEntidad();
@@ -26,8 +32,8 @@ namespace Cms.Controllers
 
         public async Task<IActionResult> Indexcorreo()
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
             if (entidadLista.Count == 0)
             {
                 TbConfEntidad objEntidad = new TbConfEntidad();
@@ -43,15 +49,15 @@ namespace Cms.Controllers
         // GET: Entidad/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
 
             if (id == 0 || entidadLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            var tbConfEntidad = await _entidadCmsService.obtenerEntidadDetalle(id);
             if (tbConfEntidad == null)
             {
                 return NotFound();
@@ -73,11 +79,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,NameComercial,Ruc,Direccion,Horario,Telefono,Celular,Correo,Favicon,LogoBlanco,LogoOscuro,LogoMini,RutaPagWeb,RedesSociales")] TbConfEntidad tbConfEntidad)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
+            //var entidad = new EntidadCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await entidad.crearEntidad(tbConfEntidad);
+                await _entidadCmsService.crearEntidad(tbConfEntidad);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbConfEntidad);
@@ -86,15 +92,15 @@ namespace Cms.Controllers
         // GET: Entidad/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
 
             if (id == 0 || entidadLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            var tbConfEntidad = await _entidadCmsService.obtenerEntidadDetalle(id);
             if (tbConfEntidad == null)
             {
                 return NotFound();
@@ -104,15 +110,15 @@ namespace Cms.Controllers
 
         public async Task<IActionResult> Correo(int id)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
 
             if (id == 0 || entidadLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            var tbConfEntidad = await _entidadCmsService.obtenerEntidadDetalle(id);
             if (tbConfEntidad == null)
             {
                 return NotFound();
@@ -127,7 +133,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,NameComercial,Ruc,Direccion,Horario,Telefono,Celular,Correo,Favicon,LogoBlanco,LogoOscuro,LogoMini,RutaPagWeb,RedesSociales")] TbConfEntidad tbConfEntidad)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
+            //var entidad = new EntidadCmsService(new HttpClient());
             if (id != tbConfEntidad.Id)
             {
                 return NotFound();
@@ -138,7 +144,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await entidad.modificarEntidad(id, tbConfEntidad);
+                    await _entidadCmsService.modificarEntidad(id, tbConfEntidad);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,15 +160,15 @@ namespace Cms.Controllers
         // GET: Entidad/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
 
             if (id == 0 || entidadLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            var tbConfEntidad = await _entidadCmsService.obtenerEntidadDetalle(id);
             if (tbConfEntidad == null)
             {
                 return NotFound();
@@ -176,17 +182,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
-            var entidadLista = await entidad.listarEntidades();
+            //var entidad = new EntidadCmsService(new HttpClient());
+            var entidadLista = await _entidadCmsService.listarEntidades();
 
             if (entidadLista == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbConfEntidads'  is null.");
             }
-            var tbConfEntidad = await entidad.obtenerEntidadDetalle(id);
+            var tbConfEntidad = await _entidadCmsService.obtenerEntidadDetalle(id);
             if (tbConfEntidad != null)
             {
-                await entidad.eliminarEntidad(id);
+                await _entidadCmsService.eliminarEntidad(id);
             }
 
             
@@ -198,7 +204,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCorreo(int id, [Bind("Id,Name,NameComercial,Ruc,Direccion,Horario,Telefono,Celular,Correo,Favicon,LogoBlanco,LogoOscuro,LogoMini,RutaPagWeb,RedesSociales,Servidor,Puerto,CorreoNotifica,ClaveNotifica,CorreoConCopia")] TbConfEntidad tbConfEntidad)
         {
-            var entidad = new EntidadCmsService(new HttpClient());
+            //var entidad = new EntidadCmsService(new HttpClient());
             if (id != tbConfEntidad.Id)
             {
                 return NotFound();
@@ -209,7 +215,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await entidad.modificarEntidad(id, tbConfEntidad);
+                    await _entidadCmsService.modificarEntidad(id, tbConfEntidad);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

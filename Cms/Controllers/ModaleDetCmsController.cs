@@ -8,11 +8,17 @@ namespace Cms.Controllers
 {
     public class ModaleDetCmsController : Controller
     {
+        ModaleDetalleCmsService _modaleDetalleCmsService;
+        public ModaleDetCmsController(ModaleDetalleCmsService modaleDetalleCmsService)
+        {
+
+            _modaleDetalleCmsService = modaleDetalleCmsService;
+
+        }
         public async Task<IActionResult> Index(int codigo)
-        {        
-          
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(codigo);
+        {
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
+            var lista = await _modaleDetalleCmsService.listarModalDetalle(codigo);
             if (lista.Count == 0)
             {
                 TbConfModaldet objModaleDet = new TbConfModaldet();
@@ -29,15 +35,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(id);
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
+            var lista = await _modaleDetalleCmsService.listarModalDetalle(id);
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalDetalle(id);
+            var modal = await _modaleDetalleCmsService.obtenerModalDetalle(id);
             if (modal == null)
             {
                 return NotFound();
@@ -62,11 +68,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int codigo, TbConfModaldet tbConfModaldet)
         {
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await servicio.crearModalDetRegistro(tbConfModaldet);
+                await _modaleDetalleCmsService.crearModalDetRegistro(tbConfModaldet);
                 return RedirectToAction(nameof(Index), new { codigo = codigo });
 
 
@@ -78,15 +84,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id, int codigo)
         {
             ViewData["ModaleCabId"] = codigo;
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
-            var lista = await servicio.listarModalDetalle(id);
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
+            var lista = await _modaleDetalleCmsService.listarModalDetalle(id);
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalDetalle(id);
+            var modal = await _modaleDetalleCmsService.obtenerModalDetalle(id);
             if (modal == null)
             {
                 return NotFound();
@@ -102,7 +108,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, int codigo, TbConfModaldet tbConfModaldet)
         {
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
            
 
 
@@ -116,7 +122,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await servicio.modificarModalDet(id, tbConfModaldet);
+                    await _modaleDetalleCmsService.modificarModalDet(id, tbConfModaldet);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -135,7 +141,7 @@ namespace Cms.Controllers
         public async Task<IActionResult> Delete(int id, int codigo)
         {
             ViewData["ModaleCabId"] = codigo;
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
          
 
             if (id == 0)
@@ -143,7 +149,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var modal = await servicio.obtenerModalDetalle(id);
+            var modal = await _modaleDetalleCmsService.obtenerModalDetalle(id);
             if (modal == null)
             {
                 return NotFound();
@@ -157,12 +163,12 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, int codigo)
         {
-            var servicio = new ModaleDetalleCmsService(new HttpClient());
+            //var servicio = new ModaleDetalleCmsService(new HttpClient());
            
-            var modal = await servicio.obtenerModalDetalle(id);
+            var modal = await _modaleDetalleCmsService.obtenerModalDetalle(id);
             if (modal != null)
             {
-                await servicio.eliminarModalDet(id);
+                await _modaleDetalleCmsService.eliminarModalDet(id);
             }
 
 

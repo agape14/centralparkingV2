@@ -8,11 +8,19 @@ namespace Cms.Controllers
 {
     public class UsuarioCmsController : Controller
     {
+        UsuarioCmsService _usuarioCmsService;
+        RolCmsService _rolCmsService;
+        public UsuarioCmsController(UsuarioCmsService usuarioCmsService, RolCmsService rolCmsService)
+        {
+
+            _usuarioCmsService = usuarioCmsService;
+            _rolCmsService = rolCmsService;
+        }
         // GET: Usuario
         public async Task<IActionResult> Index()
         {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var usuarioLista = await usuario.listarUsuarios();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await _usuarioCmsService.listarUsuarios();
             if (usuarioLista.Count == 0)
             {
 
@@ -27,15 +35,15 @@ namespace Cms.Controllers
         // GET: Usuario/Details/5
         public async Task<IActionResult> Details(ulong id)
         {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var usuarioLista = await usuario.listarUsuarios();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await _usuarioCmsService.listarUsuarios();
 
             if (id == 0 || usuarioLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
+            var tbConfUser = await _usuarioCmsService.obtenerUsuarioDetalle(id);
             if (tbConfUser == null)
             {
                 return NotFound();
@@ -48,8 +56,8 @@ namespace Cms.Controllers
         public async Task<IActionResult> Create()
         {
 
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles(); 
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles(); 
             ViewData["RolId"] = new SelectList(rolLista, "Id", "Rol");
             return View();
         }
@@ -61,13 +69,13 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,Username,Password,EmailVerifiedAt,TwoFactorSecret,TwoFactorRecoveryCodes,TwoFactorConfirmedAt,RememberToken,CurrentTeamId,ProfilePhotoPath,CreatedAt,UpdatedAt,Active,Apaterno,Amaterno,Dni,RolId")] TbConfUser tbConfUser)
         {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
 
             if (ModelState.IsValid)
             {
-                await usuario.crearUsuario(tbConfUser);
+                await _usuarioCmsService.crearUsuario(tbConfUser);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RolId"] = new SelectList(rolLista, "Id", "Id", tbConfUser.RolId);
@@ -77,17 +85,17 @@ namespace Cms.Controllers
        // GET: Usuario/Edit/5
        public async Task<IActionResult> Edit(ulong id)
        {
-           var usuario = new UsuarioCmsService(new HttpClient());
-           var usuarioLista = await usuario.listarUsuarios();
-           var rol = new RolCmsService(new HttpClient());
-           var rolLista = await rol.listarRoles();
+           //var usuario = new UsuarioCmsService(new HttpClient());
+           var usuarioLista = await _usuarioCmsService.listarUsuarios();
+           //var rol = new RolCmsService(new HttpClient());
+           var rolLista = await _rolCmsService.listarRoles();
 
             if (id == 0 || usuarioLista == null)
            {
                return NotFound();
            }
 
-           var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
+           var tbConfUser = await _usuarioCmsService.obtenerUsuarioDetalle(id);
            if (tbConfUser == null)
            {
                return NotFound();
@@ -103,9 +111,9 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(ulong id, [Bind("Id,Name,Email,Username,Password,EmailVerifiedAt,TwoFactorSecret,TwoFactorRecoveryCodes,TwoFactorConfirmedAt,RememberToken,CurrentTeamId,ProfilePhotoPath,CreatedAt,UpdatedAt,Active,Apaterno,Amaterno,Dni,RolId")] TbConfUser tbConfUser)
        {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
             if (id != tbConfUser.Id)
            {
                return NotFound();
@@ -116,7 +124,7 @@ namespace Cms.Controllers
                try
                {
 
-                    await usuario.modificarUsuario(id, tbConfUser);
+                    await _usuarioCmsService.modificarUsuario(id, tbConfUser);
                }
                catch (DbUpdateConcurrencyException)
                {
@@ -133,15 +141,15 @@ namespace Cms.Controllers
        // GET: Usuario/Delete/5
        public async Task<IActionResult> Delete(ulong id)
         {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var usuarioLista = await usuario.listarUsuarios();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await _usuarioCmsService.listarUsuarios();
 
             if (id == 0 || usuarioLista == null)
            {
                return NotFound();
            }
 
-            var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
+            var tbConfUser = await _usuarioCmsService.obtenerUsuarioDetalle(id);
            if (tbConfUser == null)
            {
                return NotFound();
@@ -155,17 +163,17 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(ulong id)
        {
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var usuarioLista = await usuario.listarUsuarios();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await _usuarioCmsService.listarUsuarios();
 
             if (usuarioLista == null)
            {
                return Problem("Entity set 'CentralparkingContext.TbConfUsers'  is null.");
            }
-           var tbConfUser = await usuario.obtenerUsuarioDetalle(id);
+           var tbConfUser = await _usuarioCmsService.obtenerUsuarioDetalle(id);
            if (tbConfUser != null)
            {
-               await usuario.eliminarUsuario(id);
+               await _usuarioCmsService.eliminarUsuario(id);
            }
 
          

@@ -12,18 +12,22 @@ namespace Cms.Controllers
     {
         private readonly HelperUploadFiles _helperUpload;
         private readonly CopiarImagenes _helperCopia;
-        public SlideCmsController(HelperUploadFiles helperUpload, CopiarImagenes helperCopia)
+        SlideCmsService _slideCmsService;
+        ConfBotonesCmsService _confBotonesCmsService;
+        public SlideCmsController(HelperUploadFiles helperUpload, CopiarImagenes helperCopia, SlideCmsService slideCmsService, ConfBotonesCmsService confBotonesCmsService)
         {
             _helperUpload = helperUpload;
             _helperCopia = helperCopia;
+            _slideCmsService = slideCmsService;
+            _confBotonesCmsService = confBotonesCmsService;
         }
 
         // GET: Slide
         public async Task<IActionResult> Index()
         {
-            var slideService = new SlideCmsService(new HttpClient());
-            return await slideService.ListarSlide() != null ?
-                        View(await slideService.ListarSlide()) :
+            //var slideService = new SlideCmsService(new HttpClient());
+            return await _slideCmsService.ListarSlide() != null ?
+                        View(await _slideCmsService.ListarSlide()) :
                         Problem("Entity set 'CentralparkingContext.TbIndSlidecabs'  is null.");
 
         }
@@ -32,7 +36,7 @@ namespace Cms.Controllers
         // GET: Slide/Details/5
         public async Task<IActionResult> Details(uint id)
         {
-            var slideService = new SlideCmsService(new HttpClient());
+            //var slideService = new SlideCmsService(new HttpClient());
             
             if (id == null)
             {
@@ -40,7 +44,7 @@ namespace Cms.Controllers
             }
             
 
-            var tbIndSlidecab = await slideService.GetDetails(id);
+            var tbIndSlidecab = await _slideCmsService.GetDetails(id);
             if(tbIndSlidecab == null)
             {
                 return NotFound();
@@ -53,8 +57,8 @@ namespace Cms.Controllers
        // GET: Slide/Create
         public async Task<IActionResult> Create()
         {
-            var boton =  new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
+            //var boton =  new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
             ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo");
             return View();
         }
@@ -67,9 +71,9 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbIndSlidecab tbIndSlidecab)
         {
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
-            var slide = new SlideCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
+            //var slide = new SlideCmsService(new HttpClient());
             ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
             if (ModelState.IsValid)
             {
@@ -106,7 +110,7 @@ namespace Cms.Controllers
                     //string path2 = await _helperUpload.UploadFilesWebAsync(file, nombreImagen, Providers.Folders.Images);
                     tbIndSlidecab.Imagen = "/images/" + nombreImagen;
                 }
-                await slide.CreateSlide(tbIndSlidecab);
+                await _slideCmsService.CreateSlide(tbIndSlidecab);
                 _helperCopia.enviaimagen();
                 return RedirectToAction(nameof(Index));
             }
@@ -119,17 +123,17 @@ namespace Cms.Controllers
         // GET: Slide/Edit/5
         public async Task<IActionResult> Edit(uint id)
         {   
-            var slide = new SlideCmsService(new HttpClient());
-            var slideList = await slide.ListarSlide();
-            var slideCms = new SlideCmsService(new HttpClient());
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
+            //var slide = new SlideCmsService(new HttpClient());
+            var slideList = await _slideCmsService.ListarSlide();
+            //var slideCms = new SlideCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
             if (id == 0 || slideList == null)
             {
                 return NotFound();
             }
 
-            var tbIndSlidecab = await slideCms.GetDetails(id);
+            var tbIndSlidecab = await _slideCmsService.GetDetails(id);
             if (tbIndSlidecab == null)
             {
                 return NotFound();
@@ -150,9 +154,9 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(uint id, [Bind("Id,Titulo,Imagen,IdBtn1")] TbIndSlidecab tbIndSlidecab)
         {
             
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
-            var slide = new SlideCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
+            //var slide = new SlideCmsService(new HttpClient());
             ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo", tbIndSlidecab.IdBtn1);
             if (id != tbIndSlidecab.Id)
             {
@@ -198,7 +202,7 @@ namespace Cms.Controllers
                     }
 
                    
-                    await slide.UpdateSlide(id,tbIndSlidecab);
+                    await _slideCmsService.UpdateSlide(id,tbIndSlidecab);
                     _helperCopia.enviaimagen();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -216,15 +220,15 @@ namespace Cms.Controllers
         // GET: Slide/Delete/5
         public async Task<IActionResult> Delete(uint id)
         {
-            var slide = new SlideCmsService(new HttpClient());
-            var slideList = await slide.ListarSlide();
-            var slideCms = new SlideCmsService(new HttpClient());
+            //var slide = new SlideCmsService(new HttpClient());
+            var slideList = await _slideCmsService.ListarSlide();
+            //var slideCms = new SlideCmsService(new HttpClient());
             if (id == 0 || slideList  == null)
             {
                 return NotFound();
             }
 
-            var tbIndSlidecab = await slideCms.GetDetails(id);
+            var tbIndSlidecab = await _slideCmsService.GetDetails(id);
             if (tbIndSlidecab == null)
             {
                 return NotFound();
@@ -238,9 +242,9 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(uint id)
         {
-            var slide = new SlideCmsService(new HttpClient());
-            var slideList = await slide.ListarSlide();
-            var slideCms = new SlideCmsService(new HttpClient());
+            //var slide = new SlideCmsService(new HttpClient());
+            var slideList = await _slideCmsService.ListarSlide();
+            //var slideCms = new SlideCmsService(new HttpClient());
             if (slideList == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbIndSlidecabs'  is null.");
@@ -248,7 +252,7 @@ namespace Cms.Controllers
            
             if (id != 0)
             {
-                await slideCms.DeleteSlide(id);
+                await _slideCmsService.DeleteSlide(id);
             }
 
          

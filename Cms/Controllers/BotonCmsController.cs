@@ -1,5 +1,6 @@
 ﻿using ApiBD.Models;
 using CentralParkingSystem.DTOs;
+using Cms.Service;
 using Cms.ServiceCms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,11 +10,19 @@ namespace Cms.Controllers
 {
     public class BotonCmsController : Controller
     {
+        private readonly ConfBotonesCmsService _confBotonesCmsService;
+        private readonly MenuCmsService _menuCmsService;
+
+        public BotonCmsController(ConfBotonesCmsService confBotonesCmsService, MenuCmsService menuCmsService)
+        {
+            _confBotonesCmsService = confBotonesCmsService;
+            _menuCmsService = menuCmsService;
+        }
         // GET: Boton
         public async Task<IActionResult> Index(uint codigo)
         {
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var botonLista = await boton.listarBotonesBanner(codigo);
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var botonLista = await _confBotonesCmsService.listarBotonesBanner(codigo);
 
             if (botonLista.Count == 0 )
             {
@@ -30,13 +39,13 @@ namespace Cms.Controllers
         // GET: Boton/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var boton = new ConfBotonesCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
             if (id == 0)
             {
                 return NotFound();
             }
 
-            var tbConfBotone = await boton.obtenerBotonDetalle(id);
+            var tbConfBotone = await _confBotonesCmsService.obtenerBotonDetalle(id);
             if (tbConfBotone == null)
             {
                 return NotFound();
@@ -51,8 +60,8 @@ namespace Cms.Controllers
             //Guardando ID Codigo Slide Padre
             ViewData["SlideCodigo"] = codigo;
             //Listando Menu
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
             {
                 Value = m.Ruta,
@@ -77,10 +86,10 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Create([Bind("Id,MenuId,PaginadetId,BtnTitulo,BtnRuta,BtnClase,Icono,Orden")] TbConfBotone tbConfBotone)
        {    
-           var boton = new ConfBotonesCmsService(new HttpClient());
+           //var boton = new ConfBotonesCmsService(new HttpClient());
            if (ModelState.IsValid)
            {
-               await boton.crearBoton(tbConfBotone);
+               await _confBotonesCmsService.crearBoton(tbConfBotone);
                return RedirectToAction(nameof(Index), new { codigo = tbConfBotone.MenuId });
             }
             return View(tbConfBotone);
@@ -91,13 +100,13 @@ namespace Cms.Controllers
        // GET: Boton/Edit/5
        public async Task<IActionResult> Edit(int id, uint codigo)
        {
-            var boton = new ConfBotonesCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
            if (id == 0)
            {
                return NotFound();
            }
 
-           var tbConfBotone = await boton.obtenerBotonDetalle(id);
+           var tbConfBotone = await _confBotonesCmsService.obtenerBotonDetalle(id);
            if (tbConfBotone == null)
            {
                return NotFound();
@@ -105,8 +114,8 @@ namespace Cms.Controllers
             //Guardando ID Codigo Slide Padre
             ViewData["SlideCodigo"] = codigo;
             //Listando Menu
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuItems = menuLista.Where(m => m.Idtipomenu == 1).Select(m => new SelectListItem
             {
                 Value = m.Ruta,
@@ -130,7 +139,7 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(int id, [Bind("Id,MenuId,PaginadetId,BtnTitulo,BtnRuta,BtnClase,Icono,Orden")] TbConfBotone tbConfBotone)
        {
-            var boton = new ConfBotonesCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
            if (id != tbConfBotone.Id)
            {
                return NotFound();
@@ -140,7 +149,7 @@ namespace Cms.Controllers
            {
                try
                {
-                    await boton.modificarBoton(id,tbConfBotone);
+                    await _confBotonesCmsService.modificarBoton(id,tbConfBotone);
                }
                catch (DbUpdateConcurrencyException)
                {
@@ -158,13 +167,13 @@ namespace Cms.Controllers
         {
             //Guardando ID Codigo Slide Padre
             ViewData["SlideCodigo"] = codigo;
-            var boton = new ConfBotonesCmsService(new HttpClient());
+            //var boton = new ConfBotonesCmsService(new HttpClient());
            if (id == 0)
            {
                return NotFound();
            }
 
-           var tbConfBotone = await boton.obtenerBotonDetalle(id);
+           var tbConfBotone = await _confBotonesCmsService.obtenerBotonDetalle(id);
               
            if (tbConfBotone == null)
            {
@@ -179,11 +188,11 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(int id)
        {
-            var boton = new ConfBotonesCmsService(new HttpClient());
-           var tbConfBotone = await boton.obtenerBotonDetalle(id);
+           //var boton = new ConfBotonesCmsService(new HttpClient());
+           var tbConfBotone = await _confBotonesCmsService.obtenerBotonDetalle(id);
            if (tbConfBotone != null)
            {
-               await boton.eliminarBoton(id);
+               await _confBotonesCmsService.eliminarBoton(id);
            }
 
 

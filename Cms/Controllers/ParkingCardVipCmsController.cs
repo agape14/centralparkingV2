@@ -8,10 +8,17 @@ namespace Cms.Controllers
 {
     public class ParkingCardVipCmsController : Controller
     {
+        ParkingCardCmsService _parkingCardCmsService;
+        public ParkingCardVipCmsController(ParkingCardCmsService parkingCardCmsService)
+        {
+
+            _parkingCardCmsService = parkingCardCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
             if (lista.Count == 0)
             {
                 TbFormParkingcard objParkingCard = new TbFormParkingcard();
@@ -24,15 +31,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var card = await servicio.obtenerParkingCardDetalle(id);
+            var card = await _parkingCardCmsService.obtenerParkingCardDetalle(id);
             if (card == null)
             {
                 return NotFound();
@@ -55,11 +62,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbFormParkingcard tbFormParkingcard)
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
+            //var servicio = new ParkingCardCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await servicio.crearParkingCardRegistro(tbFormParkingcard);
+                await _parkingCardCmsService.crearParkingCardRegistro(tbFormParkingcard);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbFormParkingcard);
@@ -69,15 +76,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var card = await servicio.obtenerParkingCardDetalle(id);
+            var card = await _parkingCardCmsService.obtenerParkingCardDetalle(id);
             if (card == null)
             {
                 return NotFound();
@@ -93,8 +100,8 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbFormParkingcard tbFormParkingcard)
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
 
 
             if (id != tbFormParkingcard.Id)
@@ -107,7 +114,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await servicio.modificarParkingCard(id, tbFormParkingcard);
+                    await _parkingCardCmsService.modificarParkingCard(id, tbFormParkingcard);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,15 +130,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var card = await servicio.obtenerParkingCardDetalle(id);
+            var card = await _parkingCardCmsService.obtenerParkingCardDetalle(id);
             if (card == null)
             {
                 return NotFound();
@@ -145,17 +152,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicio = new ParkingCardCmsService(new HttpClient());
-            var lista = await servicio.ListarParkingCard();
+            //var servicio = new ParkingCardCmsService(new HttpClient());
+            var lista = await _parkingCardCmsService.ListarParkingCard();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var prov = await servicio.obtenerParkingCardDetalle(id);
+            var prov = await _parkingCardCmsService.obtenerParkingCardDetalle(id);
             if (prov != null)
             {
-                await servicio.eliminarParkingCard(id);
+                await _parkingCardCmsService.eliminarParkingCard(id);
             }
 
 

@@ -9,11 +9,17 @@ namespace Cms.Controllers
 {
     public class CaracteristicaCmsController : Controller
     {
-        // GET: Caracteristica
+        CaracteristicaCmsService _caracteristicaCmsService;
+        public CaracteristicaCmsController(CaracteristicaCmsService caracteristicaCmsService)
+        {
+
+            _caracteristicaCmsService = caracteristicaCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var caracteristica = new CaracteristicaCmsService(new HttpClient());
-            var caracteristicaLista = await caracteristica.ListarCaracteristicas();
+            //var caracteristica = new CaracteristicaCmsService(new HttpClient());
+            var caracteristicaLista = await _caracteristicaCmsService.ListarCaracteristicas();
 
             if (caracteristicaLista.Count == 0)
             {
@@ -30,15 +36,15 @@ namespace Cms.Controllers
         // GET: Caracteristica/Details/5
         public async Task<IActionResult> Details(uint id)
         {
-            var caracteristica = new CaracteristicaCmsService(new HttpClient());
-            var caracteristicaLista = await caracteristica.ListarCaracteristicas();
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristica = new CaracteristicaCmsService(new HttpClient());
+            var caracteristicaLista = await _caracteristicaCmsService.ListarCaracteristicas();
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
             if (id == 0 || caracteristicaLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndCaracteristica = await caracteristicaCms.obtenerCaracteristicaDetalle(id);
+            var tbIndCaracteristica = await _caracteristicaCmsService.obtenerCaracteristicaDetalle(id);
             if (tbIndCaracteristica == null)
             {
                 return NotFound();
@@ -73,10 +79,10 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Icono,Detalle")] TbIndCaracteristica tbIndCaracteristica)
         {
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
-                await caracteristicaCms.crearCaracteristica(tbIndCaracteristica);
+                await _caracteristicaCmsService.crearCaracteristica(tbIndCaracteristica);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbIndCaracteristica);
@@ -99,16 +105,16 @@ namespace Cms.Controllers
                 "Text"
             );
 
-            var caracteristica = new CaracteristicaCmsService(new HttpClient());
-            var caracteristicaLista = await caracteristica.ListarCaracteristicas();
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristica = new CaracteristicaCmsService(new HttpClient());
+            var caracteristicaLista = await _caracteristicaCmsService.ListarCaracteristicas();
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 
             if (id == 0 || caracteristicaLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndCaracteristica = await caracteristicaCms.obtenerCaracteristicaDetalle(id);
+            var tbIndCaracteristica = await _caracteristicaCmsService.obtenerCaracteristicaDetalle(id);
             if (tbIndCaracteristica == null)
             {
                 return NotFound();
@@ -123,7 +129,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(uint id, [Bind("Id,Titulo,Icono,Detalle")] TbIndCaracteristica tbIndCaracteristica)
         {
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
             if (id != tbIndCaracteristica.Id)
             {
                 return NotFound();
@@ -133,7 +139,7 @@ namespace Cms.Controllers
             {
                 try
                 {
-                    await caracteristicaCms.modificarCaracteristica(id, tbIndCaracteristica);
+                    await _caracteristicaCmsService.modificarCaracteristica(id, tbIndCaracteristica);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,9 +155,9 @@ namespace Cms.Controllers
         // GET: Caracteristica/Delete/5
         public async Task<IActionResult> Delete(uint id)
         {
-            var caracteristica = new CaracteristicaCmsService(new HttpClient());
-            var caracteristicaLista = await caracteristica.ListarCaracteristicas();
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristica = new CaracteristicaCmsService(new HttpClient());
+            var caracteristicaLista = await _caracteristicaCmsService.ListarCaracteristicas();
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 
 
             if (id == 0 || caracteristicaLista == null)
@@ -159,7 +165,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var tbIndCaracteristica = await caracteristicaCms.obtenerCaracteristicaDetalle(id);
+            var tbIndCaracteristica = await _caracteristicaCmsService.obtenerCaracteristicaDetalle(id);
 
             if (tbIndCaracteristica == null)
             {
@@ -174,18 +180,18 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(uint id)
         {
-            var caracteristica = new CaracteristicaCmsService(new HttpClient());
-            var caracteristicaLista = await caracteristica.ListarCaracteristicas();
-            var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
+            //var caracteristica = new CaracteristicaCmsService(new HttpClient());
+            var caracteristicaLista = await _caracteristicaCmsService.ListarCaracteristicas();
+            //var caracteristicaCms = new CaracteristicaCmsService(new HttpClient());
 
             if (caracteristicaLista == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbIndCaracteristicas'  is null.");
             }
-            var tbIndCaracteristica = await caracteristicaCms.obtenerCaracteristicaDetalle(id);
+            var tbIndCaracteristica = await _caracteristicaCmsService.obtenerCaracteristicaDetalle(id);
             if (tbIndCaracteristica != null)
             {
-                await caracteristicaCms.eliminarCaracteristica(id);
+                await _caracteristicaCmsService.eliminarCaracteristica(id);
             }
 
 

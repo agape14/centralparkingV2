@@ -14,13 +14,18 @@ namespace CentralParkingSystem.Controllers
 {
     public class IServiciosCmsController : Controller
     {
-     
-
+        IServicioCmsService _servicioCmsService;
+        MenuCmsService _menuCmsService;
+        public IServiciosCmsController(IServicioCmsService servicioCmsService, MenuCmsService menuCmsService)
+        {
+            _servicioCmsService = servicioCmsService;
+            _menuCmsService = menuCmsService;
+        }
         // GET: IServicios
         public async Task<IActionResult> Index()
         {
-            var servicios = new IServicioCmsService(new HttpClient());
-            var lista = await servicios.ListarServiciosCabs();
+            //var servicios = new IServicioCmsService(new HttpClient());
+            var lista = await _servicioCmsService.ListarServiciosCabs();
             if (lista.Count == 0)
             {
                 TbIndServiciocab objServicioCab = new TbIndServiciocab();
@@ -36,15 +41,15 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new IServicioCmsService(new HttpClient());
-            var lista = await servicios.ListarServiciosCabs();
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var servicios = new IServicioCmsService(new HttpClient());
+            var lista = await _servicioCmsService.ListarServiciosCabs();
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciocab = await serviciosCms.obtenerServicioDetalle(id);
+            var tbIndServiciocab = await _servicioCmsService.obtenerServicioDetalle(id);
             if (tbIndServiciocab == null)
             {
                 return NotFound();
@@ -56,8 +61,8 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios/Create
         public async Task<IActionResult> Create()
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             if (menuLista.Count == 0)
             {
                 return NotFound();
@@ -85,11 +90,11 @@ namespace CentralParkingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TituloGrande,TituloPeque,Descripcion,ImagenGrande,ImagenPeque,Ruta")] TbIndServiciocab tbIndServiciocab)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
 
-                await serviciosCms.crearServicio(tbIndServiciocab);
+                await _servicioCmsService.crearServicio(tbIndServiciocab);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbIndServiciocab);
@@ -98,11 +103,11 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new IServicioCmsService(new HttpClient());
-            var lista = await servicios.ListarServiciosCabs();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var servicios = new IServicioCmsService(new HttpClient());
+            var lista = await _servicioCmsService.ListarServiciosCabs();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             if (menuLista.Count == 0)
             {
                 return NotFound();
@@ -113,7 +118,7 @@ namespace CentralParkingSystem.Controllers
                 return NotFound();
             }
 
-            var tbIndServiciocab = await serviciosCms.obtenerServicioDetalle(id);
+            var tbIndServiciocab = await _servicioCmsService.obtenerServicioDetalle(id);
             if (tbIndServiciocab == null)
             {
                 return NotFound();
@@ -141,7 +146,7 @@ namespace CentralParkingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TituloGrande,TituloPeque,Descripcion,ImagenGrande,ImagenPeque,Ruta")] TbIndServiciocab tbIndServiciocab)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
             
 
             if (id != tbIndServiciocab.Id)
@@ -154,7 +159,7 @@ namespace CentralParkingSystem.Controllers
                 try
                 {
 
-                    await serviciosCms.editarServicio(id, tbIndServiciocab);
+                    await _servicioCmsService.editarServicio(id, tbIndServiciocab);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -171,16 +176,16 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new IServicioCmsService(new HttpClient());
-            var lista = await servicios.ListarServiciosCabs();
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var servicios = new IServicioCmsService(new HttpClient());
+            var lista = await _servicioCmsService.ListarServiciosCabs();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciocab = await serviciosCms.obtenerServicioDetalle(id);
+            var tbIndServiciocab = await _servicioCmsService.obtenerServicioDetalle(id);
             if (tbIndServiciocab == null)
             {
                 return NotFound();
@@ -194,18 +199,18 @@ namespace CentralParkingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var serviciosCms = new IServicioCmsService(new HttpClient());
-            var servicios = new IServicioCmsService(new HttpClient());
-            var lista = await servicios.ListarServiciosCabs();
+            //var serviciosCms = new IServicioCmsService(new HttpClient());
+            //var servicios = new IServicioCmsService(new HttpClient());
+            var lista = await _servicioCmsService.ListarServiciosCabs();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbIndServiciocabs'  is null.");
             }
-            var tbIndServiciocab = await serviciosCms.obtenerServicioDetalle(id);
+            var tbIndServiciocab = await _servicioCmsService.obtenerServicioDetalle(id);
             if (tbIndServiciocab != null)
             {
-                await serviciosCms.eliminarServicio(id);
+                await _servicioCmsService.eliminarServicio(id);
             }
 
             return RedirectToAction(nameof(Index));

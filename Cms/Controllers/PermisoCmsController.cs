@@ -9,14 +9,26 @@ namespace Cms.Controllers
 {
     public class PermisoCmsController : Controller
     {
+        PermisoCmsService _permisoCmsService;
+        RolCmsService _rolCmsService;
+        MenuCmsService _menuCmsService;
+        public PermisoCmsController(PermisoCmsService permisoCmsService, RolCmsService rolCmsService, MenuCmsService menuCmsService)
+        {
+
+            _permisoCmsService = permisoCmsService;
+            _rolCmsService = rolCmsService;
+            _menuCmsService = menuCmsService;
+
+        }
+
         // GET: Permiso
         public async Task<IActionResult> Index(int tipoRol)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
 
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
             ViewData["rolLista"] = rolLista;
             if (tipoRol != 0)
             {
@@ -40,15 +52,15 @@ namespace Cms.Controllers
         // GET: Permiso/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
             
             if (id == 0 || permisoLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPermiso = await permiso.obtenerPermisoDetalle(id);
+            var tbConfPermiso = await _permisoCmsService.obtenerPermisoDetalle(id);
             if (tbConfPermiso == null)
             {
                 return NotFound();
@@ -60,10 +72,10 @@ namespace Cms.Controllers
         // GET: Permiso/Create
         public async Task<IActionResult> Create()
         {
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
 
             ViewData["MenuId"] = new SelectList(menuLista, "Id", "Nombre");
@@ -78,16 +90,16 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Permiso,Descripcion,MenuId,RolId,Estado,Creacion,Modificacion")] TbConfPermiso tbConfPermiso)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (ModelState.IsValid)
             {
 
-                await permiso.crearPermiso(tbConfPermiso);
+                await _permisoCmsService.crearPermiso(tbConfPermiso);
                 return RedirectToAction(nameof(Index), new { tipoRol = tbConfPermiso.RolId });
             }
             ViewData["MenuId"] = new SelectList(menuLista, "Id", "Id", tbConfPermiso.MenuId);
@@ -100,8 +112,8 @@ namespace Cms.Controllers
         public async Task<IActionResult> Createpermisos([FromBody] List<TbConfPermiso> selectedPermissions)
         {
             var jsonResponse = new JsonResponse();
-            var permisogeneral = new PermisoCmsService(new HttpClient());
-            var permisoListagral = await permisogeneral.listarPermisos();
+            //var permisogeneral = new PermisoCmsService(new HttpClient());
+            var permisoListagral = await _permisoCmsService.listarPermisos();
             var rolId = 0;
             if (permisoListagral.Count == 0)
             {
@@ -124,15 +136,15 @@ namespace Cms.Controllers
             {
                 // Procesar la lista de permisos y crear o actualizar registros según sea necesario
                 //var existingPermission=0;
-                var permiso = new PermisoCmsService(new HttpClient());
-                var permisoLista = await permiso.listarPermisos();
+                //var permiso = new PermisoCmsService(new HttpClient());
+                var permisoLista = await _permisoCmsService.listarPermisos();
                 var primerRolId = selectedPermissions[0].RolId;
-                var permisoListaDel = await permiso.listarPermisos();
+                var permisoListaDel = await _permisoCmsService.listarPermisos();
                 var permisosDelete = permisoListaDel.Where(menu => menu.RolId == primerRolId).ToList();
 
                 foreach (var permisoEliminar in permisosDelete)
                 {
-                    await permiso.eliminarPermiso(permisoEliminar.Id);
+                    await _permisoCmsService.eliminarPermiso(permisoEliminar.Id);
                 }
 
                 foreach (var permission in selectedPermissions)
@@ -153,7 +165,7 @@ namespace Cms.Controllers
                             Estado = 1,
                             Creacion = DateTime.Now,
                         };
-                        await permiso.crearPermiso(newPermission);
+                        await _permisoCmsService.crearPermiso(newPermission);
                         
                     //}
                 }
@@ -180,27 +192,27 @@ namespace Cms.Controllers
         // GET: Permiso/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuListaCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
             if (id == 0 || permisoLista == null)
             {
                 return NotFound();
             }
 
-            var subMenu = new MenuCmsService(new HttpClient());
-            var listSubMenuCms = await subMenu.ListarSubMenus();
+            //var subMenu = new MenuCmsService(new HttpClient());
+            var listSubMenuCms = await _menuCmsService.ListarSubMenus();
             listSubMenuCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
             if (listSubMenuCms.Count == 0)
             {
                 return NotFound();
             }
 
-            var tbConfPermiso = await permiso.obtenerPermisoDetalle(id);
+            var tbConfPermiso = await _permisoCmsService.obtenerPermisoDetalle(id);
             if (tbConfPermiso == null)
             {
                 return NotFound();
@@ -215,27 +227,27 @@ namespace Cms.Controllers
         // GET: Permiso/Edit/5
         public async Task<IActionResult> GetEditar(int id)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             var menuListaCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
             if (id == 0 || permisoLista == null)
             {
                 return NotFound();
             }
 
-            var subMenu = new MenuCmsService(new HttpClient());
-            var listSubMenuCms = await subMenu.ListarSubMenus();
+            //var subMenu = new MenuCmsService(new HttpClient());
+            var listSubMenuCms = await _menuCmsService.ListarSubMenus();
             listSubMenuCms = menuLista.Where(menu => menu.TipoProyecto == "cms").ToList();
             if (listSubMenuCms.Count == 0)
             {
                 return NotFound();
             }
 
-            var tbConfPermiso = await permiso.listarPermisos();
+            var tbConfPermiso = await _permisoCmsService.listarPermisos();
             var permisosss = tbConfPermiso.Where(per=>  per.RolId == id).ToList();
             var permisouno = tbConfPermiso.Where(per => per.RolId == id).Take(1).SingleOrDefault();
             if (tbConfPermiso == null)
@@ -270,11 +282,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Permiso,Descripcion,MenuId,RolId,Estado,Creacion,Modificacion")] TbConfPermiso tbConfPermiso, [FromBody] List<TbConfPermiso> selectedPermissions)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (id != tbConfPermiso.Id)
             {
@@ -286,7 +298,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await permiso.modificarPermiso(id, tbConfPermiso);
+                    await _permisoCmsService.modificarPermiso(id, tbConfPermiso);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -304,15 +316,15 @@ namespace Cms.Controllers
         // GET: Permiso/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
 
             if (id == 0 || permisoLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPermiso = await permiso.obtenerPermisoDetalle(id);
+            var tbConfPermiso = await _permisoCmsService.obtenerPermisoDetalle(id);
             if (tbConfPermiso == null)
             {
                 return NotFound();
@@ -326,17 +338,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var permiso = new PermisoCmsService(new HttpClient());
-            var permisoLista = await permiso.listarPermisos();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var permisoLista = await _permisoCmsService.listarPermisos();
 
             if (permisoLista == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbConfPermisos'  is null.");
             }
-            var tbConfPermiso = await permiso.obtenerPermisoDetalle(id);
+            var tbConfPermiso = await _permisoCmsService.obtenerPermisoDetalle(id);
             if (tbConfPermiso != null)
             {
-                await permiso.eliminarPermiso(id);
+                await _permisoCmsService.eliminarPermiso(id);
             }
 
        

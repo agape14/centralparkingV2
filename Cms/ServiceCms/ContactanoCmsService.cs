@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class ContactanoCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public ContactanoCmsService(HttpClient httpClient)
+        public ContactanoCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbFormContactano>> ListarContactos()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/contactanos";
+                var url = "/api/contactanos";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormContactano> obtenerContactoDetalle(int id)
         {
-            var url = $"{apiUrl}/api/contactanos/{id}";
+            var url = $"/api/contactanos/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormContactano> crearContactoRegistro(TbFormContactano tbFormContactano)
         {
-            var url = apiUrl + "/api/contactanos";
+            var url = "/api/contactanos";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormContactano);
 
@@ -94,7 +89,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormContactano> modificarContacto(int id, TbFormContactano tbFormContactano)
         {
-            var url = $"{apiUrl}/api/contactanos/{id}";
+            var url = $"/api/contactanos/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormContactano);
 
@@ -112,7 +107,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarContacto(int id)
         {
-            var url = $"{apiUrl}/api/contactanos/{id}";
+            var url = $"/api/contactanos/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

@@ -10,16 +10,17 @@ namespace Cms.Controllers
     public class PaginasCmsController : Controller
     {
         private readonly HelperUploadFiles _helperUpload;
-
-        public PaginasCmsController(HelperUploadFiles helperUpload)
+        PaginasCmsService _paginasCmsService;
+        public PaginasCmsController(HelperUploadFiles helperUpload, PaginasCmsService paginasCmsService)
         {
             _helperUpload = helperUpload;
+            _paginasCmsService = paginasCmsService;
         }
         // GET: Paginas
         public async Task<IActionResult> Index()
         {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
-            var paginaCabsLista = await paginaCabs.paginasListar();
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
+            var paginaCabsLista = await _paginasCmsService.paginasListar();
 
             if(paginaCabsLista.Count == 0)
             {
@@ -36,14 +37,14 @@ namespace Cms.Controllers
         // GET: Paginas/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
-            var paginaCabsLista = await paginaCabs.paginasListar();
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
+            var paginaCabsLista = await _paginasCmsService.paginasListar();
             if (id == 0 || paginaCabsLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPaginascab = await paginaCabs.obtenerPaginaDetalle(id);
+            var tbConfPaginascab = await _paginasCmsService.obtenerPaginaDetalle(id);
 
             if (tbConfPaginascab == null)
             {
@@ -66,7 +67,7 @@ namespace Cms.Controllers
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> Create([Bind("Id,Titulo,Subtitulo,ReseniaTitulo,ReseniaDetalle,MisionTitulo,MisionDetalle,VisionTitulo,VisionDetalle,ValoresTitulo,ValoresDetalle,ReconocTitulo,ReconocDetalle,ImagenMision,ImagenValores")] TbConfPaginascab tbConfPaginascab)
       {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
             if (ModelState.IsValid)
           {
                 var file1 = Request.Form.Files?[0];
@@ -89,7 +90,7 @@ namespace Cms.Controllers
                     tbConfPaginascab.ImagenValores = "/images/" + nombreImagen;
                 }
 
-                await paginaCabs.crearPagina(tbConfPaginascab);
+                await _paginasCmsService.crearPagina(tbConfPaginascab);
               return RedirectToAction(nameof(Index));
           }
           return View(tbConfPaginascab);
@@ -98,15 +99,15 @@ namespace Cms.Controllers
       // GET: Paginas/Edit/5
       public async Task<IActionResult> Edit(int id)
       {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
-            var paginaCabsLista = await paginaCabs.paginasListar();
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
+            var paginaCabsLista = await _paginasCmsService.paginasListar();
 
             if (id == 0 || paginaCabsLista == null)
           {
               return NotFound();
           }
 
-          var tbConfPaginascab = await paginaCabs.obtenerPaginaDetalle(id);
+          var tbConfPaginascab = await _paginasCmsService.obtenerPaginaDetalle(id);
           if (tbConfPaginascab == null)
           {
               return NotFound();
@@ -121,7 +122,7 @@ namespace Cms.Controllers
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Subtitulo,ReseniaTitulo,ReseniaDetalle,MisionTitulo,MisionDetalle,VisionTitulo,VisionDetalle,ValoresTitulo,ValoresDetalle,ReconocTitulo,ReconocDetalle,ImagenMision,ImagenValores")] TbConfPaginascab tbConfPaginascab)
       {
-          var paginaCabs = new PaginasCmsService(new HttpClient());
+          //var paginaCabs = new PaginasCmsService(new HttpClient());
           if (id != tbConfPaginascab.Id)
           {
               return NotFound();
@@ -266,7 +267,7 @@ namespace Cms.Controllers
 
                     }
 
-                    await paginaCabs.modificarPagina(id, tbConfPaginascab);
+                    await _paginasCmsService.modificarPagina(id, tbConfPaginascab);
                 }
               catch (DbUpdateConcurrencyException)
               {
@@ -283,15 +284,15 @@ namespace Cms.Controllers
       // GET: Paginas/Delete/5
       public async Task<IActionResult> Delete(int id)
       {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
-            var paginaCabsLista = await paginaCabs.paginasListar();
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
+            var paginaCabsLista = await _paginasCmsService.paginasListar();
 
             if (id == 0 || paginaCabsLista == null)
           {
               return NotFound();
           }
 
-          var tbConfPaginascab = await paginaCabs.obtenerPaginaDetalle(id);
+          var tbConfPaginascab = await _paginasCmsService.obtenerPaginaDetalle(id);
           if (tbConfPaginascab == null)
           {
               return NotFound();
@@ -305,17 +306,17 @@ namespace Cms.Controllers
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(int id)
       {
-            var paginaCabs = new PaginasCmsService(new HttpClient());
-            var paginaCabsLista = await paginaCabs.paginasListar();
+            //var paginaCabs = new PaginasCmsService(new HttpClient());
+            var paginaCabsLista = await _paginasCmsService.paginasListar();
 
             if (paginaCabsLista == null)
           {
               return Problem("Entity set 'CentralParkingContext.TbConfPaginascabs'  is null.");
           }
-          var tbConfPaginascab = await paginaCabs.obtenerPaginaDetalle(id);
+          var tbConfPaginascab = await _paginasCmsService.obtenerPaginaDetalle(id);
           if (tbConfPaginascab != null)
           {
-                await paginaCabs.eliminarPagina(id);
+                await _paginasCmsService.eliminarPagina(id);
           }
 
        

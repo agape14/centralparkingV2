@@ -32,7 +32,7 @@
                                         <div class="form-group">
                                             <label asp-for="PiepaginaId" class="control-label"></label>
                                             @*<input asp-for="PiepaginaId" class="form-control" />*@
-                                            <select asp-for="PiepaginaId" class="form-control" asp-items="ViewBag.PiepaginaId"></select>
+                                            <select asp-for="PiepaginaId" class="form-control" asp-items="ViewBag.PiepaginaId" readonly></select>
                                             <span asp-validation-for="PiepaginaId" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -50,20 +50,57 @@
                                             <span asp-validation-for="Titulo" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Ruta" class="control-label"></label>
-                                            <select asp-for="Ruta" class="form-control" asp-items="ViewBag.vMenu"></select>
-                                            <span asp-validation-for="Ruta" class="text-danger"></span>
+                                    @if (Model.TipoRuta ==1)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Ruta" class="control-label"></label>
+                                                <select asp-for="Ruta" class="form-control" asp-items="ViewBag.vMenu"></select>
+                                                <span asp-validation-for="Ruta" class="text-danger"></span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
+                                    else if (Model.TipoRuta == 2 || Model.TipoRuta == 3 || Model.TipoRuta == 4)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Ruta" class="control-label"></label>
+                                                <input asp-for="Ruta" class="form-control" readonly />
+                                                <span asp-validation-for="Ruta" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (Model.TipoRuta == 5)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Ruta" class="control-label"></label>
+                                                <input asp-for="Ruta" class="form-control" />
+                                                <span asp-validation-for="Ruta" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    }else{
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Ruta" class="control-label"></label>
+                                                <select asp-for="Ruta" class="form-control" asp-items="ViewBag.vMenu"></select>
+                                                <span asp-validation-for="Ruta" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    }
+                                   
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="TipoRuta" class="control-label"></label>
                                             @*<input asp-for="TipoRuta" class="form-control" />*@
                                             <select class="form-control" asp-for="TipoRuta">
+                                                <option value="">Ninguno</option>
                                                 <option value="1">Nueva Pestaña</option>
                                                 <option value="2">Modal</option>
+                                                <option value="3">Formulario</option>
+                                                <option value="4">Nueva Pestaña Documento</option>
+                                                <option value="5">Ruta Dashboard</option>
                                             </select>
                                             <span asp-validation-for="TipoRuta" class="text-danger"></span>
                                         </div>

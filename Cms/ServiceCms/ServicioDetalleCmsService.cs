@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class ServicioDetalleCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public ServicioDetalleCmsService(HttpClient httpClient)
+        public ServicioDetalleCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbServDetalle>> listar()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/servicioDetalle";
+                var url = "/api/servicioDetalle";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<List<TbServDetalle>> obtenerServicioDetalle(int id)
         {
-            var url = $"{apiUrl}/api/servicioDetalle/{id}";
+            var url = $"/api/servicioDetalle/{id}";
 
             try
             {
@@ -91,7 +86,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServDetalle> obtenerServicioEspecifico(int id)
         {
-            var url = $"{apiUrl}/api/servicioDetalle/serviciodetalle/{id}";
+            var url = $"/api/servicioDetalle/serviciodetalle/{id}";
 
             try
             {
@@ -127,7 +122,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServDetalle> crearServicioDetalle(TbServDetalle tbServDetalle)
         {
-            var url = apiUrl + "/api/servicioDetalle";
+            var url = "/api/servicioDetalle";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbServDetalle);
 
@@ -145,7 +140,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbServDetalle> modificarServicioDetalle(int id, TbServDetalle tbServDetalle)
         {
-            var url = $"{apiUrl}/api/servicioDetalle/{id}";
+            var url = $"/api/servicioDetalle/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbServDetalle);
 
@@ -163,7 +158,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarServicioDetalle(int id)
         {
-            var url = $"{apiUrl}/api/servicioDetalle/{id}";
+            var url = $"/api/servicioDetalle/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

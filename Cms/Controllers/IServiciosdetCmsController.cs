@@ -12,21 +12,27 @@ namespace Cms.Controllers
     public class IServiciosdetCmsController : Controller
     {
         private readonly HelperUploadFiles _helperUpload;
-
-        public IServiciosdetCmsController(HelperUploadFiles helperUpload)
+        IServiciodetCmsService _serviciodetCmsService;
+        ServicioCabeceraCmsService _servicioCabeceraCmsService;
+        MenuCmsService _menuCmsService;
+        public IServiciosdetCmsController(HelperUploadFiles helperUpload, IServiciodetCmsService serviciodetCmsService, MenuCmsService menuCmsService,
+            ServicioCabeceraCmsService servicioCabeceraCmsService)
         {
-                _helperUpload = helperUpload;
+            _helperUpload = helperUpload;
+            _serviciodetCmsService=serviciodetCmsService;
+            _menuCmsService = menuCmsService;
+            _servicioCabeceraCmsService= servicioCabeceraCmsService;
         }
         
         // GET: IServiciosdet
         public async Task<IActionResult> Index(int codigo)
         {
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
           
 
-            var servicioDetLista = await servicioDet.ListarServiciosdets();
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
-            var servicioDetCmsLista = await servicioDetCms.filtrarPorCodigo(codigo);
+            var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            var servicioDetCmsLista = await _serviciodetCmsService.filtrarPorCodigo(codigo);
             
 
             if (codigo == 0 || servicioDetLista == null)
@@ -43,9 +49,9 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Details/5
         public async Task<IActionResult> Details(int id, int codigo)
         {
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
-            var servicioDetLista = await servicioDet.ListarServiciosdets();
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
+            var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
 
             if (id == 0 || servicioDetLista == null)
@@ -53,7 +59,7 @@ namespace Cms.Controllers
                 return NotFound();
             }
 
-            var tbIndServiciodet = await servicioDetCms.obtenerServicioDetDetalle(id,codigo);
+            var tbIndServiciodet = await _serviciodetCmsService.obtenerServicioDetDetalle(id,codigo);
 
             if (tbIndServiciodet == null)
             {
@@ -66,10 +72,10 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Create
         public async Task<IActionResult> Create(int? codigo)
         {
-            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
-            var servicioCabLista = await servicioCab.ListarServiciosCabs();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
+            var servicioCabLista = await _servicioCabeceraCmsService.ListarServiciosCabs();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             if (menuLista.Count == 0)
             {
                 return NotFound();
@@ -91,9 +97,9 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdCab,Icono,Titulo,Detalle,Ruta,Imagen")] TbIndServiciodet tbIndServiciodet)
         {
-            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
-            var servicioCabLista = await servicioCab.ListarServiciosCabs();
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
+            //var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
+            var servicioCabLista = await _servicioCabeceraCmsService.ListarServiciosCabs();
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
 
          
 
@@ -110,7 +116,7 @@ namespace Cms.Controllers
                 }
 
 
-                await servicioDet.crearServicioDet(tbIndServiciodet);
+                await _serviciodetCmsService.crearServicioDet(tbIndServiciodet);
                 return RedirectToAction("Index", "IserviciosdetCms", new { codigo = tbIndServiciodet.IdCab });
          
             }
@@ -121,22 +127,22 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Edit/5
         public async Task<IActionResult> Edit(int id, int codigo)
         {
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
-            var servicioDetLista = await servicioDet.ListarServiciosdets();
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
+            var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
-            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
-            var servicioCabLista = await servicioCab.ListarServiciosCabs();
+            //var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
+            var servicioCabLista = await _servicioCabeceraCmsService.ListarServiciosCabs();
 
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (id == 0 || servicioDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciodet = await servicioDetCms.obtenerServicioDeEspecificoDetalle(id);
+            var tbIndServiciodet = await _serviciodetCmsService.obtenerServicioDeEspecificoDetalle(id);
             if (tbIndServiciodet == null)
             {
                 return NotFound();
@@ -165,10 +171,10 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdCab,Icono,Titulo,Detalle,Ruta,Imagen")] TbIndServiciodet tbIndServiciodet)
         {
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
-            var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
-            var servicioCabLista = await servicioCab.ListarServiciosCabs();
+            //var servicioCab = new ServicioCabeceraCmsService(new HttpClient());
+            var servicioCabLista = await _servicioCabeceraCmsService.ListarServiciosCabs();
             ViewData["vServicioId"] = tbIndServiciodet.IdCab;
             ViewData["IdCab"] = new SelectList(servicioCabLista, "Id", "TituloGrande", tbIndServiciodet.IdCab);
             if (id != tbIndServiciodet.Id)
@@ -216,7 +222,7 @@ namespace Cms.Controllers
                         tbIndServiciodet.Imagen = "/images/" + nombreImagen;
                     }
                     
-                    await servicioDetCms.modificarServicioDet(id,tbIndServiciodet) ;
+                    await _serviciodetCmsService.modificarServicioDet(id,tbIndServiciodet) ;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -234,16 +240,16 @@ namespace Cms.Controllers
         // GET: IServiciosdet/Delete/5
         public async Task<IActionResult> Delete(int id, int codigo)
         {
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
-            var servicioDetLista = await servicioDet.ListarServiciosdets();
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
+            var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
             if (id == 0 || servicioDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciodet = await servicioDetCms.obtenerServicioDetDetalle(id, codigo);
+            var tbIndServiciodet = await _serviciodetCmsService.obtenerServicioDetDetalle(id, codigo);
             if (tbIndServiciodet == null)
             {
                 return NotFound();
@@ -257,19 +263,19 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicioDet = new IServiciodetCmsService(new HttpClient());
-            var servicioDetLista = await servicioDet.ListarServiciosdets();
-            var servicioDetCms = new IServiciodetCmsService(new HttpClient());
+            //var servicioDet = new IServiciodetCmsService(new HttpClient());
+            var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
+            //var servicioDetCms = new IServiciodetCmsService(new HttpClient());
 
             if (servicioDetLista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbIndServiciodets'  is null.");
             }
-            var tbIndServiciodet = await servicioDetCms.obtenerServicioDeEspecificoDetalle(id);
+            var tbIndServiciodet = await _serviciodetCmsService.obtenerServicioDeEspecificoDetalle(id);
             var servicioid = tbIndServiciodet.IdCab;
             if (tbIndServiciodet != null)
             {
-                await servicioDetCms.eliminarServicioDet(id);
+                await _serviciodetCmsService.eliminarServicioDet(id);
             }
 
             
