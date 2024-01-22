@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class CotizanoCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public CotizanoCmsService(HttpClient httpClient)
+        public CotizanoCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
         public async Task<List<TbFormCotizano>> ListarCotizanos(int codigo)
         {
@@ -28,7 +23,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"{apiUrl}/api/cotizanos/tipoServicio/{codigo}";
+                var url = $"/api/cotizanos/tipoServicio/{codigo}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -53,7 +48,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormCotizano> obtenerCotizanoDetalle(int id)
         {
-            var url = $"{apiUrl}/api/cotizanos/{id}";
+            var url = $"/api/cotizanos/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -75,7 +70,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormCotizano> crearCotizanoRegistro(TbFormCotizano tbFormCotizanos)
         {
-            var url = apiUrl + "/api/cotizanos";
+            var url = "/api/cotizanos";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormCotizanos);
 
@@ -93,7 +88,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormCotizano> modificarCotizano(int id, TbFormCotizano tbFormCotizanos)
         {
-            var url = $"{apiUrl}/api/cotizanos/{id}";
+            var url = $"/api/cotizanos/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormCotizanos);
 
@@ -111,7 +106,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarCotizano(int id)
         {
-            var url = $"{apiUrl}/api/cotizanos/{id}";
+            var url = $"/api/cotizanos/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -133,7 +128,7 @@ namespace Cms.ServiceCms
         public async Task<List<TbConfUbigeo>> obtenerDistritos(string cod)
         {
             List<TbConfUbigeo> distritos = new List<TbConfUbigeo>();
-            var url = $"{apiUrl}/api/ubigeo/distritos/{cod}";
+            var url = $"/api/ubigeo/distritos/{cod}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -157,7 +152,7 @@ namespace Cms.ServiceCms
         public async Task<List<HotelDistrito>> obtenerHotelDistritos()
         {
             List<HotelDistrito> hotteldistritos = new List<HotelDistrito>();
-            var url = $"{apiUrl}/api/hoteldistritos";
+            var url = $"/api/hoteldistritos";
 
             var response = await _httpClient.GetAsync(url);
 

@@ -7,11 +7,18 @@ namespace Cms.Controllers
 {
     public class RolCmsController : Controller
     {
+        RolCmsService _rolCmsService;
+        public RolCmsController(RolCmsService rolCmsService)
+        {
+
+            _rolCmsService = rolCmsService;
+
+        }
         // GET: Rol
         public async Task<IActionResult> Index()
         {
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
             if (rolLista.Count == 0)
             {
                 TbConfRole objRole = new TbConfRole();
@@ -28,15 +35,15 @@ namespace Cms.Controllers
         // GET: Rol/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
 
             if (id == 0 || rolLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfRole = await rol.obtenerRolDetalle(id);
+            var tbConfRole = await _rolCmsService.obtenerRolDetalle(id);
             if (tbConfRole == null)
             {
                 return NotFound();
@@ -58,11 +65,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Rol,Descripcion,PermisoId,Estado,Creacion,Modificacion")] TbConfRole tbConfRole)
         {
-            var rol = new RolCmsService(new HttpClient());
+            //var rol = new RolCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
 
-                await rol.crearRol(tbConfRole);
+                await _rolCmsService.crearRol(tbConfRole);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbConfRole);
@@ -71,14 +78,14 @@ namespace Cms.Controllers
        // GET: Rol/Edit/5
        public async Task<IActionResult> Edit(int id)
        {
-            var rol = new RolCmsService(new HttpClient());
-            var rolLista = await rol.listarRoles();
+            //var rol = new RolCmsService(new HttpClient());
+            var rolLista = await _rolCmsService.listarRoles();
             if (id == 0 || rolLista == null)
            {
                return NotFound();
            }
 
-           var tbConfRole = await rol.obtenerRolDetalle(id);
+           var tbConfRole = await _rolCmsService.obtenerRolDetalle(id);
            if (tbConfRole == null)
            {
                return NotFound();
@@ -93,7 +100,7 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(int id, [Bind("Id,Rol,Descripcion,PermisoId,Estado,Creacion,Modificacion")] TbConfRole tbConfRole)
        {
-           var rol = new RolCmsService(new HttpClient());
+           //var rol = new RolCmsService(new HttpClient());
            if (id != tbConfRole.Id)
            {
                return NotFound();
@@ -104,7 +111,7 @@ namespace Cms.Controllers
                try
                {
 
-                    await rol.modificarRol(id, tbConfRole);
+                    await _rolCmsService.modificarRol(id, tbConfRole);
                }
                catch (DbUpdateConcurrencyException)
                {
@@ -120,15 +127,15 @@ namespace Cms.Controllers
        // GET: Rol/Delete/5
        public async Task<IActionResult> Delete(int id)
        {
-           var rol = new RolCmsService(new HttpClient());
-           var rolLista = await rol.listarRoles();
+           //var rol = new RolCmsService(new HttpClient());
+           var rolLista = await _rolCmsService.listarRoles();
 
            if (id == 0 || rolLista == null)
            {
                return NotFound();
            }
 
-           var tbConfRole = await rol.obtenerRolDetalle(id);
+           var tbConfRole = await _rolCmsService.obtenerRolDetalle(id);
            if (tbConfRole == null)
            {
                return NotFound();
@@ -142,17 +149,17 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(int id)
        {
-           var rol = new RolCmsService(new HttpClient());
-           var rolListado = rol.listarRoles();
+           //var rol = new RolCmsService(new HttpClient());
+           var rolListado = _rolCmsService.listarRoles();
 
            if (rolListado == null)
            {
                return Problem("Entity set 'CentralparkingContext.TbConfRoles'  is null.");
            }
-           var tbConfRole = await rol.obtenerRolDetalle(id);
+           var tbConfRole = await _rolCmsService.obtenerRolDetalle(id);
            if (tbConfRole != null)
            {
-               await rol.eliminarRol(id);
+               await _rolCmsService.eliminarRol(id);
            }
 
            return RedirectToAction(nameof(Index));

@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class EntidadCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public EntidadCmsService(HttpClient httpClient)
+        public EntidadCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfEntidad>> listarEntidades()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/entidades/getEntidades";
+                var url = "/api/entidades/getEntidades";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> obtenerEntidadDetalle(int id)
         {
-            var url = $"{apiUrl}/api/entidades/{id}"; 
+            var url = $"/api/entidades/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> crearEntidad(TbConfEntidad tbConfEntidad)
         {
-            var url = apiUrl + "/api/entidades"; 
+            var url = "/api/entidades"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfEntidad);
 
@@ -94,7 +89,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfEntidad> modificarEntidad(int id, TbConfEntidad tbConfEntidad)
         {
-            var url = $"{apiUrl}/api/entidades/{id}"; 
+            var url = $"/api/entidades/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfEntidad);
 
@@ -112,7 +107,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarEntidad(int id)
         {
-            var url = $"{apiUrl}/api/entidades/{id}"; 
+            var url = $"/api/entidades/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

@@ -7,11 +7,18 @@ namespace Cms.Controllers
 {
     public class PiePaginaCmsController : Controller
     {
+        PiePaginaCmsService _piePaginaCmsService;
+        public PiePaginaCmsController(PiePaginaCmsService piePaginaCmsService)
+        {
+
+            _piePaginaCmsService = piePaginaCmsService;
+
+        }
         // GET: PiePagina
         public async Task<IActionResult> Index()
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
-            var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
+            var piePaginaListaCabs = await _piePaginaCmsService.listarPiePaginasCab();
 
             if(piePaginaListaCabs.Count == 0)
             {
@@ -28,15 +35,15 @@ namespace Cms.Controllers
         // GET: PiePagina/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
-            var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
+            var piePaginaListaCabs = await _piePaginaCmsService.listarPiePaginasCab();
 
             if (id == 0 || piePaginaListaCabs == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginacab = await piePagina.obtenerPiePaginaCabsDetalle(id);
+            var tbConfPiepaginacab = await _piePaginaCmsService.obtenerPiePaginaCabsDetalle(id);
             if (tbConfPiepaginacab == null)
             {
                 return NotFound();
@@ -58,12 +65,12 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Imagen,Orden,Estado")] TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
 
-                await piePagina.crearPiePaginaCab(tbConfPiepaginacab); 
+                await _piePaginaCmsService.crearPiePaginaCab(tbConfPiepaginacab); 
                 return RedirectToAction(nameof(Index));
             }
             return View(tbConfPiepaginacab);
@@ -72,15 +79,15 @@ namespace Cms.Controllers
         // GET: PiePagina/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
-            var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
+            var piePaginaListaCabs = await _piePaginaCmsService.listarPiePaginasCab();
 
             if (id == 0 || piePaginaListaCabs == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginacab = await piePagina.obtenerPiePaginaCabsDetalle(id);
+            var tbConfPiepaginacab = await _piePaginaCmsService.obtenerPiePaginaCabsDetalle(id);
             if (tbConfPiepaginacab == null)
             {
                 return NotFound();
@@ -95,7 +102,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Imagen,Orden,Estado")] TbConfPiepaginacab tbConfPiepaginacab)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
 
             if (id != tbConfPiepaginacab.Id)
             {
@@ -107,7 +114,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await piePagina.modificarPiePaginaCab(id, tbConfPiepaginacab);
+                    await _piePaginaCmsService.modificarPiePaginaCab(id, tbConfPiepaginacab);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,15 +130,15 @@ namespace Cms.Controllers
         // GET: PiePagina/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
-            var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
+            var piePaginaListaCabs = await _piePaginaCmsService.listarPiePaginasCab();
 
             if (id == 0 || piePaginaListaCabs == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginacab = await piePagina.obtenerPiePaginaCabsDetalle(id);
+            var tbConfPiepaginacab = await _piePaginaCmsService.obtenerPiePaginaCabsDetalle(id);
 
             if (tbConfPiepaginacab == null)
             {
@@ -146,18 +153,18 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var piePagina = new PiePaginaCmsService(new HttpClient());
-            var piePaginaListaCabs = await piePagina.listarPiePaginasCab();
+            //var piePagina = new PiePaginaCmsService(new HttpClient());
+            var piePaginaListaCabs = await _piePaginaCmsService.listarPiePaginasCab();
 
             if (piePaginaListaCabs == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbConfPiepaginacabs'  is null.");
             }
-            var tbConfPiepaginacab = await piePagina.obtenerPiePaginaCabsDetalle(id);
+            var tbConfPiepaginacab = await _piePaginaCmsService.obtenerPiePaginaCabsDetalle(id);
 
             if (tbConfPiepaginacab != null)
             {
-                await piePagina.eliminarPiePaginaCab(id);
+                await _piePaginaCmsService.eliminarPiePaginaCab(id);
             }
 
             

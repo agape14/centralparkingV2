@@ -9,19 +9,14 @@ namespace Cms.ServiceCms
     public class PermisoCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PermisoCmsService(HttpClient httpClient)
+        public PermisoCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfPermiso>> listarPermisos()
@@ -30,7 +25,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/permiso";
+                var url = "/api/permiso";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -71,7 +66,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> obtenerPermisoDetalle(int id)
         {
-            var url = $"{apiUrl}/api/permiso/{id}"; 
+            var url = $"/api/permiso/{id}"; 
 
             try
             {
@@ -107,7 +102,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> crearPermiso(TbConfPermiso tbConfPermiso)
         {
-            var url = apiUrl + "/api/permiso"; 
+            var url = "/api/permiso"; 
 
             try
             {
@@ -141,7 +136,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPermiso(int id)
         {
-            var url = $"{apiUrl}/api/permiso/{id}";
+            var url = $"/api/permiso/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -162,7 +157,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPermiso> modificarPermiso(int id, TbConfPermiso tbConfPermiso)
         {
-            var url = $"{apiUrl}/api/permiso/{id}"; 
+            var url = $"/api/permiso/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfPermiso), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

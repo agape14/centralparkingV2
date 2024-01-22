@@ -9,19 +9,14 @@ namespace Cms.ServiceCms
     public class PiePaginaDetCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PiePaginaDetCmsService(HttpClient httpClient)
+        public PiePaginaDetCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfPiepaginadet>> listarPiePaginaDetPorCodigoId(int id)
@@ -30,7 +25,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = $"{apiUrl}/api/piepaginadet/piePaginaDetId/{id}";
+                var url = $"/api/piepaginadet/piePaginaDetId/{id}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -59,7 +54,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/piepaginadet";
+                var url = "/api/piepaginadet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -84,7 +79,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> obtenerPiePaginaDetDetalle(int id)
         {
-            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
+            var url = $"/api/piepaginadet/{id}"; 
 
             try
             {
@@ -120,7 +115,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> crearPiePaginaDet(TbConfPiepaginadet piePaginaDet)
         {
-            var url = apiUrl + "/api/piepaginadet"; 
+            var url = "/api/piepaginadet"; 
 
             try
             {
@@ -154,7 +149,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPiePaginaDet(int id)
         {
-            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
+            var url = $"/api/piepaginadet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -175,7 +170,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPiepaginadet> modificarPiePaginaDet(int id, TbConfPiepaginadet boton)
         {
-            var url = $"{apiUrl}/api/piepaginadet/{id}"; 
+            var url = $"/api/piepaginadet/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(boton), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);

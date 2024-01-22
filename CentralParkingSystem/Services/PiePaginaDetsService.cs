@@ -1,9 +1,9 @@
 ﻿using ApiBD.Models;
-using CentralParkingSystem.DTOs;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -12,33 +12,25 @@ namespace CentralParkingSystem.Services
     public class PiePaginaDetsService
     {
         private readonly HttpClient _httpClient;
+        private readonly string apiUrl;
         private readonly IConfiguration _configuration;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
-        private string apiUrl = "";
         public PiePaginaDetsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            //if (File.Exists(launchSettingsPath))
-            //{
-            //    var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-            //    var launchSettings = JObject.Parse(launchSettingsJson);
-
-            //    // Acceder al perfil "ApiBD" y obtener la URL
-            //    apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            //}
             _configuration = configuration;
             apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
+            
+           
         }
-
 
         public async Task<List<TbConfPiepaginadet>> ListarPiePaginaDets()
         {
-
             List<TbConfPiepaginadet> piePaginaDets = new List<TbConfPiepaginadet>();
 
             try
             {
-                var url = apiUrl+"/api/piepaginadet";
+                var url = "/api/piepaginadet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -59,7 +51,6 @@ namespace CentralParkingSystem.Services
             }
 
             return piePaginaDets;
-
         }
     }
 }

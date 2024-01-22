@@ -24,4 +24,11 @@ public class IndexVM
     public TbConfModalcab ModalCabs10 { get; set; }
     public List<TbConfModaldet> ListModalDet15 { get; set; }
     public TbFormProveedore Proveedor { get; set; }
+    public List<TbServCabecera> ListServCabecera { get; set; }
+    public TbFormCotizano TbFormCotizanos { get; set; }
+    public ServiceDetails ServicioDetalles { get; set; }
+    public TbFormContactano FormContactanos { get; set; }
+    public TbFormTbcnosotro TbFormTbcnosotros { get; set; }
+    public TbFormHojareclamacione HojaReclamaciones { get; set; }
+    
 }

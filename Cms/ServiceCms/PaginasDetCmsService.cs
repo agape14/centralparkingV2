@@ -9,19 +9,14 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PaginasDetCmsService(HttpClient httpClient)
+        public PaginasDetCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfPaginasdet>> paginasDetListar()
@@ -30,7 +25,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/paginasdet";
+                var url = "/api/paginasdet";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -55,7 +50,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> obtenerPaginaDetDetalle(int id)
         {
-            var response = await _httpClient.GetAsync($"{apiUrl}/api/paginasdet/{id}");
+            var response = await _httpClient.GetAsync($"/api/paginasdet/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -75,7 +70,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> crearPaginaDet(TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = apiUrl + "/api/paginasdet";
+            var url = "/api/paginasdet";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfPaginasdet);
 
@@ -93,7 +88,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfPaginasdet> modificarPaginaDet(int id, TbConfPaginasdet tbConfPaginasdet)
         {
-            var url = $"{apiUrl}/api/paginasdet/{id}"; 
+            var url = $"/api/paginasdet/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfPaginasdet);
 
@@ -111,7 +106,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPaginaDet(int id)
         {
-            var url = $"{apiUrl}/api/paginasdet/{id}"; 
+            var url = $"/api/paginasdet/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

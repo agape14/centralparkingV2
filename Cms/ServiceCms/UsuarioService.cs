@@ -10,19 +10,14 @@ namespace Cms.Service
     public class UsuarioService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public UsuarioService(HttpClient httpClient)
+        public UsuarioService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<TbConfUser> validacionUsuario(TbConfUser user)
@@ -31,7 +26,7 @@ namespace Cms.Service
 
             try
             {
-                var url = apiUrl + "/api/usuario/validacionUser";
+                var url = "/api/usuario/validacionUser";
 
             
 

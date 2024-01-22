@@ -8,10 +8,17 @@ namespace Cms.Controllers
 {
     public class ContactosCmsController : Controller
     {
+        ContactanoCmsService _contactanoCmsService;
+        public ContactosCmsController(ContactanoCmsService contactanoCmsService)
+        {
+
+            _contactanoCmsService = contactanoCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
-            var lista = await contactos.ListarContactos();
+            //var contactos = new ContactanoCmsService(new HttpClient());
+            var lista = await _contactanoCmsService.ListarContactos();
             if (lista.Count == 0)
             {
                 TbFormContactano objContactano = new TbFormContactano();
@@ -24,15 +31,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
-            var lista = contactos.ListarContactos();
+            //var contactos = new ContactanoCmsService(new HttpClient());
+            var lista = _contactanoCmsService.ListarContactos();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciocab = await contactos.obtenerContactoDetalle(id);
+            var tbIndServiciocab = await _contactanoCmsService.obtenerContactoDetalle(id);
             if (tbIndServiciocab == null)
             {
                 return NotFound();
@@ -55,10 +62,10 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbFormContactano tbFormContactano)
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
+            //var contactos = new ContactanoCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
-                await contactos.crearContactoRegistro(tbFormContactano);
+                await _contactanoCmsService.crearContactoRegistro(tbFormContactano);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbFormContactano);
@@ -68,15 +75,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var contactos = new ContactanoCmsService(new HttpClient());
-            var lista = contactos.ListarContactos();
+            //var contactos = new ContactanoCmsService(new HttpClient());
+            var lista = _contactanoCmsService.ListarContactos();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var contacto = await contactos.obtenerContactoDetalle(id);
+            var contacto = await _contactanoCmsService.obtenerContactoDetalle(id);
             if (contacto == null)
             {
                 return NotFound();
@@ -92,7 +99,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbFormContactano tbFormContactano)
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
+            //var contactos = new ContactanoCmsService(new HttpClient());
 
 
             if (id != tbFormContactano.Id)
@@ -105,7 +112,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await contactos.modificarContacto(id, tbFormContactano);
+                    await _contactanoCmsService.modificarContacto(id, tbFormContactano);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,16 +128,16 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
+            //var contactos = new ContactanoCmsService(new HttpClient());
 
-            var lista = await contactos.ListarContactos();
+            var lista = await _contactanoCmsService.ListarContactos();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var contacto = await contactos.obtenerContactoDetalle(id);
+            var contacto = await _contactanoCmsService.obtenerContactoDetalle(id);
             if (contacto == null)
             {
                 return NotFound();
@@ -144,17 +151,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contactos = new ContactanoCmsService(new HttpClient());
-            var lista = await contactos.ListarContactos();
+            //var contactos = new ContactanoCmsService(new HttpClient());
+            var lista = await _contactanoCmsService.ListarContactos();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var contacto = await contactos.obtenerContactoDetalle(id);
+            var contacto = await _contactanoCmsService.obtenerContactoDetalle(id);
             if (contacto != null)
             {
-                await contactos.eliminarContacto(id);
+                await _contactanoCmsService.eliminarContacto(id);
             }
 
 

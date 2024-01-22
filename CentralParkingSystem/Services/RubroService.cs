@@ -1,4 +1,5 @@
 ﻿using ApiBD.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
@@ -8,19 +9,14 @@ namespace CentralParkingSystem.Services
     public class RubroService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public RubroService(HttpClient httpClient)
+        public RubroService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfRubro>> ListarRubros()
@@ -29,7 +25,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = apiUrl+"/api/rubro";
+                var url = "/api/rubro";
 
                 var response = await _httpClient.GetAsync(url);
 

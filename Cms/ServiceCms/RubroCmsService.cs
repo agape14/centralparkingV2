@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class RubroCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public RubroCmsService(HttpClient httpClient)
+        public RubroCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfRubro>> listarRubros()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/rubro";
+                var url = "/api/rubro";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRubro> obtenerRubroDetalle(int id)
         {
-            var url = $"{apiUrl}/api/rubro/{id}"; 
+            var url = $"/api/rubro/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRubro> crearRubro(TbConfRubro TbConfRubro)
         {
-            var url = apiUrl + "/api/rubro"; 
+            var url = "/api/rubro"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, TbConfRubro);
 
@@ -95,7 +90,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRubro> modificarRubro(int id, TbConfRubro TbConfRubro)
         {
-            var url = $"{apiUrl}/api/rubro/{id}"; 
+            var url = $"/api/rubro/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, TbConfRubro);
 
@@ -113,7 +108,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarRubro(int id)
         {
-            var url = $"{apiUrl}/api/rubro/{id}"; 
+            var url = $"/api/rubro/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

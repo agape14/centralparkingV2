@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class RolCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public RolCmsService(HttpClient httpClient)
+        public RolCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfRole>> listarRoles()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/rol";
+                var url = "/api/rol";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> obtenerRolDetalle(int id)
         {
-            var url = $"{apiUrl}/api/rol/{id}"; 
+            var url = $"/api/rol/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> crearRol(TbConfRole tbConfRole)
         {
-            var url = apiUrl+"/api/rol"; 
+            var url = "/api/rol"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbConfRole);
 
@@ -95,7 +90,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfRole> modificarRol(int id, TbConfRole tbConfRole)
         {
-            var url = $"{apiUrl}/api/rol/{id}"; 
+            var url = $"/api/rol/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbConfRole);
 
@@ -113,7 +108,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarRol(int id)
         {
-            var url = $"{apiUrl}/api/rol/{id}"; 
+            var url = $"/api/rol/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

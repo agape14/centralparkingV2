@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class PuestoCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public PuestoCmsService(HttpClient httpClient)
+        public PuestoCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbTraPuesto>> puestoListar()
@@ -29,7 +24,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/puesto";
+                var url = "/api/puesto";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> obtenerPuestoDetalle(int id)
         {
-            var url = $"{apiUrl}/api/puesto/{id}"; 
+            var url = $"/api/puesto/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> crearPuesto(TbTraPuesto tbTraPuesto)
         {
-            var url = apiUrl + "/api/puesto"; 
+            var url = "/api/puesto"; 
 
             var response = await _httpClient.PostAsJsonAsync(url, tbTraPuesto);
 
@@ -94,7 +89,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbTraPuesto> modificarPuesto(int id, TbTraPuesto tbTraPuesto)
         {
-            var url = $"{apiUrl}/api/puesto/{id}"; 
+            var url = $"/api/puesto/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbTraPuesto);
 
@@ -112,7 +107,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarPuesto(int id)
         {
-            var url = $"{apiUrl}/api/puesto/{id}"; 
+            var url = $"/api/puesto/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 

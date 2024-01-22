@@ -13,24 +13,19 @@ namespace Cms.ServiceCms
     {
 
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public IServiciodetCmsService(HttpClient httpClient)
+        public IServiciodetCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["applicationUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbIndServiciodet>> filtrarPorCodigo(int codigo)
         {
-            var url = $"{apiUrl}/api/serviciosdet/filtrarPorCodigo/{codigo}"; 
+            var url = $"/api/serviciosdet/filtrarPorCodigo/{codigo}"; 
 
             
             HttpResponseMessage response = await _httpClient.GetAsync(url);
@@ -57,7 +52,7 @@ namespace Cms.ServiceCms
        
         public async Task<TbIndServiciodet> obtenerServicioDetDetalle(int id, int codigo)
         {
-            var url = $"{apiUrl}/api/serviciosdet/Details/{id}/{codigo}";
+            var url = $"/api/serviciosdet/Details/{id}";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
@@ -81,7 +76,7 @@ namespace Cms.ServiceCms
 
         public async Task<ActionResult<TbIndServiciodet>> crearServicioDet(TbIndServiciodet serviciodet)
         {
-            var url = apiUrl+"/api/serviciosdet";
+            var url = "/api/serviciosdet";
 
             var serializedObject = JsonSerializer.Serialize(serviciodet);
             var content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
@@ -105,7 +100,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarServicioDet(int id)
         {
-            var url = $"{apiUrl}/api/serviciosdet/{id}"; // Reemplaza con la URL correcta de tu API
+            var url = $"/api/serviciosdet/{id}"; // Reemplaza con la URL correcta de tu API
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -127,7 +122,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciodet> obtenerServicioDeEspecificoDetalle(int id)
         {
-            var url = $"{apiUrl}/api/serviciosdet/{id}"; 
+            var url = $"/api/serviciosdet/{id}"; 
 
             var response = await _httpClient.GetAsync(url);
 
@@ -149,7 +144,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbIndServiciodet> modificarServicioDet(int id, TbIndServiciodet tbIndServiciodet)
         {
-            var url = $"{apiUrl}/api/serviciosdet/{id}"; 
+            var url = $"/api/serviciosdet/{id}"; 
 
             var response = await _httpClient.PutAsJsonAsync(url, tbIndServiciodet);
 
@@ -171,7 +166,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/serviciosdet";
+                var url = "/api/serviciosdet";
 
                 var response = await _httpClient.GetAsync(url);
 

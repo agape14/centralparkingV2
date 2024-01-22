@@ -8,10 +8,17 @@ namespace Cms.Controllers
 {
     public class HojaReclamacionCmsController : Controller
     {
+        HojaReclamacioneCmsService _hojaReclamacioneCmsService;
+        public HojaReclamacionCmsController(HojaReclamacioneCmsService hojaReclamacioneCmsService)
+        {
+
+            _hojaReclamacioneCmsService = hojaReclamacioneCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
             if (lista.Count == 0)
             {
                 TbFormHojareclamacione objHojaReclamacione = new TbFormHojareclamacione();
@@ -24,15 +31,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var hoja = await servicio.obtenerHojaReclamacionesDetalle(id);
+            var hoja = await _hojaReclamacioneCmsService.obtenerHojaReclamacionesDetalle(id);
             if (hoja == null)
             {
                 return NotFound();
@@ -58,11 +65,11 @@ namespace Cms.Controllers
             tbFormHojareclamacione.Fecha = DateTime.Now;
             tbFormHojareclamacione.Menordeedad = 0;
 
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await servicio.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
+                await _hojaReclamacioneCmsService.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbFormHojareclamacione);
@@ -72,15 +79,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var hoja = await servicio.obtenerHojaReclamacionesDetalle(id);
+            var hoja = await _hojaReclamacioneCmsService.obtenerHojaReclamacionesDetalle(id);
             if (hoja == null)
             {
                 return NotFound();
@@ -96,8 +103,8 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbFormHojareclamacione tbFormHojareclamacione)
         {
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
 
 
             if (id != tbFormHojareclamacione.Id)
@@ -110,7 +117,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await servicio.modificarHojaReclamacion(id, tbFormHojareclamacione);
+                    await _hojaReclamacioneCmsService.modificarHojaReclamacion(id, tbFormHojareclamacione);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,15 +133,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var hoja = await servicio.obtenerHojaReclamacionesDetalle(id);
+            var hoja = await _hojaReclamacioneCmsService.obtenerHojaReclamacionesDetalle(id);
             if (hoja == null)
             {
                 return NotFound();
@@ -148,17 +155,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicio = new HojaReclamacioneCmsService(new HttpClient());
-            var lista = await servicio.ListarHojaReclamaciones();
+            //var servicio = new HojaReclamacioneCmsService(new HttpClient());
+            var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var hoja = await servicio.obtenerHojaReclamacionesDetalle(id);
+            var hoja = await _hojaReclamacioneCmsService.obtenerHojaReclamacionesDetalle(id);
             if (hoja != null)
             {
-                await servicio.eliminarHojaReclamacion(id);
+                await _hojaReclamacioneCmsService.eliminarHojaReclamacion(id);
             }
 
 

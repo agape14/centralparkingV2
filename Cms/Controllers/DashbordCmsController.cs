@@ -16,7 +16,43 @@ namespace Cms.Controllers
 {
     public class DashbordCmsController : Controller
     {
-
+        private readonly UsuarioService _usuarioService;
+        private readonly UsuarioCmsService _usuariocmsService;
+        private readonly ContactanoCmsService _contactanoCmsService;
+        private readonly ServicioCabeceraCmsService _servicioCabeceraCmsService;
+        private readonly CotizanoCmsService _cotizanoCmsService;
+        private readonly ProveedorCmsService _proveedorCmsService;
+        private readonly HojaReclamacioneCmsService _hojaReclamacioneCmsService;
+        private readonly ParkingCardCmsService _parkingCardCmsService;
+        private readonly PuestoCmsService _puestoCmsService;
+        private readonly PermisoCmsService _permisoCmsService;
+        private readonly MenuCmsService _menuCmsService;
+        public DashbordCmsController(
+            UsuarioService usuarioCService,
+            UsuarioCmsService usuarioCmsService,
+            ContactanoCmsService contactanoCmsService,
+            ServicioCabeceraCmsService servicioCabeceraCmsService,
+            CotizanoCmsService cotizanoCmsService,
+            ProveedorCmsService proveedorCmsService,
+            HojaReclamacioneCmsService hojaReclamacioneCmsService,
+            ParkingCardCmsService parkingCardCmsService,
+            PuestoCmsService puestoCmsService,
+            PermisoCmsService permisoCmsService,
+            MenuCmsService menuCmsService
+         )
+        {
+            _usuarioService = usuarioCService;
+            _usuariocmsService = usuarioCmsService;
+            _contactanoCmsService= contactanoCmsService;
+            _servicioCabeceraCmsService=servicioCabeceraCmsService;
+            _cotizanoCmsService= cotizanoCmsService;
+            _proveedorCmsService= proveedorCmsService;
+            _hojaReclamacioneCmsService=hojaReclamacioneCmsService;
+            _parkingCardCmsService=parkingCardCmsService;
+            _puestoCmsService= puestoCmsService;
+            _permisoCmsService = permisoCmsService;
+            _menuCmsService= menuCmsService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -26,12 +62,12 @@ namespace Cms.Controllers
         public async Task<ActionResult> Index(TbConfUser user)
         {
 
-            var servicioUsuario = new UsuarioService(new HttpClient());
+            //var servicioUsuario = new UsuarioService(new HttpClient());
             
             try
             {
 
-                var usuario = await servicioUsuario.validacionUsuario(user);
+                var usuario = await _usuarioService.validacionUsuario(user);
 
                 if (usuario != null)
                 {
@@ -67,24 +103,24 @@ namespace Cms.Controllers
             string usuarioName = HttpContext.Session.GetString("UsuarioName") ?? "";
             int usuarioRol = HttpContext.Session.GetInt32("UsuarioRol") ?? 0;
 
-            var usuario = new UsuarioCmsService(new HttpClient());
-            var usuarioLista = await usuario.listarUsuarios();
+            //var usuario = new UsuarioCmsService(new HttpClient());
+            var usuarioLista = await _usuariocmsService.listarUsuarios();
             int contadorUsuarios = 0;
             if (usuarioLista is ICollection<TbConfUser> usuarioCollection)
             {
                 contadorUsuarios = usuarioCollection.Count;
             }
 
-            var contacto = new ContactanoCmsService(new HttpClient());
-            var contactoLista = await contacto.ListarContactos();
+            //var contacto = new ContactanoCmsService(new HttpClient());
+            var contactoLista = await _contactanoCmsService.ListarContactos();
             int contadorContactos = 0;
             if (contactoLista is ICollection<TbFormContactano> contactoCollection)
             {
                 contadorContactos = contactoCollection.Count;
             }
 
-            var servicios = new ServicioCabeceraCmsService(new HttpClient());
-            var listaServicios = await servicios.listarServiciosCabecera();
+            //var servicios = new ServicioCabeceraCmsService(new HttpClient());
+            var listaServicios = await _servicioCabeceraCmsService.listarServiciosCabecera();
             int contadorServicios = 0;
             int contadorCotizanos = 0;
             if (listaServicios.Count > 0)
@@ -95,8 +131,8 @@ namespace Cms.Controllers
                     int contadorCoti = 0;
                     foreach (var servicio in serviciosCollection)
                     {
-                        var cotizano = new CotizanoCmsService(new HttpClient());
-                        var cotizanoLista = await cotizano.ListarCotizanos(servicio.Id);
+                        //var cotizano = new CotizanoCmsService(new HttpClient());
+                        var cotizanoLista = await _cotizanoCmsService.ListarCotizanos(servicio.Id);
 
                         if (cotizanoLista is ICollection<TbFormCotizano> cotizanoCollection)
                         {
@@ -108,42 +144,42 @@ namespace Cms.Controllers
                 
             }
             int contadorProvedores = 0;
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var proveedorLista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var proveedorLista = await _proveedorCmsService.ListarProveedores();
             if (proveedorLista is ICollection<TbFormProveedore> proveedorCollection)
             {
                 contadorProvedores = proveedorCollection.Count;
             }
 
             int contadorHojaRecla = 0;
-            var hojarecla = new HojaReclamacioneCmsService(new HttpClient());
-            var hojareclaLista = await hojarecla.ListarHojaReclamaciones();
+            //var hojarecla = new HojaReclamacioneCmsService(new HttpClient());
+            var hojareclaLista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
             if (hojareclaLista is ICollection<TbFormHojareclamacione> hojareclaCollection)
             {
                 contadorHojaRecla = hojareclaCollection.Count;
             }
 
             int contadorParking = 0;
-            var parking = new ParkingCardCmsService(new HttpClient());
-            var parkingLista = await parking.ListarParkingCard();
+            //var parking = new ParkingCardCmsService(new HttpClient());
+            var parkingLista = await _parkingCardCmsService.ListarParkingCard();
             if (parkingLista is ICollection<TbFormParkingcard> parkingCollection)
             {
                 contadorParking = parkingCollection.Count;
             }
 
             int contadorVacantes = 0;
-            var vacante = new PuestoCmsService(new HttpClient());
-            var vacanteLista = await vacante.puestoListar();
+            //var vacante = new PuestoCmsService(new HttpClient());
+            var vacanteLista = await _puestoCmsService.puestoListar();
             if (vacanteLista is ICollection<TbTraPuesto> vacanteCollection)
             {
                 contadorVacantes = vacanteCollection.Count;
             }
-            var permiso = new PermisoCmsService(new HttpClient());
-            var tbConfPermiso = await permiso.listarPermisos();
+            //var permiso = new PermisoCmsService(new HttpClient());
+            var tbConfPermiso = await _permisoCmsService.listarPermisos();
             var permisosss = tbConfPermiso.Where(per => per.RolId == usuarioRol).ToList();
 
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             menuLista = menuLista.Where(menu => menu.TipoProyecto == "cms" && permisosss.Any(p => p.MenuId == menu.Id))
                 .OrderBy(menu => menu.Id)
                 .ToList();

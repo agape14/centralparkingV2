@@ -7,11 +7,19 @@ namespace Cms.Controllers
 {
     public class PaginasDetCmsController : Controller
     {
+        PaginasDetCmsService _paginasDetCmsService;
+        public PaginasDetCmsController(PaginasDetCmsService paginasDetCmsService)
+        {
+
+            _paginasDetCmsService = paginasDetCmsService;
+
+        }
+
         // GET: PaginasDet
         public async Task<IActionResult> Index()
         {
-            var paginaDet = new PaginasDetCmsService(new HttpClient());
-            var paginaDetLista = await paginaDet.paginasDetListar();
+            //var paginaDet = new PaginasDetCmsService(new HttpClient());
+            var paginaDetLista = await _paginasDetCmsService.paginasDetListar();
 
             if(paginaDetLista.Count == 0)
             {
@@ -28,15 +36,15 @@ namespace Cms.Controllers
         // GET: PaginasDet/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var paginaDet = new PaginasDetCmsService(new HttpClient());
-            var paginaDetLista = await paginaDet.paginasDetListar();
+            //var paginaDet = new PaginasDetCmsService(new HttpClient());
+            var paginaDetLista = await _paginasDetCmsService.paginasDetListar();
 
             if (id == 0 || paginaDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPaginasdet = await paginaDet.obtenerPaginaDetDetalle(id);
+            var tbConfPaginasdet = await _paginasDetCmsService.obtenerPaginaDetDetalle(id);
             if (tbConfPaginasdet == null)
             {
                 return NotFound();
@@ -58,11 +66,11 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Create([Bind("Id,PaginaId,Titulo,Detalle,Imagen")] TbConfPaginasdet tbConfPaginasdet)
        {
-           var paginaDet = new PaginasDetCmsService(new HttpClient());
+           //var paginaDet = new PaginasDetCmsService(new HttpClient());
 
            if (ModelState.IsValid)
            {
-               await paginaDet.crearPaginaDet(tbConfPaginasdet);
+               await _paginasDetCmsService.crearPaginaDet(tbConfPaginasdet);
                return RedirectToAction(nameof(Index));
            }
            return View(tbConfPaginasdet);
@@ -71,14 +79,14 @@ namespace Cms.Controllers
        // GET: PaginasDet/Edit/5
        public async Task<IActionResult> Edit(int id)
        {
-           var paginaDet = new PaginasDetCmsService(new HttpClient());
-           var paginaDetLista = await paginaDet.paginasDetListar();
+           //var paginaDet = new PaginasDetCmsService(new HttpClient());
+           var paginaDetLista = await _paginasDetCmsService.paginasDetListar();
            if (id == 0 || paginaDetLista == null)
            {
                return NotFound();
            }
 
-           var tbConfPaginasdet = await paginaDet.obtenerPaginaDetDetalle(id);
+           var tbConfPaginasdet = await _paginasDetCmsService.obtenerPaginaDetDetalle(id);
            if (tbConfPaginasdet == null)
            {
                return NotFound();
@@ -93,7 +101,7 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(int id, [Bind("Id,PaginaId,Titulo,Detalle,Imagen")] TbConfPaginasdet tbConfPaginasdet)
        {
-           var paginaDet = new PaginasDetCmsService(new HttpClient());
+           //var paginaDet = new PaginasDetCmsService(new HttpClient());
            if (id != tbConfPaginasdet.Id)
            {
                return NotFound();
@@ -104,7 +112,7 @@ namespace Cms.Controllers
                try
                {
 
-                    await paginaDet.modificarPaginaDet(id,tbConfPaginasdet);
+                    await _paginasDetCmsService.modificarPaginaDet(id,tbConfPaginasdet);
                }
                catch (DbUpdateConcurrencyException)
                {
@@ -120,14 +128,14 @@ namespace Cms.Controllers
        // GET: PaginasDet/Delete/5
        public async Task<IActionResult> Delete(int id)
        {
-           var paginaDet = new PaginasDetCmsService(new HttpClient());
-           var paginaDetLista = await paginaDet.paginasDetListar();
+           //var paginaDet = new PaginasDetCmsService(new HttpClient());
+           var paginaDetLista = await _paginasDetCmsService.paginasDetListar();
            if (id == 0 || paginaDetLista == null)
            {
                return NotFound();
            }
 
-           var tbConfPaginasdet = await paginaDet.obtenerPaginaDetDetalle(id);
+           var tbConfPaginasdet = await _paginasDetCmsService.obtenerPaginaDetDetalle(id);
            if (tbConfPaginasdet == null)
            {
                return NotFound();
@@ -141,16 +149,16 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(int id)
        {
-           var paginaDet = new PaginasDetCmsService(new HttpClient());
-           var paginaDetLista = await paginaDet.paginasDetListar();
+           //var paginaDet = new PaginasDetCmsService(new HttpClient());
+           var paginaDetLista = await _paginasDetCmsService.paginasDetListar();
            if (paginaDetLista == null)
            {
                return Problem("Entity set 'CentralParkingContext.TbConfPaginasdets'  is null.");
            }
-           var tbConfPaginasdet = await paginaDet.obtenerPaginaDetDetalle(id);
+           var tbConfPaginasdet = await _paginasDetCmsService.obtenerPaginaDetDetalle(id);
            if (tbConfPaginasdet != null)
            {
-                await paginaDet.eliminarPaginaDet(id);
+                await _paginasDetCmsService.eliminarPaginaDet(id);
            }
 
           

@@ -8,10 +8,17 @@ namespace Cms.Controllers
 {
     public class ProveedoresCmsController : Controller
     {
+        ProveedorCmsService _proveedorCmsService;
+        public ProveedoresCmsController(ProveedorCmsService proveedorCmsService)
+        {
+
+            _proveedorCmsService = proveedorCmsService;
+
+        }
         public async Task<IActionResult> Index()
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
             if (lista.Count == 0)
             {
              
@@ -25,15 +32,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var prov = await proveedor.obtenerProveedorDetalle(id);
+            var prov = await _proveedorCmsService.obtenerProveedorDetalle(id);
             if (prov == null)
             {
                 return NotFound();
@@ -56,11 +63,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbFormProveedore tbFormProveedore)
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
+            //var proveedor = new ProveedorCmsService(new HttpClient());
             
             if (ModelState.IsValid)
             {
-                await proveedor.crearProveedorRegistro(tbFormProveedore);
+                await _proveedorCmsService.crearProveedorRegistro(tbFormProveedore);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbFormProveedore);
@@ -70,15 +77,15 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var prov = await proveedor.obtenerProveedorDetalle(id);
+            var prov = await _proveedorCmsService.obtenerProveedorDetalle(id);
             if (prov == null)
             {
                 return NotFound();
@@ -94,8 +101,8 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbFormProveedore tbFormProveedore)
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
 
 
             if (id != tbFormProveedore.Id)
@@ -108,7 +115,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await proveedor.modificarProveedor(id, tbFormProveedore);
+                    await _proveedorCmsService.modificarProveedor(id, tbFormProveedore);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,15 +131,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var prov = await proveedor.obtenerProveedorDetalle(id);
+            var prov = await _proveedorCmsService.obtenerProveedorDetalle(id);
             if (prov == null)
             {
                 return NotFound();
@@ -146,17 +153,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var proveedor = new ProveedorCmsService(new HttpClient());
-            var lista = await proveedor.ListarProveedores();
+            //var proveedor = new ProveedorCmsService(new HttpClient());
+            var lista = await _proveedorCmsService.ListarProveedores();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var prov = await proveedor.obtenerProveedorDetalle(id);
+            var prov = await _proveedorCmsService.obtenerProveedorDetalle(id);
             if (prov != null)
             {
-                await proveedor.eliminarProveedor(id);
+                await _proveedorCmsService.eliminarProveedor(id);
             }
 
 

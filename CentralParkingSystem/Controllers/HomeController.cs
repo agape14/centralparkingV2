@@ -17,6 +17,14 @@ namespace CentralParkingSystem.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly ContactanoService _contactanoService;
+    private readonly CotizanosService _cotizanosService;
+    private readonly HojaReclamacioneService _hojaReclamacioneService;
+    private readonly ParkingCardService _parkingCardService;
+    private readonly PostulacionService _postulacionService;
+    private readonly ProveedorService _proveedorService;
+    private readonly ServicioCabeceraService _servicioCabeceraService;
+    private readonly ServicioDetalleService _servicioDetalleService;
 
     private readonly SlideService _slideService;
     private readonly ServiciosCabsService _serviciosCabsservice;
@@ -46,7 +54,16 @@ public class HomeController : Controller
         ModaleDetalleService modalDetalleservice,
         PaginasCabsService paginasCabsService,
         PuestoService puestoService,
-        RubroService rubroService
+        RubroService rubroService,
+
+        ContactanoService contactanoService,
+        CotizanosService cotizanosService,
+        HojaReclamacioneService hojaReclamacioneService,
+        ParkingCardService parkingCardService,
+        PostulacionService postulacionService,
+        ProveedorService proveedorService,
+        ServicioCabeceraService servicioCabeceraService,
+        ServicioDetalleService servicioDetalleService
         )
     {
         _slideService = slideService;
@@ -63,6 +80,14 @@ public class HomeController : Controller
         _paginasCabsService = paginasCabsService;
         _puestoService = puestoService;
         _rubroService=rubroService;
+        _contactanoService= contactanoService;
+        _cotizanosService= cotizanosService;
+        _hojaReclamacioneService = hojaReclamacioneService;
+        _parkingCardService=parkingCardService;
+        _postulacionService=postulacionService;
+        _proveedorService=proveedorService;
+        _servicioCabeceraService=servicioCabeceraService;
+        _servicioDetalleService=servicioDetalleService;
     }
     public async Task<IActionResult> Index()
     {
@@ -227,7 +252,7 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var servicio = new ParkingCardService(new HttpClient());
+        //var servicio = new ParkingCardService(new HttpClient());
         if (ModelState.IsValid)
         {
          
@@ -236,7 +261,7 @@ public class HomeController : Controller
                 string mensaje = "Notificamos que hemos registrado su solicitud en parkingcardvip.";
                 tbFormParkingcard.FecRegistro = DateTime.Now;
                 tbFormParkingcard.Notificado = 1;
-                await servicio.crearParkingCardRegistro(tbFormParkingcard);
+                await _parkingCardService.crearParkingCardRegistro(tbFormParkingcard);
                 enviarEmail(tbFormParkingcard.Correo, mensaje, primerRegistro);
                
             }catch (Exception ex)
@@ -309,10 +334,10 @@ public class HomeController : Controller
     public async Task<IActionResult> Adminestacionamiento()
     {
         int contador = 1;
-        ServicioDetalleDtos objeto = new ServicioDetalleDtos();
+        ServiceDetails objeto = new ServiceDetails();
         
-        var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
-        var servicio = await adminiestacionamiento.obtenerServicioDetalle(1);
+        //var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
+        var servicio = await _servicioDetalleService.obtenerServicioDetalle(1);
         foreach (var valor in servicio)
         {
             if (contador == 1)
@@ -329,21 +354,89 @@ public class HomeController : Controller
             }
 
         }
-        return View(objeto);
+        //return View(objeto);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            ServicioDetalles = objeto,
+        };
+        return View(model);
     }
 
-    public IActionResult Cotizacionadministracion()
+    public async Task<IActionResult> Cotizacionadministracion()
     {
-        return View();
+        //return View();
+        //return View(objeto);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+        return View(model);
     }
 
     // ============================ Abonados ============================
     public async Task<IActionResult> Abonados()
     {
         int contador = 1;
-        ServicioDetalleDtos objeto = new ServicioDetalleDtos();
-        var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
-        var servicio = await adminiestacionamiento.obtenerServicioDetalle(2);
+        ServiceDetails objeto = new ServiceDetails();
+        //var adminiestacionamiento = new ServicioDetalleService(new HttpClient());
+        var servicio = await _servicioDetalleService.obtenerServicioDetalle(2);
         foreach (var valor in servicio)
         {
             if (contador == 1)
@@ -360,18 +453,52 @@ public class HomeController : Controller
             }
             
         }
-        return View(objeto);
+        //return View(objeto);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            ServicioDetalles= objeto,
+        };
+        return View(model);
     }
     public async Task<IActionResult> Cotizacionabonados()
     {
-        var cotizanoServicio = new CotizanosService(new HttpClient());
-        var distritos = await cotizanoServicio.obtenerDistritos("1501");
+        //var cotizanoServicio = new CotizanosService(new HttpClient());
+        var distritos = await _cotizanosService.obtenerDistritos("1501");
         if (distritos == null)
         {
             return NotFound();
         }
 
-        var hoteldistritos = await cotizanoServicio.obtenerHotelDistritos();
+        var hoteldistritos = await _cotizanosService.obtenerHotelDistritos();
         if (hoteldistritos == null)
         {
             return NotFound();
@@ -386,12 +513,45 @@ public class HomeController : Controller
         .ToList();
 
         ViewData["Distritos"] = new SelectList(distritos, "CodUbi", "Dist");
-        return View();
+
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+        return View(model);
     }
     public async Task<IActionResult> GetHotelPorDistrito(string cod)
     {
-        var cotizanoServicio = new CotizanosService(new HttpClient());
-        var hoteldistritos = await cotizanoServicio.obtenerHotelDistritos();
+        //var cotizanoServicio = new CotizanosService(new HttpClient());
+        var hoteldistritos = await _cotizanosService.obtenerHotelDistritos();
         if (hoteldistritos == null)
         {
             return NotFound();
@@ -404,65 +564,394 @@ public class HomeController : Controller
     // ============================ Otros servicios ============================
     public async Task<IActionResult> Otrosservicios()
     {
-        var otrosServicios = new ServicioCabeceraService(new HttpClient());
-        var servicios = await otrosServicios.ListarServicios();
-        if(servicios.Count == 0)
+        //var otrosServicios = new ServicioCabeceraService(new HttpClient());
+        var servicios = await _servicioCabeceraService.ListarServicios();
+        //return View(servicios);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            ListServCabecera= servicios,
+        };
+        if (servicios.Count == 0)
         {
             TbServCabecera objServCabecera = new TbServCabecera();
-            servicios.Add(objServCabecera);
-            return View(servicios);
+            model.ListServCabecera.Add(objServCabecera);
+            return View(model);
         }
-
-
-        return View(servicios);
+        return View(model);
     }
     //----------------------------------------
     public async Task<IActionResult> ValetParking()
     {
-        var cotizanoServicio = new CotizanosService(new HttpClient());
-        var distritos = await cotizanoServicio.obtenerDistritos("1501");
+        //var cotizanoServicio = new CotizanosService(new HttpClient());
+        var distritos = await _cotizanosService.obtenerDistritos("1501");
         if (distritos == null)
         {
             return NotFound();
         }
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
-    public IActionResult CotizacionValetParking()
+    public async Task<IActionResult> CotizacionValetParking()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
     //----------------------------------------
-    public IActionResult Eventos()
+    public async Task<IActionResult> Eventos()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
-    public IActionResult CotizacionEventos()
+    public async Task<IActionResult> CotizacionEventos()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
     //----------------------------------------
-    public IActionResult Prevencion()
+    public async Task<IActionResult> Prevencion()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
-    public IActionResult CotizacionPrevencion()
+    public async Task<IActionResult> CotizacionPrevencion()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
     //----------------------------------------
-    public IActionResult Rentabilizacion()
+    public async Task<IActionResult> Rentabilizacion()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
-    public IActionResult CotizacionRentabilizacion()
+    public async Task<IActionResult> CotizacionRentabilizacion()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
     //----------------------------------------
     // ============================ Contactanos ============================
-    public IActionResult Contactanos()
+    public async Task<IActionResult> Contactanos()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
 
     [HttpPost]
@@ -478,12 +967,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new ContactanoService(new HttpClient());
+        //var contacto = new ContactanoService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su solicitud llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearContactoRegistro(tbFormContactano);
+            await _contactanoService.crearContactoRegistro(tbFormContactano);
             enviarEmail(tbFormContactano.CorreoElectronico,mensaje,primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -506,12 +995,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Administración de Estacionamiento llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -532,12 +1021,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Gestión de Abonados llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -560,12 +1049,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Valet Parking llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -586,12 +1075,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Eventos llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -612,12 +1101,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Prevención llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -638,12 +1127,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var contacto = new CotizanosService(new HttpClient());
+        //var contacto = new CotizanosService(new HttpClient());
 
         if (ModelState.IsValid)
         {
             string mensaje = "Recibimos su cotización de Rentabilización de Terrenos llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await contacto.crearCotizanoRegistro(tbFormCotizano);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
             enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -697,7 +1186,7 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult Postulacion(int idpostulacion)
+    public async Task<IActionResult> Postulacion(int idpostulacion)
     {
         TbFormTbcnosotro form = new TbFormTbcnosotro();
         if (idpostulacion == 1)
@@ -710,7 +1199,41 @@ public class HomeController : Controller
         {
             form.Puesto = "Agente Servicio" ;
         }
-        return View(form);
+       // return View(form);
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+            TbFormTbcnosotros = form,
+        };
+        return View(model);
     }
 
     // POST: Postulacion/Create
@@ -729,12 +1252,12 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        var postulacion = new PostulacionService(new HttpClient());
+        //var postulacion = new PostulacionService(new HttpClient());
         
         if (ModelState.IsValid)
         {
             string mensaje= $"Su solicitud de postulación para, {tbFormTbcnosotro.Puesto} ah sido registrada";
-            await postulacion.crearPostulacion(tbFormTbcnosotro);
+            await _postulacionService.crearPostulacion(tbFormTbcnosotro);
             enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");
@@ -801,12 +1324,12 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Proveedores(TbFormProveedore tbFormProveedore)
     {
-        var proveedor = new ProveedorService(new HttpClient());
+        //var proveedor = new ProveedorService(new HttpClient());
 
         if (ModelState.IsValid)
         {
            // string mensaje = "Su solicitud de postulación ah sido registrada";
-            await proveedor.crearProveedorRegistro(tbFormProveedore);
+            await _proveedorService.crearProveedorRegistro(tbFormProveedore);
          //   enviarEmail(tbFormProveedore., mensaje);
 
             return RedirectToAction("Index", "Home");
@@ -816,9 +1339,42 @@ public class HomeController : Controller
     }
     
     // ============================ Hoja Reclamaciones ============================ 
-    public IActionResult HojaReclamaciones()
+    public async Task<IActionResult> HojaReclamaciones()
     {
-        return View();
+        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
+        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+
+        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
+        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+
+        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
+        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
+        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
+        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
+        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
+        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
+        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
+        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var model = new IndexVM()
+        {
+            Puestos = await _puestoService.ListarPuestos(),
+            ModalCabs2 = modalcab2,
+            ListModalDet6 = modaldet6,
+            ModalCabs5 = modalcab5,
+            ListModalDet9 = modaldet9,
+
+            ModalCabs7 = modalcab7,
+            ListModalDet12 = modaldet12,
+            ModalCabs8 = modalcab8,
+            ListModalDet13 = modaldet13,
+            ModalCabs9 = modalcab9,
+            ListModalDet14 = modaldet14,
+            ModalCabs10 = modalcab10,
+            ListModalDet15 = modaldet15,
+        };
+
+        return View(model);
     }
 
     [HttpPost]
@@ -835,13 +1391,13 @@ public class HomeController : Controller
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         tbFormHojareclamacione.Fecha = DateTime.Now;
-        var servicio = new HojaReclamacioneService(new HttpClient());
+        //var servicio = new HojaReclamacioneService(new HttpClient());
 
         if (ModelState.IsValid)
         {
            
             string mensaje = "Su solicitud de reclamación ah sido registrada con éxito";
-            await servicio.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
+            await _hojaReclamacioneService.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
             enviarEmail(tbFormHojareclamacione.Correo, mensaje, primerRegistro);
 
             return RedirectToAction("Index", "Home");

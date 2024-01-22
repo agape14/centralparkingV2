@@ -8,19 +8,14 @@ namespace Cms.ServiceCms
     public class ProveedorCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public ProveedorCmsService(HttpClient httpClient)
+        public ProveedorCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
         public async Task<List<TbFormProveedore>> ListarProveedores()
         {
@@ -28,7 +23,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/proveedor";
+                var url = "/api/proveedor";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -53,7 +48,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormProveedore> obtenerProveedorDetalle(int id)
         {
-            var url = $"{apiUrl}/api/proveedor/{id}";
+            var url = $"/api/proveedor/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -75,7 +70,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormProveedore> crearProveedorRegistro(TbFormProveedore tbFormProveedore)
         {
-            var url = apiUrl + "/api/proveedor";
+            var url = "/api/proveedor";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormProveedore);
 
@@ -93,7 +88,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbFormProveedore> modificarProveedor(int id, TbFormProveedore tbFormProveedore)
         {
-            var url = $"{apiUrl}/api/proveedor/{id}";
+            var url = $"/api/proveedor/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormProveedore);
 
@@ -111,7 +106,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarProveedor(int id)
         {
-            var url = $"{apiUrl}/api/proveedor/{id}";
+            var url = $"/api/proveedor/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

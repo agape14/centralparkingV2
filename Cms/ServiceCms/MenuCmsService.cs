@@ -11,19 +11,14 @@ namespace Cms.ServiceCms
     public class MenuCmsService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public MenuCmsService(HttpClient httpClient)
+        public MenuCmsService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["Cms"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbConfTipomenu>> listarTipoMenu()
@@ -32,7 +27,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl+"/api/menu/tipoMenu";
+                var url = "/api/menu/tipoMenu";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -61,7 +56,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/menu/menusController";
+                var url = "/api/menu/menusController";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -86,7 +81,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> obtenerMenuDetalle(int id)
         {
-            var url = $"{apiUrl}/api/menu/{id}"; 
+            var url = $"/api/menu/{id}"; 
 
             try
             {
@@ -122,7 +117,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> crearMenu(TbConfMenu tbConfMenu)
         {
-            var url = apiUrl + "/api/menu"; 
+            var url = "/api/menu"; 
 
             try
             {
@@ -156,7 +151,7 @@ namespace Cms.ServiceCms
 
         public async Task<bool> eliminarMenu(int id)
         {
-            var url = $"{apiUrl}/api/menu/{id}"; 
+            var url = $"/api/menu/{id}"; 
 
             var response = await _httpClient.DeleteAsync(url);
 
@@ -177,7 +172,7 @@ namespace Cms.ServiceCms
 
         public async Task<TbConfMenu> modificarMenu(int id, TbConfMenu tbConfMenu)
         {
-            var url = $"{apiUrl}/api/menu/{id}"; 
+            var url = $"/api/menu/{id}"; 
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(tbConfMenu), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, jsonContent);
@@ -208,7 +203,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/menu/subMenus";
+                var url = "/api/menu/subMenus";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -236,7 +231,7 @@ namespace Cms.ServiceCms
 
             try
             {
-                var url = apiUrl + "/api/menu";
+                var url = "/api/menu";
 
                 var response = await _httpClient.GetAsync(url);
 

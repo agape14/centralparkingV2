@@ -1,5 +1,4 @@
-﻿@model ApiBD.Models.TbFormTbcnosotro
-
+﻿@model ApiBD.Models.Home.IndexVM;
 @{
     ViewData["Title"] = "Postulacion";
 }
@@ -36,7 +35,7 @@
                         <div class="form-group row mb-2">
                             <label for="state_id" class="col-sm-2 col-form-label">Tipo Documento</label>
                             <div class="col-sm-5">
-                                <select class="form-control" asp-for="TipoDocumento" placeholder="Tipo Documento">
+                                <select class="form-control" asp-for="@Model.TbFormTbcnosotros.TipoDocumento" placeholder="Tipo Documento">
                                     <option value="1">DNI</option>
                                     <option value="2">CARNÉT DE EXTRANJERIA</option>
                                     <option value="3">PASAPORTE</option>
@@ -44,14 +43,14 @@
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Nro. Doc</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" asp-for="NumeroDocumento"
+                                <input type="text" class="form-control" asp-for="@Model.TbFormTbcnosotros.NumeroDocumento"
                                        placeholder="Nro. Documento">
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label for="Nombres" class="col-sm-2 col-form-label">Nombres</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" asp-for="Nombre"
+                                <input type="text" class="form-control" asp-for="@Model.TbFormTbcnosotros.Nombre"
                                        placeholder="Nombres">
                             </div>
                         </div>
@@ -59,27 +58,27 @@
                             <label for="Apellidos" class="col-sm-2 col-form-label">Apellidos</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" 
-                                       placeholder="Apellidos" asp-for="Apellido">
+                                       placeholder="Apellidos" asp-for="@Model.TbFormTbcnosotros.Apellido">
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label for="Nac" class="col-sm-2 col-form-label">Fecha Nac.</label>
                             <div class="col-sm-5">
-                                <input type="date" class="form-control" asp-for="FechaNacimiento" placeholder="Nac">
+                                <input type="date" class="form-control" asp-for="@Model.TbFormTbcnosotros.FechaNacimiento" placeholder="Nac">
                             </div>
                             <label for="Telf" class="col-sm-1 col-form-label">Celular</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" asp-for="Celular" id="Telf" placeholder="Telf">
+                                <input type="text" class="form-control" asp-for="@Model.TbFormTbcnosotros.Celular" id="Telf" placeholder="Telf">
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Correo Electrónico</label>
                             <div class="col-sm-5">
-                                <input type="email" class="form-control" asp-for="CorreoElectronico" placeholder="Email">
+                                <input type="email" class="form-control" asp-for="@Model.TbFormTbcnosotros.CorreoElectronico" placeholder="Email">
                             </div>
                             <label for="inputEmail3" class="col-sm-1 col-form-label">Medio</label>
                             <div class="col-sm-4">
-                                <select asp-for="Medio" class="form-control" id="cbxMedio" placeholder="Medio">
+                                <select asp-for="@Model.TbFormTbcnosotros.Medio" class="form-control" id="cbxMedio" placeholder="Medio">
                                     <option value="PAGINA">PAGINA WEB</option>
                                     <option value="RADIO">RADIO</option>
                                     <option value="TV">TV</option>
@@ -89,7 +88,7 @@
                         <div class="form-group row mb-2">
                             <label for="state_id" class="col-sm-2 col-form-label">Departamento </label>
                             <div class="col-sm-10">
-                                <select asp-for="Departamento" class="form-control" id="state_id" placeholder="Departamento">
+                                <select asp-for="@Model.TbFormTbcnosotros.Departamento" class="form-control" id="state_id" placeholder="Departamento">
                                     <option value="LIMA">LIMA</option>
                                 </select>
                             </div>
@@ -97,7 +96,7 @@
                         <div class="form-group row mb-2">
                             <label for="state_id" class="col-sm-2 col-form-label">Provincia </label>
                             <div class="col-sm-10">
-                                <select asp-for="Provincia" class="form-control" placeholder="Provincia">
+                                <select asp-for="@Model.TbFormTbcnosotros.Provincia" class="form-control" placeholder="Provincia">
                                     <option value="LIMA">LIMA</option>
                                 </select>
                             </div>
@@ -105,7 +104,7 @@
                         <div class="form-group row mb-2">
                             <label for="state_id" class="col-sm-2 col-form-label">Distrito </label>
                             <div class="col-sm-10">
-                                <select class="form-control" asp-for="Distrito" placeholder="Distrito">
+                                <select class="form-control" asp-for="@Model.TbFormTbcnosotros.Distrito" placeholder="Distrito">
                                     <option value="1">LIMA</option>
                                 </select>
                             </div>
@@ -113,14 +112,14 @@
                         <div class="form-group row mb-2">
                             <label for="inputPuesto" class="col-sm-2 col-form-label">Puesto</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" asp-for="Puesto"  />
+                                <input type="text" class="form-control" asp-for="@Model.TbFormTbcnosotros.Puesto" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <div class="col-sm-2">Información Adicional</div>
                             <div class="col-sm-10">
                                 <div class="custom-file">
-                                    <input asp-for="InformacionAdicional" type="file" class="custom-file-input">
+                                    <input asp-for="@Model.TbFormTbcnosotros.InformacionAdicional" type="file" class="custom-file-input">
                                 </div>
                             </div>
                         </div>

@@ -9,14 +9,19 @@ namespace Cms.Controllers
 {
     public class MenuCmsController : Controller
     {
-        
-      
-        // GET: Menu ok
+
+        MenuCmsService _menuCmsService;
+        public MenuCmsController(MenuCmsService menuCmsService)
+        {
+
+            _menuCmsService = menuCmsService;
+
+        }
         public async Task<IActionResult> Index(string tipoProyecto)
         {
             
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             // Filtrar menús según el tipo de proyecto
             if (!string.IsNullOrEmpty(tipoProyecto))
             {
@@ -35,15 +40,15 @@ namespace Cms.Controllers
         // GET: Menu/Details/5 ok
         public async Task<IActionResult> Details(int id)
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (id == 0 || menuLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfMenu = await menu.obtenerMenuDetalle(id);
+            var tbConfMenu = await _menuCmsService.obtenerMenuDetalle(id);
 
             if (tbConfMenu == null)
             {
@@ -57,13 +62,13 @@ namespace Cms.Controllers
         // GET: Menu/Create ok
         public async Task<IActionResult> Create()
         {
-            var menuCentralParking = new MenuCmsService(new HttpClient());
-            var menu = new MenuCmsService(new HttpClient());
-            var tipoMenuLista = await menu.listarTipoMenu();
+            //var menuCentralParking = new MenuCmsService(new HttpClient());
+            //var menu = new MenuCmsService(new HttpClient());
+            var tipoMenuLista = await _menuCmsService.listarTipoMenu();
 
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion");
 
-            var items = await menuCentralParking.ListarMenusv2();
+            var items = await _menuCmsService.ListarMenusv2();
             var selectListItems = items.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),
@@ -83,13 +88,13 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto,Icono")] TbConfMenu tbConfMenu)
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var tipoMenuLista = await menu.listarTipoMenu();
+            //var menu = new MenuCmsService(new HttpClient());
+            var tipoMenuLista = await _menuCmsService.listarTipoMenu();
 
             if (ModelState.IsValid)
             {
 
-                await menu.crearMenu(tbConfMenu);
+                await _menuCmsService.crearMenu(tbConfMenu);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
@@ -100,24 +105,24 @@ namespace Cms.Controllers
         // GET: Menu/Edit/5 ok
         public async Task<IActionResult> Edit(int id)
         {
-            var menuCentralParking = new MenuCmsService(new HttpClient());
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
-            var tipoMenuLista = await menu.listarTipoMenu();
+            //var menuCentralParking = new MenuCmsService(new HttpClient());
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
+            var tipoMenuLista = await _menuCmsService.listarTipoMenu();
 
             if (id == 0 || menuLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfMenu = await menu.obtenerMenuDetalle(id);
+            var tbConfMenu = await _menuCmsService.obtenerMenuDetalle(id);
             if (tbConfMenu == null)
             {
                 return NotFound();
             }
             ViewData["Idtipomenu"] = new SelectList(tipoMenuLista, "Id", "Opcion", tbConfMenu.Idtipomenu);
 
-            var items = await menuCentralParking.ListarMenusv2();
+            var items = await _menuCmsService.ListarMenusv2();
             var selectListItems = items.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),
@@ -137,9 +142,9 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Ruta,Idtipomenu,Acceso,Padre,Estado,TipoProyecto,Icono")] TbConfMenu tbConfMenu)
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
-            var tipoMenuLista = await menu.listarTipoMenu();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
+            var tipoMenuLista = await _menuCmsService.listarTipoMenu();
 
             if (id != tbConfMenu.Id)
             {
@@ -151,7 +156,7 @@ namespace Cms.Controllers
                 try
                 {
                   
-                    await menu.modificarMenu(id,tbConfMenu);
+                    await _menuCmsService.modificarMenu(id,tbConfMenu);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -169,15 +174,15 @@ namespace Cms.Controllers
         // GET: Menu/Delete/5 ok
         public async Task<IActionResult> Delete(int id)
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (id == 0 || menuLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfMenu = await menu.obtenerMenuDetalle(id);
+            var tbConfMenu = await _menuCmsService.obtenerMenuDetalle(id);
             if (tbConfMenu == null)
             {
                 return NotFound();
@@ -191,17 +196,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (menuLista == null)
             {
                 return Problem("Entity set 'CentralparkingContext.TbConfMenus'  is null.");
             }
-            var tbConfMenu = await menu.obtenerMenuDetalle(id);
+            var tbConfMenu = await _menuCmsService.obtenerMenuDetalle(id);
             if (tbConfMenu != null)
             {
-               await menu.eliminarMenu(id);
+               await _menuCmsService.eliminarMenu(id);
             }
 
            

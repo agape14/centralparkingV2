@@ -1,5 +1,5 @@
 ﻿@{
-    @model ApiBD.Models.TbFormCotizano;
+    @model ApiBD.Models.Home.IndexVM;
     ViewData["Title"] = "Cotización de Abonados";
 }
 <!-- Page Header Start -->
@@ -46,7 +46,7 @@
                 <form asp-action="CotizanosAbonados" method="post">
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="TipoServicio">
+                            <select required class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="TbFormCotizanos.TipoServicio">
                                 <option value="2">ABONADOS</option>
                             </select>
                             <label for="tipoServicio">Tipo de Servicio</label>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select id="tipoAbonado" asp-for="TipoAbonado" class="form-control border-0 bg-light mb-4" required placeholder="Tipo de Abonado">
+                            <select id="tipoAbonado" asp-for="TbFormCotizanos.TipoAbonado" class="form-control border-0 bg-light mb-4" required placeholder="Tipo de Abonado">
                                 <option value="Personas">Personas</option>
                                 <option value="Empresas">Empresas</option>
                             </select>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required name="Distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="Distrito">
+                            <select required name="Distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="TbFormCotizanos.Distrito">
                                 <option value="">Seleccione un distrito</option>
                                 @foreach (var item in (SelectList)ViewData["Distritos"])
                                 {
@@ -76,7 +76,7 @@
                     <div class="row g-3">
                         <div class="col-md-8">
                             <div class="form-floating">
-                                <select id="estacionamiento" asp-for="Estacionamiento" class="form-control border-0 bg-light " required placeholder="Seleccione Estacionamiento">
+                                <select id="estacionamiento" asp-for="TbFormCotizanos.Estacionamiento" class="form-control border-0 bg-light " required placeholder="Seleccione Estacionamiento">
 
                                 </select>
                                 <label for="estacionamiento">Estacionamientos</label>
@@ -84,44 +84,44 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" required class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" asp-for="Cantidad">
+                                <input type="number" required class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" asp-for="TbFormCotizanos.Cantidad">
                                 <label for="cantidad">Cantidad</label>
                             </div>
                         </div>
                         <div class="col-md-12" id="divContacto">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light " placeholder="Nombres y Apellidos" asp-for="Contacto" maxlength="100">
+                                <input type="text" class="form-control border-0 bg-light " placeholder="Nombres y Apellidos" asp-for="TbFormCotizanos.Contacto" maxlength="100">
                                 <label for="Contacto">Nombres y Apellidos</label>
                             </div>
                         </div>
                         <div class="col-md-4" id="divRuc">
                             <div class="form-floating">
-                                    <input type="text" class="form-control border-0 bg-light " placeholder="Ruc" asp-for="Ruc" maxlength="11">
+                                <input type="text" class="form-control border-0 bg-light " placeholder="Ruc" asp-for="TbFormCotizanos.Ruc" maxlength="11">
                                 <label for="Ruc">RUC</label>
                             </div>
                         </div>
                         <div class="col-md-8" id="divRazonSocial">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" placeholder="Razon Social" asp-for="RazonSocial" maxlength="255">
+                                <input type="text" class="form-control border-0 bg-light" placeholder="Razon Social" asp-for="TbFormCotizanos.RazonSocial" maxlength="255">
                                 <label for="RazonSocial">Razon Social</label>
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input required pattern="[0-9]{9}" maxlength="9"  title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="Celular">
+                                    <input required pattern="[0-9]{9}" maxlength="9" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="TbFormCotizanos.Celular">
                                     <label for="celular">Celular</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="Telefono">
+                                    <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="TbFormCotizanos.Telefono">
                                     <label for="telefono">Teléfono</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="CorreoElectronico" maxlength="100">
+                                    <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="TbFormCotizanos.CorreoElectronico" maxlength="100">
                                     <label for="correoElectronico">Correo electrónico</label>
                                 </div>
                             </div>

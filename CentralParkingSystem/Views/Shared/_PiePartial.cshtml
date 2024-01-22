@@ -18,10 +18,6 @@
     {
         listaPiedet = JsonSerializer.Deserialize<List<TbConfPiepaginadet>>(piedetJson);
     }
-    
-
-    string nameAcceder = "Acceder";
-    var rutaAcceder = "https://localhost:7063/DashbordCms/Index";
 }
 <div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
     <div class="container">
@@ -62,6 +58,12 @@
                                         {
                                             <p class="mb-2"><i class="@piedet.Icono me-3"></i>@piedet.Titulo</p>
                                         }
+                                        else if (piedet.Id == Constantes.codigoPieDetAcceder)
+                                        {
+                                            <a target="_blank" href="@piedet.Ruta" class="btn btn-primary py-2 px-lg-3 d-none d-lg-block">
+                                                @piedet.Titulo <i class="fa fa-arrow-right ms-3"></i>
+                                            </a>
+                                        }
                                         else
                                         {
                                             if (piedet.TipoRuta == 1)
@@ -76,10 +78,8 @@
                                     }
                                 }
                             }
+
                             
-                            <a href="https://localhost:7063/DashbordCms/Index" class="btn btn-primary py-2 px-lg-3 d-none d-lg-block">
-                                @nameAcceder <i class="fa fa-arrow-right ms-3"></i>
-                            </a>
                         </div>
                     }
 
@@ -188,7 +188,7 @@
                                     }
                                     else if (piedet.Id == Constantes.codigoPieDetCalidad)
                                     {
-                                        <a class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
+                                        <a target="_blank" class="btn btn-link" href="@piedet.Ruta">@piedet.Titulo</a>
                                     }
                                     else
                                     {

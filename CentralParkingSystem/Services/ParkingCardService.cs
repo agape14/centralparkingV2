@@ -8,19 +8,14 @@ namespace CentralParkingSystem.Services
     public class ParkingCardService
     {
         private readonly HttpClient _httpClient;
-        private string launchSettingsPath = Path.Combine("Properties", "launchSettings.json");
+        private readonly IConfiguration _configuration;
         private string apiUrl = "";
-        public ParkingCardService(HttpClient httpClient)
+        public ParkingCardService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            if (File.Exists(launchSettingsPath))
-            {
-                var launchSettingsJson = File.ReadAllText(launchSettingsPath);
-                var launchSettings = JObject.Parse(launchSettingsJson);
-
-                // Acceder al perfil "ApiBD" y obtener la URL
-                apiUrl = launchSettings["profiles"]?["CentralParkingSystem"]?["apiUrl"]?.ToString();
-            }
+            _configuration = configuration;
+            apiUrl = _configuration.GetValue<string>("ApiSettings:ApiUrl");
+            _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
         public async Task<List<TbFormParkingcard>> ListarParkingCard()
@@ -29,7 +24,7 @@ namespace CentralParkingSystem.Services
 
             try
             {
-                var url = apiUrl+"/api/parkingcard";
+                var url = "/api/parkingcard";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -54,7 +49,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> obtenerParkingCardDetalle(int id)
         {
-            var url = $"{apiUrl}/api/parkingcard/{id}";
+            var url = $"/api/parkingcard/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -76,7 +71,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> crearParkingCardRegistro(TbFormParkingcard tbFormParkingcard)
         {
-            var url = apiUrl+"/api/parkingcard";
+            var url = "/api/parkingcard";
 
             var response = await _httpClient.PostAsJsonAsync(url, tbFormParkingcard);
 
@@ -94,7 +89,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<TbFormParkingcard> modificarParkingCard(int id, TbFormParkingcard tbFormParkingcard)
         {
-            var url = $"{apiUrl}/api/parkingcard/{id}";
+            var url = $"/api/parkingcard/{id}";
 
             var response = await _httpClient.PutAsJsonAsync(url, tbFormParkingcard);
 
@@ -112,7 +107,7 @@ namespace CentralParkingSystem.Services
 
         public async Task<bool> eliminarParkingCard(int id)
         {
-            var url = $"{apiUrl}/api/parkingcard/{id}";
+            var url = $"/api/parkingcard/{id}";
 
             var response = await _httpClient.DeleteAsync(url);
 

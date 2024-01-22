@@ -13,18 +13,23 @@ namespace Cms.Controllers
     public class PiePaginaDetCmsController : Controller
     {
         private HelperUploadFiles _helperUpload;
-
-        public PiePaginaDetCmsController(HelperUploadFiles helperUpload)
+        PiePaginaDetCmsService _piePaginaDetCmsService;
+        PiePaginaCmsService _piePaginaCmsService;
+        MenuCmsService _menuCmsService;
+        public PiePaginaDetCmsController(HelperUploadFiles helperUpload, PiePaginaDetCmsService piePaginaDetCmsService, PiePaginaCmsService piePaginaCmsService, MenuCmsService menuCmsService)
         {
             _helperUpload = helperUpload;
+            _piePaginaDetCmsService = piePaginaDetCmsService;
+            _piePaginaCmsService = piePaginaCmsService;
+            _menuCmsService = menuCmsService;
         }
 
         // GET: PiePaginaDet
         public async Task<IActionResult> Index(int codigo)
         {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
-            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
-            var piePaginaDetPorId = await piePaginaDet.listarPiePaginaDetPorCodigoId(codigo);
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
+            var piePaginaDetPorId = await _piePaginaDetCmsService.listarPiePaginaDetPorCodigoId(codigo);
 
             if (codigo == 0 || piePaginaDetLista == null)
             {
@@ -39,15 +44,15 @@ namespace Cms.Controllers
         // GET: PiePaginaDet/Details/5
         public async Task<IActionResult> Details(int id, int codigo)
         {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
-            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
 
             if (id == 0 || piePaginaDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+            var tbConfPiepaginadet = await _piePaginaDetCmsService.obtenerPiePaginaDetDetalle(id);
             if (tbConfPiepaginadet == null)
             {
                 return NotFound();
@@ -59,10 +64,10 @@ namespace Cms.Controllers
         // GET: PiePaginaDet/Create
         public async Task<IActionResult> Create(int codigo)
         {
-            var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
-            var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
+            var piePaginaCabsLista = await _piePaginaCmsService.ListarPiePaginasCabs();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
             if (menuLista.Count == 0)
             {
                 return NotFound();
@@ -93,7 +98,7 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Create([Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
         {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
 
             
             if (ModelState.IsValid)
@@ -110,7 +115,7 @@ namespace Cms.Controllers
                }
 
 
-                await piePaginaDet.crearPiePaginaDet(tbConfPiepaginadet);
+                await _piePaginaDetCmsService.crearPiePaginaDet(tbConfPiepaginadet);
                return RedirectToAction("Index", "PiePaginaDetCms", new { codigo = tbConfPiepaginadet.PiepaginaId });
               
            }
@@ -120,21 +125,21 @@ namespace Cms.Controllers
        // GET: PiePaginaDet/Edit/5
        public async Task<IActionResult> Edit(int id, int codigo)
        {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
-            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
 
-            var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
-            var piePaginaCabsLista = await piePaginaCabs.ListarPiePaginasCabs();
+            //var piePaginaCabs = new PiePaginaCmsService(new HttpClient());
+            var piePaginaCabsLista = await _piePaginaCmsService.ListarPiePaginasCabs();
 
-            var menu = new MenuCmsService(new HttpClient());
-            var menuLista = await menu.listarMenus();
+            //var menu = new MenuCmsService(new HttpClient());
+            var menuLista = await _menuCmsService.listarMenus();
 
             if (id == 0 || piePaginaDetLista == null)
             {
                 return NotFound();
             }
 
-            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+            var tbConfPiepaginadet = await _piePaginaDetCmsService.obtenerPiePaginaDetDetalle(id);
             if (tbConfPiepaginadet == null)
             {
                 return NotFound();
@@ -171,7 +176,7 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Edit(int id, [Bind("Id,PiepaginaId,Icono,Titulo,Ruta,Imagen,TipoRuta")] TbConfPiepaginadet tbConfPiepaginadet)
        {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
 
             if (id != tbConfPiepaginadet.Id)
            {
@@ -193,7 +198,7 @@ namespace Cms.Controllers
                    }
 
 
-                    await piePaginaDet.modificarPiePaginaDet(id, tbConfPiepaginadet);
+                    await _piePaginaDetCmsService.modificarPiePaginaDet(id, tbConfPiepaginadet);
                }
                catch (DbUpdateConcurrencyException)
                {
@@ -211,15 +216,15 @@ namespace Cms.Controllers
        public async Task<IActionResult> Delete(int id, int codigo)
        {
 
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
-            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
 
             if (id == 0 || piePaginaDetLista == null)
            {
                return NotFound();
            }
 
-            var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+            var tbConfPiepaginadet = await _piePaginaDetCmsService.obtenerPiePaginaDetDetalle(id);
            if (tbConfPiepaginadet == null)
            {
                return NotFound();
@@ -233,18 +238,18 @@ namespace Cms.Controllers
        [ValidateAntiForgeryToken]
        public async Task<IActionResult> DeleteConfirmed(int id)
        {
-            var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
-            var piePaginaDetLista = await piePaginaDet.listarPiePaginaDet();
+            //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
+            var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
 
             if (piePaginaDetLista == null)
            {
                return Problem("Entity set 'CentralparkingContext.TbConfPiepaginadets'  is null.");
            }
-           var tbConfPiepaginadet = await piePaginaDet.obtenerPiePaginaDetDetalle(id);
+           var tbConfPiepaginadet = await _piePaginaDetCmsService.obtenerPiePaginaDetDetalle(id);
            var piepaginaid = tbConfPiepaginadet.PiepaginaId;
            if (tbConfPiepaginadet != null)
            {
-                await piePaginaDet.eliminarPiePaginaDet(id);
+                await _piePaginaDetCmsService.eliminarPiePaginaDet(id);
            }
 
           

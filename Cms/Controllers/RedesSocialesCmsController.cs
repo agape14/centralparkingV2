@@ -7,11 +7,18 @@ namespace Cms.Controllers
 {
     public class RedesSocialesCmsController : Controller
     {
+        RedesSocialesCmsService _redesSocialesCmsService;
+        public RedesSocialesCmsController(RedesSocialesCmsService redesSocialesCmsService)
+        {
+
+            _redesSocialesCmsService = redesSocialesCmsService;
+
+        }
         // GET: RedesSociales
         public async Task<IActionResult> Index()
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
-            var redSocialLista = await redSocial.listarRedesSociales();
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
+            var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 
             if (redSocialLista.Count == 0)
             {
@@ -28,15 +35,15 @@ namespace Cms.Controllers
         // GET: RedesSociales/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
-            var redSocialLista = await redSocial.listarRedesSociales();
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
+            var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 
             if (id == 0 || redSocialLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndRedsocial = await redSocial.obtenerRedSocialDetalle(id);
+            var tbIndRedsocial = await _redesSocialesCmsService.obtenerRedSocialDetalle(id);
             if (tbIndRedsocial == null)
             {
                 return NotFound();
@@ -58,11 +65,11 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Clasehead,Ruta,Clasefoot,Icono,Color,Estado")] TbIndRedsocial tbIndRedsocial)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
 
             if (ModelState.IsValid)
             {
-                await redSocial.crearRedSocial(tbIndRedsocial);
+                await _redesSocialesCmsService.crearRedSocial(tbIndRedsocial);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbIndRedsocial);
@@ -71,15 +78,15 @@ namespace Cms.Controllers
         // GET: RedesSociales/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
-            var redSocialLista = await redSocial.listarRedesSociales();
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
+            var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 
             if (id == 0 || redSocialLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndRedsocial = await redSocial.obtenerRedSocialDetalle(id);
+            var tbIndRedsocial = await _redesSocialesCmsService.obtenerRedSocialDetalle(id);
             if (tbIndRedsocial == null)
             {
                 return NotFound();
@@ -94,7 +101,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Clasehead,Ruta,Clasefoot,Icono,Color,Estado")] TbIndRedsocial tbIndRedsocial)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
             
             if (id != tbIndRedsocial.Id)
             {
@@ -106,7 +113,7 @@ namespace Cms.Controllers
                 try
                 {
 
-                    await redSocial.modificarRedSocial(id, tbIndRedsocial);
+                    await _redesSocialesCmsService.modificarRedSocial(id, tbIndRedsocial);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,15 +129,15 @@ namespace Cms.Controllers
         // GET: RedesSociales/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
-            var redSocialLista = await redSocial.listarRedesSociales();
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
+            var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 
             if (id == 0 || redSocialLista == null)
             {
                 return NotFound();
             }
 
-            var tbIndRedsocial = await redSocial.obtenerRedSocialDetalle(id);
+            var tbIndRedsocial = await _redesSocialesCmsService.obtenerRedSocialDetalle(id);
             if (tbIndRedsocial == null)
             {
                 return NotFound();
@@ -144,17 +151,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var redSocial = new RedesSocialesCmsService(new HttpClient());
-            var redSocialLista = await redSocial.listarRedesSociales();
+            //var redSocial = new RedesSocialesCmsService(new HttpClient());
+            var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 
             if (redSocialLista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbIndRedsocials'  is null.");
             }
-            var tbIndRedsocial = await redSocial.obtenerRedSocialDetalle(id);
+            var tbIndRedsocial = await _redesSocialesCmsService.obtenerRedSocialDetalle(id);
             if (tbIndRedsocial != null)
             {
-                await redSocial.eliminarRedSocial(id);
+                await _redesSocialesCmsService.eliminarRedSocial(id);
             }
 
            

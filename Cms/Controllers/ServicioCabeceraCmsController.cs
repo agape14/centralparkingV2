@@ -10,17 +10,20 @@ namespace Cms.Controllers
     public class ServicioCabeceraCmsController : Controller
     {
         private readonly HelperUploadFiles _helperUpload;
-
-        public ServicioCabeceraCmsController(HelperUploadFiles helperUpload)
+        ServicioCabeceraCmsService _servicioCabeceraCmsService;
+        ConfBotonesCmsService _confBotonesCmsService;
+        public ServicioCabeceraCmsController(HelperUploadFiles helperUpload, ServicioCabeceraCmsService servicioCabeceraCmsService, ConfBotonesCmsService confBotonesCmsService)
         {
             _helperUpload = helperUpload;
+            _servicioCabeceraCmsService = servicioCabeceraCmsService;
+            _confBotonesCmsService = confBotonesCmsService;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = await servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = await _servicioCabeceraCmsService.listarServiciosCabecera();
             if (lista.Count == 0)
             {
                 TbServCabecera objServicioCabecera = new TbServCabecera();
@@ -34,15 +37,15 @@ namespace Cms.Controllers
         // GET: IServicios/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = _servicioCabeceraCmsService.listarServiciosCabecera();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var tbIndServiciocab = await servicioCabecera.obtenerServicioCabecera(id);
+            var tbIndServiciocab = await _servicioCabeceraCmsService.obtenerServicioCabecera(id);
             if (tbIndServiciocab == null)
             {
                 return NotFound();
@@ -55,8 +58,8 @@ namespace Cms.Controllers
         public async Task<IActionResult> Create()
         {
 
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
             listBotones.Insert(0, new TbConfBotone { Id = 0, BtnTitulo = "Seleccionar" });
 
 
@@ -73,7 +76,7 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbServCabecera tbServCabecera)
         {
-            var servicioCms = new ServicioCabeceraCmsService(new HttpClient());
+            //var servicioCms = new ServicioCabeceraCmsService(new HttpClient());
             if (ModelState.IsValid)
             {
                 var file = Request.Form.Files.FirstOrDefault();
@@ -87,7 +90,7 @@ namespace Cms.Controllers
                 }
 
 
-                await servicioCms.crearServicioCabecera(tbServCabecera);
+                await _servicioCabeceraCmsService.crearServicioCabecera(tbServCabecera);
                 return RedirectToAction(nameof(Index));
             }
             return View(tbServCabecera);
@@ -97,8 +100,8 @@ namespace Cms.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = _servicioCabeceraCmsService.listarServiciosCabecera();
 
             if (id == 0 || lista == null)
             {
@@ -106,15 +109,15 @@ namespace Cms.Controllers
             }
 
 
-            var servicio = await servicioCabecera.obtenerServicioCabecera(id);
+            var servicio = await _servicioCabeceraCmsService.obtenerServicioCabecera(id);
             if (servicio == null)
             {
                 return NotFound();
             }
 
 
-            var boton = new ConfBotonesCmsService(new HttpClient());
-            var listBotones = await boton.listarBotones();
+            //var boton = new ConfBotonesCmsService(new HttpClient());
+            var listBotones = await _confBotonesCmsService.listarBotones();
             listBotones.Insert(0, new TbConfBotone { Id = 0, BtnTitulo = "Seleccionar" });
             ViewData["IdBtn1"] = new SelectList(listBotones, "Id", "BtnTitulo");
 
@@ -129,8 +132,8 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TbServCabecera tbServCabecera)
         {
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = _servicioCabeceraCmsService.listarServiciosCabecera();
 
             if (id != tbServCabecera.Id)
             {
@@ -155,7 +158,7 @@ namespace Cms.Controllers
 
                     }
 
-                    await servicioCabecera.modificarServicioCabecera(id, tbServCabecera);
+                    await _servicioCabeceraCmsService.modificarServicioCabecera(id, tbServCabecera);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -171,15 +174,15 @@ namespace Cms.Controllers
         // GET: TbTraPuesto/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = await servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = await _servicioCabeceraCmsService.listarServiciosCabecera();
 
             if (id == 0 || lista == null)
             {
                 return NotFound();
             }
 
-            var servicio = await servicioCabecera.obtenerServicioCabecera(id);
+            var servicio = await _servicioCabeceraCmsService.obtenerServicioCabecera(id);
             if (servicio == null)
             {
                 return NotFound();
@@ -193,17 +196,17 @@ namespace Cms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
-            var lista = await servicioCabecera.listarServiciosCabecera();
+            //var servicioCabecera = new ServicioCabeceraCmsService(new HttpClient());
+            var lista = await _servicioCabeceraCmsService.listarServiciosCabecera();
 
             if (lista == null)
             {
                 return Problem("Entity set 'CentralParkingContext.TbTraPuestos'  is null.");
             }
-            var servicio = await servicioCabecera.obtenerServicioCabecera(id);
+            var servicio = await _servicioCabeceraCmsService.obtenerServicioCabecera(id);
             if (servicio != null)
             {
-                await servicioCabecera.eliminarServicioCabecera(id);
+                await _servicioCabeceraCmsService.eliminarServicioCabecera(id);
             }
 
 
