@@ -15,6 +15,7 @@
     </div>
 </div>
 <!-- Page Header End -->
+
 <!-- Contact Start -->
 <div class="container-xxl py-6">
     <div class="container">
@@ -31,13 +32,13 @@
                 <h6 class="text-primary text-uppercase mb-2">Contáctanos</h6>
                 <h1 class="display-6 mb-4">Si tiene alguna consulta, contáctenos</h1>
                 <p class="mb-4">¿Tienes problemas? Encuentra la respuesta a tu pregunta aquí. ¡No dudes en contactarnos!.</p>
-                <form asp-action="Contactanos">
+                <form asp-action="Contactanos" onsubmit="bloquearFormulario()">
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="form-floating">
                                 <select class="form-control border-0 bg-light" id="cbxTipoServicio" asp-for="@Model.FormContactanos.TipoServicio"
-                                        placeholder="Tipo Servicio">
-                                    <option value="0">Seleccione Tipo de Servicio</option>
+                                        placeholder="Tipo Servicio" required>
+                                    <option value="">Seleccione Tipo de Servicio</option>
                                     <option value="1">ADMINISTRACIÓN DE ESTACIONAMIENTOS</option>
                                     <option value="2">GESTION DE ABONADOS</option>
                                     <option value="3">OTROS SERVICIOS</option>
@@ -47,35 +48,48 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres" asp-for="@Model.FormContactanos.Nombre">
+                                <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Nombres" asp-for="@Model.FormContactanos.Nombre" required>
                                 <label for="name">Nombres</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico" asp-for="@Model.FormContactanos.CorreoElectronico">
+                                <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Correo electrónico" asp-for="@Model.FormContactanos.CorreoElectronico" required>
                                 <label for="email">Correo electrónico</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto" asp-for="@Model.FormContactanos.Asunto">
+                                <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Asunto" asp-for="@Model.FormContactanos.Asunto" required>
                                 <label for="subject">Asunto</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px" asp-for="@Model.FormContactanos.Mensaje"></textarea>
+                                <textarea class="form-control border-0 bg-light" placeholder="Ingrese su Mensaje" id="message" style="height: 150px" asp-for="@Model.FormContactanos.Mensaje" required></textarea>
                                 <label for="message">Mensaje</label>
                             </div>
                         </div>
                         <div class="col-12">
-                            <button class="btn btn-primary py-3 px-5" type="submit">Enviar Mensaje</button>
+                            <button id="submitButton" class="btn btn-primary py-3 px-5" type="submit">
+                                <span class="spinner-container">
+                                    <i id="spinnerIcon" class="fa fa-paper-plane"></i>
+                                </span>
+                                Enviar Mensaje
+                            </button>
                         </div>
+
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<!-- Contact End -->
+<script>
+    function bloquearFormulario() {
+        var button = document.querySelector('button[type="submit"]');
+        button.disabled = true;
+        var spinnerIcon = $('#spinnerIcon');
+        spinnerIcon.addClass('fa fa-spinner fa-pulse');
+    }
+</script>

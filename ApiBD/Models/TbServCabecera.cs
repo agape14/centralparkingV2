@@ -22,6 +22,8 @@ public partial class TbServCabecera
     /// </summary>
     public int IsMenu { get; set; }
 
+    public string Iniciales { get; set; }
+
     public virtual TbConfBotone IdBtnConoceNavigation { get; set; }
 
     public virtual TbConfBotone IdBtnSolicitarNavigation { get; set; }
@@ -29,4 +31,5 @@ public partial class TbServCabecera
     public virtual ICollection<TbServDetalle> TbServDetalles { get; set; } = new List<TbServDetalle>();
 
     public virtual ICollection<TbServFormulario> TbServFormularios { get; set; } = new List<TbServFormulario>();
+    public virtual ICollection<TbConfUbigeoServicio> TbConfUbigeoServicios { get; set; } = new List<TbConfUbigeoServicio>();
 }

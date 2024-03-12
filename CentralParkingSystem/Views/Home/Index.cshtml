@@ -148,3 +148,29 @@
     </div>
 </div>
 <!-- Courses End -->
+<!-- Mensajes de envio de correo -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show position-fixed bottom-0 start-0 mb-3 ms-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorAlert" class="alert alert-danger alert-dismissible fade show position-fixed bottom-0 start-0 mb-3 ms-3" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Mensajes de envio de correo -->
+<!-- Contact End -->
+<script>
+    // Función para ocultar el alerta después de unos segundos
+    setTimeout(function () {
+        $('#successAlert').fadeOut('slow');
+        $('#errorAlert').fadeOut('slow');
+    }, 10000); // 10000 milisegundos = 10 segundos
+</script>

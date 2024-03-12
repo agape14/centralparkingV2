@@ -1,6 +1,7 @@
 ﻿@{
     @model ApiBD.Models.Home.IndexVM;
     ViewData["Title"] = "Cotizacion de Valet Parking";
+    var primerRegistroEntidad = ViewBag.primerRegistroEntidad;
 }
 <div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
     <div class="container text-center">
@@ -32,13 +33,11 @@
                     <p class="mb-4">Deja tus datos y muy pronto nos comunicaremos contigo.</p>
                     <p>¡Muchas gracias por tu preferencia!</p>
                     <h5 class=" mb-4 mt-4">LLAMANOS AL NUMERO</h5>
-                    <p class="mb-2"><i class="fa fa-phone me-3 "></i>+511 505 5000</p>
-                    <p class="mb-2">Horario de atención: Lunes a Viernes de 9:00 a.m. a 5:00 p.m.</p>
+                    <p class="mb-2"><i class="fa fa-phone me-3 "></i>@primerRegistroEntidad.Telefono</p>
+                    <p class="mb-2">Horario de atención: @primerRegistroEntidad.Horario</p>
                     <h5 class=" mb-4 mt-4">SEDE CENTRAL</h5>
                     <p class="mb-2">
-                        <i class="fa fa-map-marker-alt me-3"></i>Av. Javier Prado Oeste 1650, San Isidro
-                        -
-                        Lima - Peru
+                        <i class="fa fa-map-marker-alt me-3"></i>@primerRegistroEntidad.Direccion
                     </p>
                 </div>
             </div>

@@ -410,6 +410,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -425,8 +433,9 @@ public class HomeController : Controller
             ModalCabs9 = modalcab9,
             ListModalDet14 = modaldet14,
             ModalCabs10 = modalcab10,
-            ListModalDet15 = modaldet15,
+            ListModalDet15 = modaldet15
         };
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
 
@@ -529,6 +538,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -546,6 +563,7 @@ public class HomeController : Controller
             ModalCabs10 = modalcab10,
             ListModalDet15 = modaldet15,
         };
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
     public async Task<IActionResult> GetHotelPorDistrito(string cod)
@@ -669,6 +687,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -686,7 +712,7 @@ public class HomeController : Controller
             ModalCabs10 = modalcab10,
             ListModalDet15 = modaldet15,
         };
-
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
     //----------------------------------------
@@ -744,6 +770,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -761,7 +795,7 @@ public class HomeController : Controller
             ModalCabs10 = modalcab10,
             ListModalDet15 = modaldet15,
         };
-
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
     //----------------------------------------
@@ -819,6 +853,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -836,7 +878,7 @@ public class HomeController : Controller
             ModalCabs10 = modalcab10,
             ListModalDet15 = modaldet15,
         };
-
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
     //----------------------------------------
@@ -894,6 +936,14 @@ public class HomeController : Controller
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
+
+        if (listEntidad.Count == 0)
+        {
+            Entidades objEntidad = new Entidades();
+            listEntidad.Add(objEntidad);
+        }
+        Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -911,7 +961,7 @@ public class HomeController : Controller
             ModalCabs10 = modalcab10,
             ListModalDet15 = modaldet15,
         };
-
+        ViewBag.primerRegistroEntidad = primerRegistroEntidad;
         return View(model);
     }
     //----------------------------------------
@@ -956,7 +1006,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Contactanos([Bind("Id,Nombre,CorreoElectronico,Asunto,Mensaje,TipoServicio")] TbFormContactano tbFormContactano)
+    public async Task<IActionResult> Contactanos(IndexVM tbFormContactano)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades() ;// entidad.ListarEntidades();
@@ -971,9 +1021,18 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            string mensaje = "Recibimos su solicitud llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _contactanoService.crearContactoRegistro(tbFormContactano);
-            enviarEmail(tbFormContactano.CorreoElectronico,mensaje,primerRegistro);
+            string titulonotificacion = "Gracias por contactarte con nosotros.";
+            string mensaje = "Gracias por su consulta a través de nuestro formulario de contacto. Nos comunicaremos con ud. lo antes posible.";
+            await _contactanoService.crearContactoRegistro(tbFormContactano.FormContactanos);
+            bool envioExitoso = enviarEmailValidando(tbFormContactano.FormContactanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -1452,6 +1511,100 @@ public class HomeController : Controller
         }
     }
 
+    private bool enviarEmailValidando(string correoDestinatario, string mensaje, Entidades entidades, string titulonotificacion)
+    {
+
+        string server = entidades.Servidor ?? "smtp.gmail.com";
+        int port = entidades.Puerto ?? 465;
+        string correo = entidades.CorreoNotifica ?? "centralparking153@gmail.com";
+        string pass = entidades.ClaveNotifica ?? "mwabukzuumewdbhn";
+
+
+        string correoCC = entidades.CorreoConCopia ?? "adelacruzcarlos@gmail.com";
+
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Remitente", correo));
+        message.To.Add(new MailboxAddress("Destinatario", correoDestinatario));
+        message.Cc.Add(new MailboxAddress("Copia", correoCC));
+        message.Subject = "Agencia CentralParking Perú";
+
+        var bodyBuilder = new BodyBuilder();
+        //bodyBuilder.TextBody = mensaje;
+        bodyBuilder.HtmlBody = @"<!DOCTYPE html>
+                             <html lang='en'>
+                             <head>
+                                 <meta charset='UTF-8'>
+                                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                             </head>
+                             <body style='background-color:#FEF9E7;'>
+                                 <div style='width: 100%;margin: auto;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+                                     <table style='background-color:#FEF9E7;max-width:670px;margin:0 auto' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'>
+                                        <tbody>
+                                        <tr>
+                                            <td style='height:40px'>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><table width='95%' border='0' align='center' cellpadding='0' cellspacing='0' style='max-width:670px;background:#fff;border-radius:3px;text-align:center'>
+                                        <tbody>
+                                        <tr>
+                                            <td style='height:40px'>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style='padding:0 15px'>
+                                                <h1 style='color:#F1C40F;font-weight:400;margin:0;font-size:30px'>" + titulonotificacion +@"</h1>
+                                                <span style='display:inline-block;vertical-align:middle;margin:29px 0 26px;border-bottom:1px solid #cecece;width:100px'></span>
+                                                <p style='color:#171f23de;font-size:15px;line-height:24px;margin:0'>
+                                                    " + mensaje + @"
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style='height:40px'>&nbsp;</td>
+                                        </tr>
+                                        </tbody>
+                                    </table></td>
+                                        </tr>
+                                        <tr>
+                                            <td style='height:20px'>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style='text-align:center'>
+                                                <p style='font-size:14px;color:#455056bd;line-height:18px;margin:0 0 0'><strong>Central Parking System</strong> | Todos los derechos reservados</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style='height:80px'>&nbsp;</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                 </div>
+                             </body>
+                             </html>";
+        message.Body = bodyBuilder.ToMessageBody();
+
+        using (var client = new SmtpClient())
+        {
+            try
+            {
+                client.Connect(server, port, true);
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                client.Authenticate(correo, pass);
+                client.Send(message);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Registrar un mensaje de error o lanzar una excepción o ambos.
+                Console.WriteLine("Ocurrió un error al enviar el correo electrónico: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                client.Disconnect(true);
+                client.Dispose();
+            }
+        }
+    }
 
 
 }

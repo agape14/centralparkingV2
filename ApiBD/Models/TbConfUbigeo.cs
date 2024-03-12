@@ -12,4 +12,5 @@ public partial class TbConfUbigeo
     public string Prov { get; set; }
 
     public string Dist { get; set; }
+    public virtual ICollection<TbConfUbigeoServicio> TbConfUbigeoServicios { get; set; } = new List<TbConfUbigeoServicio>();
 }

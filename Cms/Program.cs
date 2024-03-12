@@ -40,7 +40,7 @@ builder.Services.AddHttpClient<ServicioDetalleCmsService>();
 builder.Services.AddHttpClient<SlideCmsService>();
 builder.Services.AddHttpClient<UsuarioCmsService>();
 builder.Services.AddHttpClient<UsuarioService>();
-
+builder.Services.AddHttpClient<UbigeoServicioscmsService>();
 
 builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();

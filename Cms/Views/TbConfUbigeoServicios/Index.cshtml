@@ -1,0 +1,125 @@
+﻿@model ApiBD.Models.TbConfUbigeoServicio
+@{
+    ViewData["Title"] = "Listado Distrito por Servicio";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+
+                        <div>
+                            <div class="input-group">
+                                <div id="radioBtn" class="btn-group">
+                                    @foreach (var servicesList in ViewBag.serviciosLista)
+                                    {
+                                        <a class="btn btn-primary btn-sm @((servicesList.Id == 1) ? "active" : "notActive")"
+                                           data-toggle="tiposervicio"
+                                           data-title="@servicesList.Id"
+                                           data-id="@servicesList.Id"
+                                           id="enlace_@servicesList.Id">@servicesList.Iniciales</a>
+                                    }
+                                </div>
+                                <input type="hidden" name="tiposervicio" id="tiposervicio">
+                            </div>
+                        </div>
+                        <a href="#" id="editarLink" class="btn btn-warning">
+                            <i class="ti-pencil"></i> Editar
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Servicio
+                                    </th>
+                                    <th>
+                                        Distrito
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => model.TbServCabecera.Titulo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => model.TbConfUbigeo.Dist)
+                                    </td>
+
+                                    @if (Model.CodUbi != null)
+                                    {
+                                        <td>
+                                            <a asp-action="Delete" asp-route-id="@Model.CodUbi" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                        </td>
+                                    }
+
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        var url = new URL(window.location.href);
+        var tipoServicio = url.searchParams.get("tipoServicio");
+        if (tipoServicio) {
+            // El parámetro "tipoProyecto" está presente en la URL
+            console.log("Valor de tipoServicio:", tipoServicio);
+            var sel = tipoServicio;
+            var tog = "tiposervicio";
+            //idTipoServSel = $(this).data('id');
+            console.log('rOOOOOOOOOOOOOOOL=>', sel, tog);
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+        } else {
+            // El parámetro "tipoProyecto" no está presente en la URL
+            console.log("El parámetro tipoProyecto no está presente en la URL.");
+        }
+
+        let idTipoServSel = 1;
+
+        // Manejar el clic en los enlaces
+        $('#radioBtn a').click(function (e) {
+            e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+            var sel = $(this).data('title');
+            var tog = $(this).data('toggle');
+            //idTipoServSel = $(this).data('id');
+
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+            // Obtener el valor de data-id
+            var idTipoServSel = $(this).data('id');
+
+            // Construir la URL del controlador con el valor de idTipoServSel
+            var url = '@Url.Action("Index", "TbConfUbigeoServicios")' + '?tipoServicio=' + idTipoServSel;
+            console.log('Ahiqw=>', sel, tog, idTipoServSel, url);
+            // Redirigir a la URL
+            window.location.href = url;
+        });
+
+        $("#editarLink").attr("href", "/TbConfUbigeoServicios/Edit/" + tipoServicio);
+    });
+</script>

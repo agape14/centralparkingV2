@@ -30,5 +30,5 @@ public class IndexVM
     public TbFormContactano FormContactanos { get; set; }
     public TbFormTbcnosotro TbFormTbcnosotros { get; set; }
     public TbFormHojareclamacione HojaReclamaciones { get; set; }
-    
+
 }
