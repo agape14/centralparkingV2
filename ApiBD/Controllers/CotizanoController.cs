@@ -38,6 +38,14 @@ namespace ApiBD.Controllers
         [HttpPost]
         public async Task<ActionResult<TbFormCotizano>> Create(TbFormCotizano tbFormCotizano)
         {
+            if (tbFormCotizano.Distrito.Length == 6)
+            {
+                var tbldistrito = await _dbContext.TbConfUbigeos.FirstOrDefaultAsync(u => u.CodUbi == tbFormCotizano.Distrito);
+                if (tbldistrito != null)
+                {
+                    tbFormCotizano.Distrito = tbldistrito.Dist;
+                }
+            }
             _dbContext.TbFormCotizanos.Add(tbFormCotizano);
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = tbFormCotizano.Id }, tbFormCotizano);

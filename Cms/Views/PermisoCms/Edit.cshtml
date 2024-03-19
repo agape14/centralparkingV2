@@ -132,12 +132,12 @@
 
             $('.menu-checkbox:checked').each(function () {
                 var menuId = $(this).data('menu-id');
-                selectedPermissions.push({ MenuId: menuId, RolId: 1 });
+                selectedPermissions.push({ MenuId: menuId, RolId: rol_id });
             });
 
             $('.submenu-checkbox:checked').each(function () {
                 var submenuId = $(this).data('submenu-id');
-                selectedPermissions.push({ MenuId: submenuId, RolId: 1 });
+                selectedPermissions.push({ MenuId: submenuId, RolId: rol_id });
             });
             console.log('actualizar-btn',selectedPermissions); //return;
             $.ajax({

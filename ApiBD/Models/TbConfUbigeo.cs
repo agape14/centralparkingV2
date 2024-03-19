@@ -13,4 +13,5 @@ public partial class TbConfUbigeo
 
     public string Dist { get; set; }
     public virtual ICollection<TbConfUbigeoServicio> TbConfUbigeoServicios { get; set; } = new List<TbConfUbigeoServicio>();
+    public virtual ICollection<TbEstacionamiento> TbPlayasEstacionamientos { get; set; } = new List<TbEstacionamiento>();
 }

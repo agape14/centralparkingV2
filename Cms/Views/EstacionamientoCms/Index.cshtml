@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ApiBD.Models.TbEstacionamiento>
+
+@{
+    ViewData["Title"] = "Listado de estacionamientos";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                        <!-- <a class="btn btn-primary readonly" href="/EntidadCms/Create">-->
+                        <a class="btn btn-primary" href="/EstacionamientoCms/Create" id="crearLink">
+                            <i class="ti-plus"></i>  Nuevo
+                        </a>
+                        <a class="btn btn-info d-none" href="/EstacionamientoCms/Index" id="inicioLink">
+                            <i class="ti-plus"></i>  redirigir
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div class="row p-4">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Distrito</label>
+                                    <select id="cbxServicio" class="form-control" asp-items="ViewBag.Distritos" ></select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <table class="table" id="tablaEstacionamientos">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Estacionamiento
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Estacionamiento)
+                                        </td>
+                                        @if (item.Id != 0)
+                                        {
+                                            <td>
+                                                <a asp-action="Edit" asp-route-id="@item.Id"  class="btn btn-warning"><i class="ti-pencil"></i> </a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var url = new URL(window.location.href);
+        var codUbi = url.searchParams.get("codUbi");
+
+        $("#crearLink").attr("href", "/EstacionamientoCms/Create?codUbi=" + codUbi);
+
+        $('#cbxServicio').on('change', function () {
+            var selectedCodUbi = $(this).val();
+            $("#inicioLink").attr("href", "/EstacionamientoCms/Index?codUbi=" + selectedCodUbi);
+            $("#inicioLink")[0].click();
+
+        });
+    });
+</script>
+

@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <form asp-action="CotizanosPrevencion">
+                <form asp-action="CotizanosPrevencion" onsubmit="bloquearFormulario()">
                     <div class="col-12">
                         <div class="form-floating">
                             <select class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="@Model.TbFormCotizanos.TipoServicio">
@@ -54,13 +54,14 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="@Model.TbFormCotizanos.Distrito">
+                            @Html.DropDownListFor(model => model.TbFormCotizanos.Distrito, (IEnumerable<SelectListItem>)ViewData["Distritos"], "Seleccione distrito", new { @class = "form-control border-0 bg-light mb-4", id = "distrito", required = "required" })
+                            @* <select required name="distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="@Model.TbFormCotizanos.Distrito">
                                 <option value="Cercado de Lima">Cercado de Lima</option>
                                 <option value="Miraflores">Miraflores</option>
                                 <option value="Pueblo Libre">Pueblo Libre</option>
                                 <option value="San Isidro">San Isidro</option>
                                 <option value="Surco">Surco</option>
-                            </select>
+                            </select> *@
                             <label for="distrito">Distrito</label>
                         </div>
                     </div>
@@ -108,8 +109,8 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <button class="btn btn-primary py-3 px-6 w-50">
-                                <i class="fas fa-check-square"></i>
+                            <button type="submit" class="btn btn-primary py-3 px-6 w-50">
+                                <i id="spinnerIcon" class="fas fa-check-square"></i>
                                 Registrar mi cotización
                             </button>
                         </div>
@@ -140,4 +141,11 @@
             event.preventDefault();
         }
     });
+
+    function bloquearFormulario() {
+        var button = document.querySelector('button[type="submit"]');
+        button.disabled = true;
+        var spinnerIcon = $('#spinnerIcon');
+        spinnerIcon.addClass('fa fa-spinner fa-pulse');
+    }
 </script>

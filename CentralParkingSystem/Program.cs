@@ -1,4 +1,5 @@
 using ApiBD.Models;
+using CentralParkingSystem.Helpers;
 using CentralParkingSystem.Services;
 
 
@@ -38,7 +39,7 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();
 builder.Services.AddSession();
-
+builder.Services.AddSingleton<CopiarArchivosPDF>();
 
 var app = builder.Build();
 

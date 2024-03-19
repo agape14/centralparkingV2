@@ -43,91 +43,86 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <form asp-action="CotizanosAbonados" method="post">
+                <form asp-action="CotizanosAbonados" method="post" onsubmit="bloquearFormulario()">
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required class="form-control border-0 bg-light mb-4" id="tipoServicio" placeholder="Tipo Servicio" asp-for="TbFormCotizanos.TipoServicio">
+                            <select required class="form-control border-0 bg-light mb-4" placeholder="Tipo Servicio" asp-for="TbFormCotizanos.TipoServicio">
                                 <option value="2">ABONADOS</option>
                             </select>
-                            <label for="tipoServicio">Tipo de Servicio</label>
+                            <label for="TbFormCotizanos.TipoServicio">Tipo de Servicio</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select id="tipoAbonado" asp-for="TbFormCotizanos.TipoAbonado" class="form-control border-0 bg-light mb-4" required placeholder="Tipo de Abonado">
+                            <select asp-for="TbFormCotizanos.TipoAbonado" class="form-control border-0 bg-light mb-4" required placeholder="Tipo de Abonado">
                                 <option value="Personas">Personas</option>
                                 <option value="Empresas">Empresas</option>
                             </select>
-                            <label for="tipoAbonado">Tipo de Abonado</label>
+                            <label for="TbFormCotizanos.TipoAbonado">Tipo de Abonado</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <select required name="Distrito" id="distrito" class="form-control border-0 bg-light mb-4" placeholder="Distrito" asp-for="TbFormCotizanos.Distrito">
-                                <option value="">Seleccione un distrito</option>
-                                @foreach (var item in (SelectList)ViewData["Distritos"])
-                                {
-                                    <option value="@item.Text" data-id="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                            <label for="distrito">Distrito</label>
+                            @Html.DropDownListFor(model => model.TbFormCotizanos.Distrito, (IEnumerable<SelectListItem>)ViewData["Distritos"], "Seleccione distrito", new { @class = "form-control border-0 bg-light mb-4", id = "distrito", required = "required" })
+
+                            <label for="TbFormCotizanos.Distrito">Distrito</label>
                         </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-8">
                             <div class="form-floating">
-                                <select id="estacionamiento" asp-for="TbFormCotizanos.Estacionamiento" class="form-control border-0 bg-light " required placeholder="Seleccione Estacionamiento">
+                                <select asp-for="TbFormCotizanos.Estacionamiento" class="form-control border-0 bg-light " required placeholder="Seleccione Estacionamiento">
 
                                 </select>
-                                <label for="estacionamiento">Estacionamientos</label>
+                                <label for="TbFormCotizanos.Estacionamiento">Estacionamientos</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-floating">
-                                <input type="number" required class="form-control border-0 bg-light" id="cantidad" placeholder="Cantidad" min="1" asp-for="TbFormCotizanos.Cantidad">
-                                <label for="cantidad">Cantidad</label>
+                                <input type="number" required class="form-control border-0 bg-light" placeholder="Cantidad" min="1" asp-for="TbFormCotizanos.Cantidad">
+                                <label for="TbFormCotizanos.Cantidad">Cantidad</label>
                             </div>
                         </div>
                         <div class="col-md-12" id="divContacto">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-0 bg-light " placeholder="Nombres y Apellidos" asp-for="TbFormCotizanos.Contacto" maxlength="100">
-                                <label for="Contacto">Nombres y Apellidos</label>
+                                <label for="TbFormCotizanos.Contacto">Nombres y Apellidos</label>
                             </div>
                         </div>
                         <div class="col-md-4" id="divRuc">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-0 bg-light " placeholder="Ruc" asp-for="TbFormCotizanos.Ruc" maxlength="11">
-                                <label for="Ruc">RUC</label>
+                                <label for="TbFormCotizanos.Ruc">RUC</label>
                             </div>
                         </div>
                         <div class="col-md-8" id="divRazonSocial">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-0 bg-light" placeholder="Razon Social" asp-for="TbFormCotizanos.RazonSocial" maxlength="255">
-                                <label for="RazonSocial">Razon Social</label>
+                                <label for="TbFormCotizanos.RazonSocial">Razon Social</label>
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input required pattern="[0-9]{9}" maxlength="9" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" id="celular" name="celular" placeholder="Celular" asp-for="TbFormCotizanos.Celular">
-                                    <label for="celular">Celular</label>
+                                    <input required pattern="[0-9]{9}" maxlength="9" title="Ingrese un número de celular válido" class="form-control border-0 bg-light" placeholder="Celular" asp-for="TbFormCotizanos.Celular">
+                                    <label for="TbFormCotizanos.Celular">Celular</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" id="telefono" name="telefono" placeholder="Teléfono" asp-for="TbFormCotizanos.Telefono">
-                                    <label for="telefono">Teléfono</label>
+                                    <input pattern="[0-9]{7}" maxlength="7" title="Ingrese un número de telefono válido" class="form-control border-0 bg-light" placeholder="Teléfono" asp-for="TbFormCotizanos.Telefono">
+                                    <label for="TbFormCotizanos.Telefono">Teléfono</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input required type="email" class="form-control border-0 bg-light" id="correoElectronico" name="correoElectronico" placeholder="Correo electrónico" asp-for="TbFormCotizanos.CorreoElectronico" maxlength="100">
-                                    <label for="correoElectronico">Correo electrónico</label>
+                                    <input required type="email" class="form-control border-0 bg-light" placeholder="Correo electrónico" asp-for="TbFormCotizanos.CorreoElectronico" maxlength="100">
+                                    <label for="TbFormCotizanos.CorreoElectronico">Correo electrónico</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary py-3 px-6 w-50">
-                                    <i class="fas fa-check-square"></i>
+                                <button type="submit" class="btn btn-primary py-3 px-6 w-50">
+                                    <i id="spinnerIcon" class="fas fa-check-square"></i>
                                     Registrar mi cotización
                                 </button>
                             </div>
@@ -161,23 +156,41 @@
       campo.value = 1;
     }
   }
+
+  function bloquearFormulario() {
+    var button = document.querySelector('button[type="submit"]');
+    button.disabled = true;
+    var spinnerIcon = $('#spinnerIcon');
+    spinnerIcon.addClass('fa fa-spinner fa-pulse');
+}
+
   document.getElementById("cantidad").addEventListener("blur", validarcantidad);
 
     $(document).ready(function () {
         mostrarFormTipoPersona("Personas");
         $("#distrito").change(function () {
-            //var selectedDistrito = $(this).val();
-            var selectedDistrito = $(this).find(":selected").data("id");
+            var selectedDistrito = $(this).val();
+            //var selectedDistrito = $(this).find(":selected").data("id");
             $("#estacionamiento").empty();  // Limpiar el segundo select
             console.log("selectedDistrito",selectedDistrito);
             if (selectedDistrito) {
-                // Llamar al servicio API para obtener los hoteles relacionados con el distrito seleccionado
                 $.get("/Home/GetHotelPorDistrito?cod=" + selectedDistrito, function (data) {
+                    console.log(data);
+                    $("#estacionamiento").empty(); // Limpia el select antes de agregar nuevas opciones
                     $("#estacionamiento").append("<option value=''>Seleccione Estacionamiento</option>");
                     $.each(data, function (index, item) {
-                        $("#estacionamiento").append("<option value='" + item.hotel + "'>" + item.hotel + "</option>");
+                        $("#estacionamiento").append("<option value='" + item.estacionamiento + "'>" + item.estacionamiento + "</option>");
                     });
                 });
+
+
+                // Llamar al servicio API para obtener los hoteles relacionados con el distrito seleccionado
+                // $.get("/Home/GetHotelPorDistrito?cod=" + selectedDistrito, function (data) {
+                //     $("#estacionamiento").append("<option value=''>Seleccione Estacionamiento</option>");
+                //     $.each(data, function (index, item) {
+                //         $("#estacionamiento").append("<option value='" + item.hotel + "'>" + item.hotel + "</option>");
+                //     });
+                // });
             }
         });
 

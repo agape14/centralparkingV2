@@ -1,4 +1,4 @@
-﻿@model ApiBD.Models.TbConfUbigeoServicio
+﻿@model IEnumerable<ApiBD.Models.TbConfUbigeoServicio>
 @{
     ViewData["Title"] = "Listado Distrito por Servicio";
     Layout = "~/Views/Shared/_Layout2.cshtml";
@@ -47,24 +47,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(model => model.TbServCabecera.Titulo)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(model => model.TbConfUbigeo.Dist)
-                                    </td>
-
-                                    @if (Model.CodUbi != null)
-                                    {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
                                         <td>
-                                            <a asp-action="Delete" asp-route-id="@Model.CodUbi" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                            @Html.DisplayFor(modelItem => item.TbServCabecera.Titulo)
                                         </td>
-                                    }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TbConfUbigeo.Dist)
+                                        </td>
 
-                                </tr>
-                                
+                                        @if (item.CodUbi != null)
+                                        {
+                                            @*<td>
+                                                <a asp-action="Delete" asp-route-id="@item.CodUbi" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                            </td>
+                                             <td>
+                                                <form method="post" asp-action="Delete" asp-route-idservicio="@item.TbServCabecera.Id" asp-route-codubi="@item.CodUbi" onsubmit="return confirm('¿Está seguro de que desea eliminar este elemento?');">
+                                                    <button type="submit" class="btn btn-danger"><i class="ti-trash"></i></button>
+                                                </form>
+                                            </td> *@
+                                            <td>
+                                                <a asp-action="Delete" asp-route-idservicio="@item.TbServCabecera.Id" asp-route-codubi="@item.CodUbi" class="btn btn-danger"><i class="ti-trash"></i> </a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

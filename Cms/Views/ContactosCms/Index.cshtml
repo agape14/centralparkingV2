@@ -31,6 +31,9 @@
                                         @Html.DisplayNameFor(model => model.Nombre)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(model => model.Asunto)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(model => model.Mensaje)
                                     </th>
                                     <th>
@@ -44,10 +47,24 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TipoServicio)
+                                            @if (item.TipoServicio == 1)
+                                            {
+                                                <span class="badge rounded-pill bg-light text-dark">ADMINISTRACIÓN DE ESTACIONAMIENTOS</span>
+                                            }
+                                            else if (item.TipoServicio == 2)
+                                            {
+                                                <span class="badge rounded-pill bg-primary text-white">GESTION DE ABONADOS</span>
+                                            }
+                                            else if (item.TipoServicio == 3)
+                                            {
+                                                <span class="badge rounded-pill bg-light text-white">OTROS SERVICIOS</span>
+                                            }
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Asunto)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Mensaje)

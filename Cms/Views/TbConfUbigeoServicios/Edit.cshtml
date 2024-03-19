@@ -1,4 +1,4 @@
-﻿@model ApiBD.Models.TbConfUbigeoServicio
+﻿@model IEnumerable<ApiBD.Models.TbConfUbigeoServicio>
 @{
     ViewData["Title"] = "Editar Distrito por Servicio";
     Layout = "~/Views/Shared/_Layout2.cshtml";
@@ -17,13 +17,12 @@
                         <div class="col-md-12">
                             <form asp-action="Edit">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="CodUbi" />
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">Servicio</label>
                                             <select id="cbxServicio" class="form-control" asp-items="ViewBag.ServicioList" readonly></select>
-                                            <span asp-validation-for="TbServCabecera.Id" class="text-danger"></span>
+                                           @*  <span asp-validation-for="TbServCabecera.Id" class="text-danger"></span> *@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -32,7 +31,7 @@
                                             <select id="dptoId" class="form-control" asp-items="ViewBag.DptoId" onchange="loadProvincias(this.value)" readonly>
                                                 <option value="">Seleccione un departamento</option>
                                             </select>
-                                            <span asp-validation-for="TbConfUbigeo.Dpto" class="text-danger"></span>
+                                            @* <span asp-validation-for="TbConfUbigeo.Dpto" class="text-danger"></span> *@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -41,22 +40,18 @@
                                             <select id="provId" class="form-control" onchange="loadDistritos(this.value)" readonly>
                                                 <option value="">Seleccione una provincia</option>
                                             </select>
-                                            <span asp-validation-for="TbConfUbigeo.Prov" class="text-danger"></span>
+                                           @*  <span asp-validation-for="TbConfUbigeo.Prov" class="text-danger"></span> *@
                                         </div>
                                     </div>
 
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
-                                    <a class="btn btn-danger " id="btnRegresarPermiso"><i class="ti-back-left"></i> Regresar</a>
                                 </div>
                             </form>
                         </div>
                     </div>
 
                     <div class="row">
-                        <!--<form asp-action="Createpermisos">-->
-                        <form>
+                        <form asp-action="Creadistritosservice">
+                            <input type="hidden" name="IdServicio" value="@Model.First().IdServicio" />
                             <ul>
                                 <li>
                                     <div>
@@ -67,10 +62,12 @@
 
                                         @foreach (var dists in ViewBag.DistritosList)
                                         {
-                                            
+                                            bool isChecked = Model.Any(m => m.CodUbi == dists.CodUbi);
                                             <li>
                                                 <div class="submenu">
-                                                    <input type="checkbox" id="menu-@dists.CodUbi" data-menu-id="@dists.CodUbi" class="menu-checkbox" />
+                                                    <input type="checkbox" id="menu-@dists.CodUbi" data-menu-id="0" data-submenu-id="@dists.CodUbi" class="submenu-checkbox" @(isChecked ? "checked" : "") 
+                                                    name="distritosSeleccionados"
+                                                           value="@dists.CodUbi" />
                                                     <label for="menu-@dists.CodUbi">@dists.Dist</label>
                                                 </div>
                                             </li>
@@ -80,89 +77,82 @@
                                     </ul>
                                 </li>
                             </ul>
-                            @* <span asp-validation-for="Estado" class="text-danger"></span> *@
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
+                                <button type="submit" class="btn btn-primary" id="actualizar-btn"><i class="ti-save"></i> Grabar</button> |
                                 <a class="btn btn-danger " id="btnRegresarPermiso"><i class="ti-back-left"></i> Regresar</a>
                             </div>
+                            
                         </form>
+                       
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@* <h4>TbConfUbigeoServicio</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodUbi" />
-            <input type="hidden" asp-for="IdServicio" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div> *@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    function loadProvincias(departamentoId) {
-        // Limpiar el combo de provincias y distritos
-        document.getElementById("provId").innerHTML = '<option value="">Seleccione una provincia</option>';
-        //document.getElementById("distId").innerHTML = '<option value="">Seleccione un distrito</option>';
+    $(document).ready(function () {
+        var token = $('[name=__RequestVerificationToken]').val();
+        $('.menu-checkbox').change(function () {
+            var menuId = $(this).data('menu-id');
+            var isChecked = $(this).prop('checked');
+            $(`.submenu-checkbox[data-menu-id=${menuId}]`).prop('checked', isChecked);
+        });
 
-        // Si no se seleccionó ningún departamento, salir
-        if (!departamentoId) return;
 
-        // Realizar la solicitud AJAX para obtener las provincias
-        fetch(`/TbConfUbigeoServicios/GetProvincias?departamentoId=${departamentoId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Llenar el combo de provincias con los datos recibidos
-                data.forEach(provincia => {
-                    var option = document.createElement("option");
-                    option.value = provincia.codUbi; // Ajustar según tu modelo
-                    option.text = provincia.prov; // Ajustar según tu modelo
-                    document.getElementById("provId").appendChild(option);
+        function loadProvincias(departamentoId) {
+            // Limpiar el combo de provincias y distritos
+            document.getElementById("provId").innerHTML = '<option value="">Seleccione una provincia</option>';
+            //document.getElementById("distId").innerHTML = '<option value="">Seleccione un distrito</option>';
+
+            // Si no se seleccionó ningún departamento, salir
+            if (!departamentoId) return;
+
+            // Realizar la solicitud AJAX para obtener las provincias
+            fetch(`/TbConfUbigeoServicios/GetProvincias?departamentoId=${departamentoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Llenar el combo de provincias con los datos recibidos
+                    data.forEach(provincia => {
+                        var option = document.createElement("option");
+                        option.value = provincia.codUbi; // Ajustar según tu modelo
+                        option.text = provincia.prov; // Ajustar según tu modelo
+                        document.getElementById("provId").appendChild(option);
+                    });
+                    document.getElementById("provId").value = "1501";
                 });
-                document.getElementById("provId").value = "1501";
-            });
-    }
+        }
 
-    function loadDistritos(provinciaId) {
-        // Limpiar el combo de distritos
-        document.getElementById("distId").innerHTML = '<option value="">Seleccione un distrito</option>';
+        function loadDistritos(provinciaId) {
+            // Limpiar el combo de distritos
+            document.getElementById("distId").innerHTML = '<option value="">Seleccione un distrito</option>';
 
-        // Si no se seleccionó ninguna provincia, salir
-        if (!provinciaId) return;
+            // Si no se seleccionó ninguna provincia, salir
+            if (!provinciaId) return;
 
-        // Realizar la solicitud AJAX para obtener los distritos
-        fetch(`/TbConfUbigeoServicios/GetDistritos?provinciaId=${provinciaId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Llenar el combo de distritos con los datos recibidos
-                data.forEach(distrito => {
-                    var option = document.createElement("option");
-                    option.value = distrito.codUbi; // Ajustar según tu modelo
-                    option.text = distrito.dist; // Ajustar según tu modelo
-                    document.getElementById("distId").appendChild(option);
+            // Realizar la solicitud AJAX para obtener los distritos
+            fetch(`/TbConfUbigeoServicios/GetDistritos?provinciaId=${provinciaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Llenar el combo de distritos con los datos recibidos
+                    data.forEach(distrito => {
+                        var option = document.createElement("option");
+                        option.value = distrito.codUbi; // Ajustar según tu modelo
+                        option.text = distrito.dist; // Ajustar según tu modelo
+                        document.getElementById("distId").appendChild(option);
+                    });
                 });
-            });
-    }
+        }
 
-    $("#btnRegresarPermiso").attr("href", "/TbConfUbigeoServicios/Index?tipoServicio=" + $("#cbxServicio").val());
+        $("#btnRegresarPermiso").attr("href", "/TbConfUbigeoServicios/Index?tipoServicio=" + $("#cbxServicio").val());
 
-    document.getElementById("dptoId").value = "15";
-    loadProvincias("15");
+        document.getElementById("dptoId").value = "15";
+        loadProvincias("15");
 
-    document.getElementById("cbxServicio").disabled = true;
-    document.getElementById("dptoId").disabled = true;
-    document.getElementById("provId").disabled = true;
+        document.getElementById("cbxServicio").disabled = true;
+        document.getElementById("dptoId").disabled = true;
+        document.getElementById("provId").disabled = true;
+    });
+    
 </script>

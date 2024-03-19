@@ -1,0 +1,69 @@
+﻿@model ApiBD.Models.TbEstacionamiento
+
+@{
+    ViewData["Title"] = "Editar Estacionamiento por Distrito";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Servicio</label>
+                                            <input type="hidden" asp-for="CodUbi" />
+                                            <select asp-for="CodUbi" class="form-control" asp-items="ViewBag.Distritos" disabled></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="Estacionamiento" class="control-label">Estacionamiento</label>
+                                            <input asp-for="Estacionamiento" class="form-control" />
+                                            <span asp-validation-for="Estacionamiento" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Grabar</button> |
+                                        <a class="btn btn-danger " href="@Url.Action("Index", "EstacionamientoCms", new { codUbi = @Model.CodUbi })"><i class="ti-back-left"></i> Regresar</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <h4>TbEstacionamiento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CodUbi" />
+            <input type="hidden" asp-for="Estacionamiento" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+

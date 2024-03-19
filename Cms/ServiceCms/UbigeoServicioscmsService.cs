@@ -1,7 +1,10 @@
 ﻿using ApiBD.Models;
+using CentralParkingSystem.DTOs;
 using Cms.Helpers;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace Cms.ServiceCms
@@ -19,9 +22,39 @@ namespace Cms.ServiceCms
             _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
-        public async Task<TbConfUbigeoServicio> listarUbigeoPorServicio(int id)
+        public async Task<List<TbConfUbigeoServicio>> listarDistritosPorServicio()
         {
-            TbConfUbigeoServicio listUbigeoServicio = new TbConfUbigeoServicio();
+            List<TbConfUbigeoServicio> permisos = new List<TbConfUbigeoServicio>();
+
+            try
+            {
+                var url = "/api/ubigeoServicio";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var permisoLista = JsonSerializer.Deserialize<List<TbConfUbigeoServicio>>(content, jsonOptions);
+                    return permisoLista;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return permisos;
+        }
+
+        public async Task<List<TbConfUbigeoServicio>> listarUbigeoPorServicio(int id)
+        {
+            List<TbConfUbigeoServicio> listUbigeoServicio = new List<TbConfUbigeoServicio>();
 
             try
             {
@@ -32,19 +65,9 @@ namespace Cms.ServiceCms
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize<ApiResponse<TbConfUbigeoServicio>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    if (result != null && result.Result != null)
-                    {
-                        listUbigeoServicio = result.Result;
-                        // Aquí puedes usar el objeto ubigeoServicio como desees
-                        //return ubigeoServicio;
-                    }
-                    else
-                    {
-                        throw new Exception("No se pudo deserializar correctamente el objeto TbConfUbigeoServicio.");
-                    }
-                    //var ubigeoServicio = JsonSerializer.Deserialize<TbConfUbigeoServicio>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    //return ubigeoServicio;
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var ubigeoServicio = JsonSerializer.Deserialize<List<TbConfUbigeoServicio>>(content, jsonOptions);
+                    listUbigeoServicio = ubigeoServicio;
                 }
                 else
                 {
@@ -156,28 +179,96 @@ namespace Cms.ServiceCms
             }
         }
 
+        public async Task<TbConfUbigeoServicio> crearUbigeoServicio(TbConfUbigeoServicio tbUbigeoServicio)
+        {
+            var url = "/api/ubigeoServicio";
 
-        //public async Task<TbConfUbigeoServicio> listarUbigeoPorServicio(int id)
-        //{
-        //    var url = $"/api/ubigeoServicio/{id}";
+            try
+            {
+                var jsonContent = new StringContent(JsonSerializer.Serialize(tbUbigeoServicio), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync(url, jsonContent);
 
-        //    var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var crearUbigeoServicio = await response.Content.ReadFromJsonAsync<TbConfUbigeoServicio>();
+                    return crearUbigeoServicio;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+                    throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                throw new Exception("Error en la solicitud HTTP", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear el botón: {ex.Message}");
+                throw;
+            }
+        }
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var servicio = await response.Content.ReadFromJsonAsync<TbConfUbigeoServicio>();
-        //        return servicio;
-        //    }
-        //    else if (response.StatusCode == HttpStatusCode.NotFound)
-        //    {
-        //        throw new Exception("El servicio no fue encontrado.");
-        //    }
-        //    else
-        //    {
-        //        var errorContent = await response.Content.ReadAsStringAsync();
-        //        throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
-        //    }
-        //}
+        public async Task<bool> eliminarUbigeoServicio(int idservicio,string codubi)
+        {
+            var url = $"/api/ubigeoServicio/{idservicio}/{codubi}";
+
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("El botón no fue encontrado.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+        public async Task<List<TbConfUbigeoServicio>>  getEliminarUbigeoPorServicio(int idservicio, string codubi)
+        {
+            var url = $"/api/ubigeoServicio/{idservicio}/{codubi}";
+
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var distritos = JsonSerializer.Deserialize<List<TbConfUbigeoServicio>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return distritos;
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new Exception("El botón no fue encontrado.");
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+                    throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                throw new Exception("Error en la solicitud HTTP", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener el botón: {ex.Message}");
+                throw;
+            }
+        }
 
     }
 }

@@ -175,6 +175,66 @@ namespace CentralParkingSystem.Services
                 throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
             }
         }
+
+        public async Task<List<TbConfUbigeoServicio>> listarDistritoPorServicio(int id)
+        {
+            List<TbConfUbigeoServicio> listUbigeoServicio = new List<TbConfUbigeoServicio>();
+
+            try
+            {
+                var url = $"/api/hoteldistritos/{id}";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var ubigeoServicio = JsonSerializer.Deserialize<List<TbConfUbigeoServicio>>(content, jsonOptions);
+                    listUbigeoServicio = ubigeoServicio;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return listUbigeoServicio;
+        }
+
+        public async Task<List<TbEstacionamiento>> listarEstacionamientosPorDistrito(string codubi)
+        {
+            List<TbEstacionamiento> listEstacionamientos = new List<TbEstacionamiento>();
+
+            try
+            {
+                var url = $"/api/estacionamientos/{codubi}";
+
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var estacionamientos = JsonSerializer.Deserialize<List<TbEstacionamiento>>(content, jsonOptions);
+                    listEstacionamientos = estacionamientos;
+                }
+                else
+                {
+                    Console.WriteLine("No se ha podido conectar a la API");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return listEstacionamientos;
+        }
     }
 }
 

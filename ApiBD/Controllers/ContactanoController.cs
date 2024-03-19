@@ -19,7 +19,7 @@ namespace ApiBD.Controllers
         [HttpGet]
         public async Task<List<TbFormContactano>> Get()
         {
-            var contactos = await _dbContext.TbFormContactanos.ToListAsync();
+            var contactos = await _dbContext.TbFormContactanos.OrderByDescending(p => p.Id).ToListAsync();
             return contactos;
         }
 

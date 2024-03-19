@@ -12,6 +12,7 @@ using CentralParkingSystem.DTOs;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ApiBD.Controllers;
 using System.Linq;
+using CentralParkingSystem.Helpers;
 
 namespace CentralParkingSystem.Controllers;
 
@@ -40,7 +41,7 @@ public class HomeController : Controller
     private readonly PaginasCabsService _paginasCabsService;
     private readonly PuestoService _puestoService;
     private readonly RubroService _rubroService;
-
+    private readonly CopiarArchivosPDF _copiarArchivosPDF;
     public HomeController(SlideService slideService, 
         ServiciosCabsService serviciosCabsservice,
         ServiciosdetsService serviciosdetsService,
@@ -63,7 +64,8 @@ public class HomeController : Controller
         PostulacionService postulacionService,
         ProveedorService proveedorService,
         ServicioCabeceraService servicioCabeceraService,
-        ServicioDetalleService servicioDetalleService
+        ServicioDetalleService servicioDetalleService,
+        CopiarArchivosPDF copiarArchivosPDF
         )
     {
         _slideService = slideService;
@@ -88,6 +90,7 @@ public class HomeController : Controller
         _proveedorService=proveedorService;
         _servicioCabeceraService=servicioCabeceraService;
         _servicioDetalleService=servicioDetalleService;
+        _copiarArchivosPDF = copiarArchivosPDF;
     }
     public async Task<IActionResult> Index()
     {
@@ -418,6 +421,13 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(1);
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        ViewData["Distritos"] = distritosSelectList;
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -521,7 +531,22 @@ public class HomeController : Controller
         .Where(d => codigosDistritoDistintos.Any(h => h == d.CodUbi))
         .ToList();
 
-        ViewData["Distritos"] = new SelectList(distritos, "CodUbi", "Dist");
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(2);
+        // Crear lista de SelectListItem
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        // Agregar un elemento adicional al inicio de la lista
+        //distritosSelectList.Insert(0, new SelectListItem
+        //{
+        //    Value = "", // Valor vacío
+        //    Text = "Seleccione distrito" // Texto a mostrar
+        //});
+        // Establecer la lista en ViewData
+        ViewData["Distritos"] = distritosSelectList;
+        //ViewData["Distritos"] = new SelectList(distritos, "CodUbi", "Dist");
 
         var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
         var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
@@ -569,15 +594,13 @@ public class HomeController : Controller
     public async Task<IActionResult> GetHotelPorDistrito(string cod)
     {
         //var cotizanoServicio = new CotizanosService(new HttpClient());
-        var hoteldistritos = await _cotizanosService.obtenerHotelDistritos();
-        if (hoteldistritos == null)
+        var estacionamientos = await _cotizanosService.listarEstacionamientosPorDistrito(cod);
+        if (estacionamientos == null || !estacionamientos.Any())
         {
             return NotFound();
         }
-        var codigosDistritoDistintos = hoteldistritos
-        .Where(h=>h.CodDistrito== cod)
-        .ToList();
-        return Json(codigosDistritoDistintos);
+
+        return Json(estacionamientos);
     }
     // ============================ Otros servicios ============================
     public async Task<IActionResult> Otrosservicios()
@@ -695,6 +718,13 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(3);
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        ViewData["Distritos"] = distritosSelectList;
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -778,6 +808,13 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(4);
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        ViewData["Distritos"] = distritosSelectList;
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -861,6 +898,13 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(5);
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        ViewData["Distritos"] = distritosSelectList;
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -944,6 +988,13 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(6);
+        var distritosSelectList = ubigeoServicio.Select(u => new SelectListItem
+        {
+            Value = u.TbConfUbigeo.CodUbi, // Valor del id
+            Text = u.TbConfUbigeo.Dist // Texto a mostrar
+        }).ToList();
+        ViewData["Distritos"] = distritosSelectList;
         var model = new IndexVM()
         {
             Puestos = await _puestoService.ListarPuestos(),
@@ -1043,7 +1094,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosAdministracion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosAdministracion(IndexVM tbFormCotizaAdmin)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1058,18 +1109,27 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Administración de Estacionamiento llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaAdmin.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaAdmin.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
 
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaAdmin);
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosAbonados([Bind("Id,Distrito,TipoAbonado,Estacionamiento,Cantidad,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosAbonados(IndexVM tbFormCotizaAbonados)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1084,20 +1144,28 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Gestión de Abonados llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
-
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaAbonados.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaAbonados.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaAbonados);
     }
 
     
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosValetParking([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosValetParking(IndexVM tbFormCotizaValetParking)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1112,18 +1180,26 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Valet Parking llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
-
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaValetParking.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaValetParking.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaValetParking);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosEventos([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,FechaEvento,CorreoElectronico,Comentario,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosEventos(IndexVM tbFormCotizaEventos)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1138,18 +1214,26 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Eventos llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
-
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaEventos.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaEventos.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaEventos);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosPrevencion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosPrevencion(IndexVM tbFormCotizaPrevencion)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1164,18 +1248,26 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Prevención llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
-
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaPrevencion.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaPrevencion.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaPrevencion);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CotizanosRentabilizacion([Bind("Id,Distrito,Direccion,Ruc,RazonSocial,Contacto,Celular,Telefono,CorreoElectronico,TipoServicio")] TbFormCotizano tbFormCotizano)
+    public async Task<IActionResult> CotizanosRentabilizacion(IndexVM tbFormCotizaPrevencion)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1190,13 +1282,21 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
+            string titulonotificacion = "Gracias por registrar la cotizacion.";
             string mensaje = "Recibimos su cotización de Rentabilización de Terrenos llenada en el formulario, nos pondremos en contacto a la brevedad.";
-            await _cotizanosService.crearCotizanoRegistro(tbFormCotizano);
-            enviarEmail(tbFormCotizano.CorreoElectronico, mensaje, primerRegistro);
-
+            await _cotizanosService.crearCotizanoRegistro(tbFormCotizaPrevencion.TbFormCotizanos);
+            bool envioExitoso = enviarEmailValidando(tbFormCotizaPrevencion.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormCotizano);
+        return View(tbFormCotizaPrevencion);
     }
 
     // ============================ Trabaja con Nosotros ============================
@@ -1273,6 +1373,8 @@ public class HomeController : Controller
         var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
         var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
         var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        var listDpto = await _entidadesService.obtenerDepartamento();
+        ViewData["DptoId"] = new SelectList(listDpto, "CodUbi", "Dpto","15");
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
         var model = new IndexVM()
         {
@@ -1300,7 +1402,7 @@ public class HomeController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Postulacion([Bind("Id,TipoDocumento,Nombre,Apellido,FechaNacimiento,CorreoElectronico,Departamento,Provincia,Distrito,Puesto,InformacionAdicional,NumeroDocumento,Celular,Medio")] TbFormTbcnosotro tbFormTbcnosotro)
+    public async Task<IActionResult> Postulacion(IndexVM tbFormPostulacion)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1315,15 +1417,53 @@ public class HomeController : Controller
         
         if (ModelState.IsValid)
         {
-            string mensaje= $"Su solicitud de postulación para, {tbFormTbcnosotro.Puesto} ah sido registrada";
-            await _postulacionService.crearPostulacion(tbFormTbcnosotro);
-            enviarEmail(tbFormTbcnosotro.CorreoElectronico,mensaje, primerRegistro);
+            string titulonotificacion = "Gracias por registrar la postulacion.";
+            string mensaje= $"Su solicitud de postulación para: {tbFormPostulacion.TbFormTbcnosotros.Puesto}, se registró correctamente.";
+            // Verifica si el modelo es válido y si hay un archivo adjunto
+            if (ModelState.IsValid && tbFormPostulacion.InformacionAdicionalFile != null)
+            {
+                // Guarda el archivo adjunto en el servidor
+                var fileName = Path.GetFileName(tbFormPostulacion.InformacionAdicionalFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "docs", fileName);
+                
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await tbFormPostulacion.InformacionAdicionalFile.CopyToAsync(stream);
+                }
 
+                // Agrega el nombre del archivo al modelo antes de guardarlo en la base de datos, si es necesario
+                tbFormPostulacion.TbFormTbcnosotros.InformacionAdicional = fileName;
+
+                await _postulacionService.crearPostulacion(tbFormPostulacion.TbFormTbcnosotros);
+                _copiarArchivosPDF.envia_archivo_pdf();
+                bool envioExitoso = enviarEmailValidando(tbFormPostulacion.TbFormTbcnosotros.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+                if (envioExitoso)
+                {
+                    TempData["SuccessMessage"] = "Se registro su postulacion y se envió correo correctamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Hubo un error al registrar y enviar el correo.";
+                }
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("Index", "Home");
+
         }
-        return View(tbFormTbcnosotro);
+        return View(tbFormPostulacion);
     }
 
+    public async Task<JsonResult> GetProvincias(string departamentoId)
+    {
+        var provincias = await _entidadesService.obtenerProvinciasPorDepartamento(departamentoId);
+        return Json(provincias);
+    }
+
+    public async Task<JsonResult> GetDistritos(string provinciaId)
+    {
+        var distritos = await _entidadesService.obtenerDistritosPorProvincia(provinciaId);
+        return Json(distritos);
+    }
     // ============================ Proveedores ============================ 
     public async Task<IActionResult> Proveedores()
     {
@@ -1381,19 +1521,27 @@ public class HomeController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Proveedores(TbFormProveedore tbFormProveedore)
+    public async Task<IActionResult> Proveedores(IndexVM tbFormProveedores)
     {
         //var proveedor = new ProveedorService(new HttpClient());
 
         if (ModelState.IsValid)
         {
-           // string mensaje = "Su solicitud de postulación ah sido registrada";
-            await _proveedorService.crearProveedorRegistro(tbFormProveedore);
-         //   enviarEmail(tbFormProveedore., mensaje);
+            string titulonotificacion = "Recibimos su registro de Proveedoresnos pondremos en contacto a la brevedad.";
+            await _proveedorService.crearProveedorRegistro(tbFormProveedores.Proveedor);
+            bool envioExitoso = true;
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = titulonotificacion;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
 
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormProveedore);
+        return View(tbFormProveedores);
 
     }
     
@@ -1438,7 +1586,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> HojaReclamaciones(TbFormHojareclamacione tbFormHojareclamacione)
+    public async Task<IActionResult> HojaReclamaciones(IndexVM tbFormReclamaciones)
     {
         //var entidad = new EntidadesService(new HttpClient());
         var listEntidad = await _entidadesService.ListarEntidades();
@@ -1449,19 +1597,26 @@ public class HomeController : Controller
             listEntidad.Add(objEntidad);
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
-        tbFormHojareclamacione.Fecha = DateTime.Now;
+        tbFormReclamaciones.HojaReclamaciones.Fecha = DateTime.Now;
         //var servicio = new HojaReclamacioneService(new HttpClient());
 
         if (ModelState.IsValid)
         {
-           
+            string titulonotificacion = "Gracias por registrar su reclamo.";
             string mensaje = "Su solicitud de reclamación ah sido registrada con éxito";
-            await _hojaReclamacioneService.crearHojaReclamacioneRegistro(tbFormHojareclamacione);
-            enviarEmail(tbFormHojareclamacione.Correo, mensaje, primerRegistro);
-
+            await _hojaReclamacioneService.crearHojaReclamacioneRegistro(tbFormReclamaciones.HojaReclamaciones);
+            bool envioExitoso = enviarEmailValidando(tbFormReclamaciones.TbFormCotizanos.CorreoElectronico, mensaje, primerRegistro, titulonotificacion);
+            if (envioExitoso)
+            {
+                TempData["SuccessMessage"] = "El correo se envió correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Hubo un error al enviar el correo.";
+            }
             return RedirectToAction("Index", "Home");
         }
-        return View(tbFormHojareclamacione);
+        return View(tbFormReclamaciones);
 
     }
 
@@ -1526,7 +1681,7 @@ public class HomeController : Controller
         message.From.Add(new MailboxAddress("Remitente", correo));
         message.To.Add(new MailboxAddress("Destinatario", correoDestinatario));
         message.Cc.Add(new MailboxAddress("Copia", correoCC));
-        message.Subject = "Agencia CentralParking Perú";
+        message.Subject = "CentralParking Perú";
 
         var bodyBuilder = new BodyBuilder();
         //bodyBuilder.TextBody = mensaje;

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ApiBD.Models.TbFormTbcnosotro>
+@{
+    ViewData["Title"] = "Listado de Postulaciones";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">@ViewData["Title"]</h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tblPostulaciones">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tipo Doc.
+                                    </th>
+                                    <th>
+                                        # Doc.
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Nombre)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Apellido)
+                                    </th>
+                                    <th>
+                                        Fecha Nac.
+                                    </th>
+                                    <th>
+                                        Correo
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Distrito)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Puesto)
+                                    </th>
+                                    <th>
+                                        Archivo
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Celular)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Medio)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (item.TipoDocumento == 1)
+                                            {
+                                                <span class="badge rounded-pill bg-info text-white">DNI</span>
+                                            }
+                                            else if (item.TipoDocumento ==2)
+                                            {
+                                                <span class="badge rounded-pill bg-success text-white">CARNÉT DE EXTRANJERIA</span>
+                                            }
+                                            else if (item.TipoDocumento == 3)
+                                            {
+                                                <span class="badge rounded-pill bg-primary text-white">PASAPORTE</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NumeroDocumento)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Apellido)
+                                        </td>
+                                        <td>
+                                            @if (item.FechaNacimiento.HasValue) // Verificar si la fecha no es nula
+                                            {
+                                                @item.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                                                // Formatear la fecha como "dd/mm/aaaa"
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                                                // Mostrar la fecha sin formato si es nula
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Departamento)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Puesto)
+                                        </td>
+                                        @if (!string.IsNullOrEmpty(item.InformacionAdicional))
+                                        {
+                                           @*  <td>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info"><i class="ti-download"></i> </a>
+                                            </td> *@
+
+                                            <td>
+                                                <a href="@Url.Action("DownloadArchivo", "PostulacionesCms", new { id = item.Id })" class="btn btn-info">
+                                                    <i class="ti-download"></i>
+                                                </a>
+                                            </td>
+                                        }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Celular)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Medio)
+                                        </td>
+                                        
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tblPostulaciones').DataTable({
+                // Opciones de DataTables
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    text: 'Exportar a Excel', // Cambia el texto del botón si es necesario
+                    className: 'btn btn-primary', // Agrega la clase 'btn btn-primary' al botón
+                    filename: 'Reporte de Postulaciones'
+                }]
+            });
+            $('#tblPostulaciones_wrapper .dt-buttons .btn').addClass('mr-2');
+        });
+    </script>
+}

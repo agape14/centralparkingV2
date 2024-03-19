@@ -1,5 +1,7 @@
-﻿using CentralParkingSystem.DTOs;
+﻿using ApiBD.Models;
+using CentralParkingSystem.DTOs;
 using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Text.Json;
 
 
@@ -45,6 +47,76 @@ namespace CentralParkingSystem.Services
             }
 
             return entidades;
+        }
+        public async Task<List<TbConfUbigeo>> obtenerDepartamento()
+        {
+            List<TbConfUbigeo> distritos = new List<TbConfUbigeo>();
+            var url = $"/api/ubigeo/departmentos";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                distritos = JsonSerializer.Deserialize<List<TbConfUbigeo>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return distritos;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("La característica no fue encontrada.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+        public async Task<List<TbConfUbigeo>> obtenerProvinciasPorDepartamento(string departamentoId)
+        {
+            List<TbConfUbigeo> provincias = new List<TbConfUbigeo>();
+            var url = $"/api/ubigeo/provincias/{departamentoId}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                provincias = JsonSerializer.Deserialize<List<TbConfUbigeo>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return provincias;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("No se encontraron provincias para el departamento especificado.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
+        }
+
+        public async Task<List<TbConfUbigeo>> obtenerDistritosPorProvincia(string provinciaId)
+        {
+            List<TbConfUbigeo> distritos = new List<TbConfUbigeo>();
+            var url = $"/api/ubigeo/distritos/{provinciaId}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                distritos = JsonSerializer.Deserialize<List<TbConfUbigeo>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return distritos;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("No se encontraron distritos para la provincia especificada.");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}, {errorContent}");
+            }
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Cms.Controllers
 {
     public class CotizanosCmsController : Controller
     {
-        private readonly CotizanosService _cotizanosService;
-        public CotizanosCmsController(CotizanosService cotizanosService)
+        private readonly CotizanoCmsService _cotizanosService;
+        public CotizanosCmsController(CotizanoCmsService cotizanosService)
         {
 
             _cotizanosService = cotizanosService;
