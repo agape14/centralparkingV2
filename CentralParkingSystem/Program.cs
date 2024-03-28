@@ -44,7 +44,7 @@ builder.Services.AddMvc()
         .AddSessionStateTempDataProvider();
 builder.Services.AddSession();
 builder.Services.AddSingleton<CopiarArchivosPDF>();
-
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
