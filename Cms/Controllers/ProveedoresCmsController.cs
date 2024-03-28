@@ -17,6 +17,11 @@ namespace Cms.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var proveedor = new ProveedorCmsService(new HttpClient());
             var lista = await _proveedorCmsService.ListarProveedores();
             if (lista.Count == 0)

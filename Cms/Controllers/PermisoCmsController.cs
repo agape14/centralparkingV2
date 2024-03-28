@@ -24,6 +24,11 @@ namespace Cms.Controllers
         // GET: Permiso
         public async Task<IActionResult> Index(int tipoRol)
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var permiso = new PermisoCmsService(new HttpClient());
             var permisoLista = await _permisoCmsService.listarPermisos();
 

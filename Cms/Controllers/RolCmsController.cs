@@ -17,6 +17,11 @@ namespace Cms.Controllers
         // GET: Rol
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var rol = new RolCmsService(new HttpClient());
             var rolLista = await _rolCmsService.listarRoles();
             if (rolLista.Count == 0)

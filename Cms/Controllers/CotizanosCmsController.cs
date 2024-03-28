@@ -17,6 +17,11 @@ namespace Cms.Controllers
         }
         public async Task<IActionResult> Index(int codigo)
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             ViewData["TipoServicio"] = codigo;
             //var contactos = new CotizanoCmsService(new HttpClient());
             var lista = await _cotizanosService.ListarCotizanos(codigo);

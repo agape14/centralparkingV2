@@ -17,6 +17,11 @@ namespace Cms.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var contactos = new ContactanoCmsService(new HttpClient());
             var lista = await _contactanoCmsService.ListarContactos();
             if (lista.Count == 0)

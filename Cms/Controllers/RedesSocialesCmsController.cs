@@ -17,6 +17,11 @@ namespace Cms.Controllers
         // GET: RedesSociales
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var redSocial = new RedesSocialesCmsService(new HttpClient());
             var redSocialLista = await _redesSocialesCmsService.listarRedesSociales();
 

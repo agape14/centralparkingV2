@@ -17,6 +17,11 @@ namespace Cms.Controllers
         // GET: Rubro
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var rubro = new RubroCmsService(new HttpClient());
             var rubroLista = await _rubroCmsService.listarRubros();
             if (rubroLista.Count == 0)

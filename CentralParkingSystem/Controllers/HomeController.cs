@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ApiBD.Controllers;
 using System.Linq;
 using CentralParkingSystem.Helpers;
-
+using Microsoft.Extensions.Caching.Memory;
 namespace CentralParkingSystem.Controllers;
 
 public class HomeController : Controller
@@ -27,34 +27,12 @@ public class HomeController : Controller
     private readonly ServicioCabeceraService _servicioCabeceraService;
     private readonly ServicioDetalleService _servicioDetalleService;
 
-    private readonly SlideService _slideService;
-    private readonly ServiciosCabsService _serviciosCabsservice;
-    private readonly ServiciosdetsService _serviciosdetsService;
-    private readonly CaracteristicasService _caracteristicasService;
-    private readonly ModaleCabeceraService _modaleCabeceraService;
-    private readonly ModaleDetalleService _modaleDetalleService;
-    private readonly RedesSocialesService _redesSocialesService;
-    private readonly MenusService _menusService;
-    private readonly PiePaginaCabsService _piePaginaCabsService;
-    private readonly PiePaginaDetsService _piePaginaDetsService;
     private readonly EntidadesService _entidadesService;
-    private readonly PaginasCabsService _paginasCabsService;
-    private readonly PuestoService _puestoService;
     private readonly RubroService _rubroService;
     private readonly CopiarArchivosPDF _copiarArchivosPDF;
-    public HomeController(SlideService slideService, 
-        ServiciosCabsService serviciosCabsservice,
-        ServiciosdetsService serviciosdetsService,
-        CaracteristicasService caracteristicasService,
+    private readonly IMemoryCache _cache;
+    public HomeController(
         EntidadesService entidadesService,
-        RedesSocialesService redesSocialesService,
-        MenusService menusService,
-        PiePaginaCabsService piePaginaCabsService,
-        PiePaginaDetsService piePaginaDetsService,
-        ModaleCabeceraService modaleCabeceraService,
-        ModaleDetalleService modalDetalleservice,
-        PaginasCabsService paginasCabsService,
-        PuestoService puestoService,
         RubroService rubroService,
 
         ContactanoService contactanoService,
@@ -65,22 +43,11 @@ public class HomeController : Controller
         ProveedorService proveedorService,
         ServicioCabeceraService servicioCabeceraService,
         ServicioDetalleService servicioDetalleService,
-        CopiarArchivosPDF copiarArchivosPDF
+        CopiarArchivosPDF copiarArchivosPDF,
+        IMemoryCache cache
         )
     {
-        _slideService = slideService;
-        _serviciosCabsservice = serviciosCabsservice;
-        _serviciosdetsService = serviciosdetsService;
-        _caracteristicasService = caracteristicasService;
-        _entidadesService = entidadesService;
-        _redesSocialesService = redesSocialesService;
-        _menusService = menusService;
-        _piePaginaCabsService = piePaginaCabsService;
-        _piePaginaDetsService = piePaginaDetsService;
-        _modaleCabeceraService = modaleCabeceraService;
-        _modaleDetalleService = modalDetalleservice;
-        _paginasCabsService = paginasCabsService;
-        _puestoService = puestoService;
+       _entidadesService = entidadesService;
         _rubroService=rubroService;
         _contactanoService= contactanoService;
         _cotizanosService= cotizanosService;
@@ -91,76 +58,76 @@ public class HomeController : Controller
         _servicioCabeceraService=servicioCabeceraService;
         _servicioDetalleService=servicioDetalleService;
         _copiarArchivosPDF = copiarArchivosPDF;
+        _cache = cache;
     }
     public async Task<IActionResult> Index()
     {
-        //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades(); //entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
 
-
-        //var redSocial = new RedesSocialesService(new HttpClient());
-        var listRedes = await _redesSocialesService.ListarRedSociales(); //redSocial.ListarRedSociales();
-        if(listRedes.Count == 0)
+        if (_cache.TryGetValue("redessociales", out List<RedesSociales> listRedes))
         {
-            RedesSociales objRedesSociales = new RedesSociales();
-            listRedes.Add(objRedesSociales);
+            if (listRedes.Count == 0)
+            {
+                RedesSociales objRedesSociales = new RedesSociales();
+                listRedes.Add(objRedesSociales);
+            }
         }
-
-        //var menu = new MenusService(new HttpClient());
-        var listMenu = await  _menusService.ListarMenus();// menu.ListarMenus();
-        listMenu = listMenu.Where(item => item.TipoProyecto == "web").ToList();
-        if (listMenu.Count == 0)
-        {
-            Result objResult = new Result();
-            listMenu.Add(objResult);
-        }
-
-        //var subMenu = new MenusService(new HttpClient());
-        var listSubMenu = await _menusService.ListarSubMenus();//subMenu.ListarSubMenus();
-        if(listSubMenu.Count == 0)
-        {
-            SubMenus objSubMenu = new SubMenus();
-            listSubMenu.Add(objSubMenu);
-        }
-
-
-        //var PiePaginaCab = new PiePaginaCabsService(new HttpClient());
-        var listPie = await _piePaginaCabsService.ListarPiePaginasCabs();// PiePaginaCab.ListarPiePaginasCabs();
-        if(listPie.Count == 0)
-        {
-            PiePaginaCabs objPaginaCab = new PiePaginaCabs();
-            listPie.Add(objPaginaCab);
-        }
-
-
-        //var PieDet = new PiePaginaDetsService(new HttpClient());
-        var listPieDet = await _piePaginaDetsService.ListarPiePaginaDets();// PieDet.ListarPiePaginaDets();
         
 
-        //var IServicio = new ServiciosCabsService(new HttpClient());
-        var listIServicios = await _serviciosCabsservice.ListarServiciosCabs(); //IServicio.ListarServiciosCabs();
-
-        if(listIServicios.Count == 0)
+        if (_cache.TryGetValue("menus", out List<Result> listMenu))
         {
-            TbIndServiciocab objIndServicioCab = new TbIndServiciocab();
-            listIServicios.Add(objIndServicioCab);
+            listMenu = listMenu.Where(item => item.TipoProyecto == "web").ToList();
+            if (listMenu.Count == 0)
+            {
+                Result objResult = new Result();
+                listMenu.Add(objResult);
+            }
         }
 
-
-        //var ServicioDet = new ServiciosdetsService(new HttpClient());
-        var listIServiciodets = await _serviciosdetsService.ListarServiciosdets(); //ServicioDet.ListarServiciosdets();
-        if(listIServiciodets.Count == 0)
+        if (_cache.TryGetValue("submenus", out List<SubMenus> listSubMenu))
         {
-            TbIndServiciodet objIndServicioDet = new TbIndServiciodet();
-            listIServiciodets.Add(objIndServicioDet);
+            if (listSubMenu.Count == 0)
+            {
+                SubMenus objSubMenu = new SubMenus();
+                listSubMenu.Add(objSubMenu);
+            }
         }
 
+        if (_cache.TryGetValue("piepag", out List<PiePaginaCabs> listPie))
+        {
+            if (listPie.Count == 0)
+            {
+                PiePaginaCabs objPaginaCab = new PiePaginaCabs();
+                listPie.Add(objPaginaCab);
+            }
+        }
+
+        _cache.TryGetValue("piepagdet", out List<TbConfPiepaginadet> listPieDet);
+
+       if (_cache.TryGetValue("iservices", out List<TbIndServiciocab> listIServicios))
+        {
+            if (listIServicios.Count == 0)
+            {
+                TbIndServiciocab objIndServicioCab = new TbIndServiciocab();
+                listIServicios.Add(objIndServicioCab);
+            }
+        }
+
+        if (_cache.TryGetValue("iservicesdet", out List<TbIndServiciodet> listIServiciodets))
+        {
+            if (listIServiciodets.Count == 0)
+            {
+                TbIndServiciodet objIndServicioDet = new TbIndServiciodet();
+                listIServiciodets.Add(objIndServicioDet);
+            }
+        }
 
         var option = new JsonSerializerOptions
         {
@@ -181,37 +148,41 @@ public class HomeController : Controller
         HttpContext.Session.SetString("iserviciosdet", JsonSerializer.Serialize(listIServiciodets, option));
 
 
-
-        //var instancia = new CaracteristicasService(new HttpClient());
-        var caracteristicasLista = await _caracteristicasService.ListarCaracteristicas(); //instancia.ListarCaracteristicas();
-        if (caracteristicasLista.Count == 0)
+        if (_cache.TryGetValue("caracteristicass", out List<TbIndCaracteristica> caracteristicasLista))
         {
-            TbIndCaracteristica objCaracteristicas = new TbIndCaracteristica();
-            caracteristicasLista.Add(objCaracteristicas);
+            if (caracteristicasLista.Count == 0)
+            {
+                TbIndCaracteristica objCaracteristicas = new TbIndCaracteristica();
+                caracteristicasLista.Add(objCaracteristicas);
+            }
         }
 
-        //var Slide = new SlideService(new HttpClient());
-        var listSlide = await  _slideService.ListarSlide();
-        if (listSlide.Count == 0)
+        if (_cache.TryGetValue("slides", out List<TbIndSlidecab> listSlide))
         {
-            TbIndSlidecab objSlide = new TbIndSlidecab();
-            listSlide.Add(objSlide);
+            if (listSlide.Count == 0)
+            {
+                TbIndSlidecab objSlide = new TbIndSlidecab();
+                listSlide.Add(objSlide);
+            }
         }
 
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
-        
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
+
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         var model = new IndexVM()
         {
 
@@ -247,13 +218,15 @@ public class HomeController : Controller
     public async Task<IActionResult> ParkingCard(TbFormParkingcard tbFormParkingcard)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
+        
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var servicio = new ParkingCardService(new HttpClient());
         if (ModelState.IsValid)
@@ -290,21 +263,24 @@ public class HomeController : Controller
     public async Task<IActionResult> Nosotros()
     {
         //var paginasCab = new PaginasCabsService(new HttpClient());
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        var nosotros = await _paginasCabsService.paginasCabsPorDefault();
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("paginascabs", out TbConfPaginascab nosotros); 
         // paginasCab.paginasCabsPorDefault(),
         var model = new IndexVM()
         {
@@ -358,24 +334,28 @@ public class HomeController : Controller
 
         }
         //return View(objeto);
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
+        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),//await _puestoService.ListarPuestos(),
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos, 
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -398,27 +378,31 @@ public class HomeController : Controller
     {
         //return View();
         //return View(objeto);
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(1);
@@ -428,9 +412,10 @@ public class HomeController : Controller
             Text = u.TbConfUbigeo.Dist // Texto a mostrar
         }).ToList();
         ViewData["Distritos"] = distritosSelectList;
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -473,24 +458,27 @@ public class HomeController : Controller
             
         }
         //return View(objeto);
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -548,32 +536,37 @@ public class HomeController : Controller
         ViewData["Distritos"] = distritosSelectList;
         //ViewData["Distritos"] = new SelectList(distritos, "CodUbi", "Dist");
 
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -608,24 +601,27 @@ public class HomeController : Controller
         //var otrosServicios = new ServicioCabeceraService(new HttpClient());
         var servicios = await _servicioCabeceraService.ListarServicios();
         //return View(servicios);
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -658,24 +654,27 @@ public class HomeController : Controller
         {
             return NotFound();
         }
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -695,27 +694,31 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> CotizacionValetParking()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(3);
@@ -725,9 +728,10 @@ public class HomeController : Controller
             Text = u.TbConfUbigeo.Dist // Texto a mostrar
         }).ToList();
         ViewData["Distritos"] = distritosSelectList;
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -748,24 +752,27 @@ public class HomeController : Controller
     //----------------------------------------
     public async Task<IActionResult> Eventos()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -785,27 +792,31 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> CotizacionEventos()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(4);
@@ -815,9 +826,10 @@ public class HomeController : Controller
             Text = u.TbConfUbigeo.Dist // Texto a mostrar
         }).ToList();
         ViewData["Distritos"] = distritosSelectList;
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -838,24 +850,27 @@ public class HomeController : Controller
     //----------------------------------------
     public async Task<IActionResult> Prevencion()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -875,27 +890,31 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> CotizacionPrevencion()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(5);
@@ -905,9 +924,10 @@ public class HomeController : Controller
             Text = u.TbConfUbigeo.Dist // Texto a mostrar
         }).ToList();
         ViewData["Distritos"] = distritosSelectList;
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -928,24 +948,27 @@ public class HomeController : Controller
     //----------------------------------------
     public async Task<IActionResult> Rentabilizacion()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -965,27 +988,31 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> CotizacionRentabilizacion()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
-        var listEntidad = await _entidadesService.ListarEntidades();// entidad.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistroEntidad = listEntidad.FirstOrDefault();
         var ubigeoServicio = await _cotizanosService.listarDistritoPorServicio(6);
@@ -995,9 +1022,10 @@ public class HomeController : Controller
             Text = u.TbConfUbigeo.Dist // Texto a mostrar
         }).ToList();
         ViewData["Distritos"] = distritosSelectList;
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -1019,24 +1047,27 @@ public class HomeController : Controller
     // ============================ Contactanos ============================
     public async Task<IActionResult> Contactanos()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -1060,8 +1091,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Contactanos(IndexVM tbFormContactano)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades() ;// entidad.ListarEntidades();
-
+        //var listEntidad = HttpContext.Items["entidad"] as List<Entidades> ;// entidad.ListarEntidades();
+        _cache.TryGetValue("entidades", out List<Entidades> listEntidad);
         if (listEntidad.Count == 0)
         {
             Entidades objEntidad = new Entidades();
@@ -1097,8 +1128,8 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosAdministracion(IndexVM tbFormCotizaAdmin)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
+        //var listEntidad =   HttpContext.Items["entidad"] as List<Entidades>;
+        _cache.TryGetValue("entidades", out List<Entidades> listEntidad);
         if (listEntidad.Count == 0)
         {
             Entidades objEntidad = new Entidades();
@@ -1132,12 +1163,13 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosAbonados(IndexVM tbFormCotizaAbonados)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var contacto = new CotizanosService(new HttpClient());
@@ -1168,12 +1200,13 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosValetParking(IndexVM tbFormCotizaValetParking)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var contacto = new CotizanosService(new HttpClient());
@@ -1202,12 +1235,13 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosEventos(IndexVM tbFormCotizaEventos)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var contacto = new CotizanosService(new HttpClient());
@@ -1236,12 +1270,13 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosPrevencion(IndexVM tbFormCotizaPrevencion)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var contacto = new CotizanosService(new HttpClient());
@@ -1270,12 +1305,13 @@ public class HomeController : Controller
     public async Task<IActionResult> CotizanosRentabilizacion(IndexVM tbFormCotizaPrevencion)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var contacto = new CotizanosService(new HttpClient());
@@ -1302,24 +1338,28 @@ public class HomeController : Controller
     // ============================ Trabaja con Nosotros ============================
     public async Task<IActionResult> Trabajaconnosotros()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(), 
+            Puestos = listpuestos, 
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -1358,27 +1398,31 @@ public class HomeController : Controller
         {
             form.Puesto = "Agente Servicio" ;
         }
-       // return View(form);
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        // return View(form);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
-        var listDpto = await _entidadesService.obtenerDepartamento();
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+
+        _cache.TryGetValue("dpto", out List<TbConfUbigeo> listDpto);//await _entidadesService.obtenerDepartamento();
         ViewData["DptoId"] = new SelectList(listDpto, "CodUbi", "Dpto","15");
-        //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -1405,12 +1449,13 @@ public class HomeController : Controller
     public async Task<IActionResult> Postulacion(IndexVM tbFormPostulacion)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         //var postulacion = new PostulacionService(new HttpClient());
@@ -1468,20 +1513,23 @@ public class HomeController : Controller
     public async Task<IActionResult> Proveedores()
     {
 
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
         var model = new IndexVM()
         {
             ModalCabs2 = modalcab2,
@@ -1548,24 +1596,28 @@ public class HomeController : Controller
     // ============================ Hoja Reclamaciones ============================ 
     public async Task<IActionResult> HojaReclamaciones()
     {
-        var modalcab2 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(2);
-        var modaldet6 = await _modaleDetalleService.listarModalDetalle(6);
+        _cache.TryGetValue("modalcab2", out TbConfModalcab modalcab2);
+        _cache.TryGetValue("modaldet6", out List<TbConfModaldet> modaldet6);
 
-        var modalcab5 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(5);
-        var modaldet9 = await _modaleDetalleService.listarModalDetalle(9);
+        _cache.TryGetValue("modalcab5", out TbConfModalcab modalcab5);
+        _cache.TryGetValue("modaldet9", out List<TbConfModaldet> modaldet9);
 
-        var modalcab7 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(7);
-        var modaldet12 = await _modaleDetalleService.listarModalDetalle(12);
-        var modalcab8 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(8);
-        var modaldet13 = await _modaleDetalleService.listarModalDetalle(13);
-        var modalcab9 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(9);
-        var modaldet14 = await _modaleDetalleService.listarModalDetalle(14);
-        var modalcab10 = await _modaleCabeceraService.obtenerModalCabeceraDetalle(10);
-        var modaldet15 = await _modaleDetalleService.listarModalDetalle(15);
+        _cache.TryGetValue("modalcab7", out TbConfModalcab modalcab7);
+        _cache.TryGetValue("modaldet12", out List<TbConfModaldet> modaldet12);
+
+        _cache.TryGetValue("modalcab8", out TbConfModalcab modalcab8);
+        _cache.TryGetValue("modaldet13", out List<TbConfModaldet> modaldet13);
+
+        _cache.TryGetValue("modalcab9", out TbConfModalcab modalcab9);
+        _cache.TryGetValue("modaldet14", out List<TbConfModaldet> modaldet14);
+
+        _cache.TryGetValue("modalcab10", out TbConfModalcab modalcab10);
+        _cache.TryGetValue("modaldet15", out List<TbConfModaldet> modaldet15);
+        _cache.TryGetValue("listpuestos", out List<TbTraPuesto> listpuestos);
         //var puesto = new PuestoService(new HttpClient());puesto.ListarPuestos(),
         var model = new IndexVM()
         {
-            Puestos = await _puestoService.ListarPuestos(),
+            Puestos = listpuestos,
             ModalCabs2 = modalcab2,
             ListModalDet6 = modaldet6,
             ModalCabs5 = modalcab5,
@@ -1589,12 +1641,13 @@ public class HomeController : Controller
     public async Task<IActionResult> HojaReclamaciones(IndexVM tbFormReclamaciones)
     {
         //var entidad = new EntidadesService(new HttpClient());
-        var listEntidad = await _entidadesService.ListarEntidades();
-
-        if (listEntidad.Count == 0)
+        if (_cache.TryGetValue("entidades", out List<Entidades> listEntidad))
         {
-            Entidades objEntidad = new Entidades();
-            listEntidad.Add(objEntidad);
+            if (listEntidad.Count == 0)
+            {
+                Entidades objEntidad = new Entidades();
+                listEntidad.Add(objEntidad);
+            }
         }
         Entidades primerRegistro = listEntidad.FirstOrDefault();
         tbFormReclamaciones.HojaReclamaciones.Fecha = DateTime.Now;

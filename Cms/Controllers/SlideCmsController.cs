@@ -25,6 +25,11 @@ namespace Cms.Controllers
         // GET: Slide
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var slideService = new SlideCmsService(new HttpClient());
             return await _slideCmsService.ListarSlide() != null ?
                         View(await _slideCmsService.ListarSlide()) :

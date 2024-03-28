@@ -26,6 +26,11 @@ namespace Cms.Controllers
         // GET: TbConfUbigeoServicios
         public async Task<IActionResult> Index(int tipoServicio)
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             var listServicios = await _servicioCabeceraCmsService.listarServiciosCabecera();
             ViewData["serviciosLista"] = listServicios;
             var ubigeoServicio = await _ubigeoServicioscmsService.listarDistritosPorServicio();

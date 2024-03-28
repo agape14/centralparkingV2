@@ -19,6 +19,11 @@ namespace Cms.Controllers
         // GET: TbTraPuesto
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var puesto = new PuestoCmsService(new HttpClient());
             var puestoLista = await _puestoCmsService.puestoListar();
             if(puestoLista.Count == 0)

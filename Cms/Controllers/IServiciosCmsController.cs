@@ -24,6 +24,11 @@ namespace CentralParkingSystem.Controllers
         // GET: IServicios
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var servicios = new IServicioCmsService(new HttpClient());
             var lista = await _servicioCmsService.ListarServiciosCabs();
             if (lista.Count == 0)

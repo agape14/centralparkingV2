@@ -27,6 +27,11 @@ namespace Cms.Controllers
         // GET: PiePaginaDet
         public async Task<IActionResult> Index(int codigo)
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var piePaginaDet = new PiePaginaDetCmsService(new HttpClient());
             var piePaginaDetLista = await _piePaginaDetCmsService.listarPiePaginaDet();
             var piePaginaDetPorId = await _piePaginaDetCmsService.listarPiePaginaDetPorCodigoId(codigo);

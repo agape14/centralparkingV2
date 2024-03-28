@@ -28,7 +28,11 @@ namespace Cms.Controllers
         public async Task<IActionResult> Index(int codigo)
         {
             //var servicioDet = new IServiciodetCmsService(new HttpClient());
-          
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
 
             var servicioDetLista = await _serviciodetCmsService.ListarServiciosdets();
             //var servicioDetCms = new IServiciodetCmsService(new HttpClient());

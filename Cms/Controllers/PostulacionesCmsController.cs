@@ -23,6 +23,11 @@ namespace Cms.Controllers
         // GET: PostulacionesCms
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             var postulacionLista = await _postulacionCmsService.listarPostulaciones();
             if (postulacionLista.Count == 0)
             {

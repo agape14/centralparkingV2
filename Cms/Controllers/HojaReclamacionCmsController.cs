@@ -17,6 +17,11 @@ namespace Cms.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var servicio = new HojaReclamacioneCmsService(new HttpClient());
             var lista = await _hojaReclamacioneCmsService.ListarHojaReclamaciones();
             if (lista.Count == 0)

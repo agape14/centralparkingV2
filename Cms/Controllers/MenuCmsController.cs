@@ -19,7 +19,11 @@ namespace Cms.Controllers
         }
         public async Task<IActionResult> Index(string tipoProyecto)
         {
-            
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var menu = new MenuCmsService(new HttpClient());
             var menuLista = await _menuCmsService.listarMenus();
             // Filtrar menús según el tipo de proyecto

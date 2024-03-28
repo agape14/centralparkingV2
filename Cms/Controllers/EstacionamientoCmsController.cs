@@ -26,6 +26,11 @@ namespace Cms.Controllers
         // GET: EstacionamientoCms
         public async Task<IActionResult> Index(string codUbi)
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             var listDistritos = await _ubigeoServicioscmsService.obtenerDistritosPorProvincia("1501");
             ViewData["Distritos"] = new SelectList(listDistritos, "CodUbi", "Dist", codUbi);
             //var centralParkingContext = _context.TbEstacionamientos.Include(t => t.TbConfUbigeo);

@@ -19,6 +19,11 @@ namespace Cms.Controllers
         // GET: Paginas
         public async Task<IActionResult> Index()
         {
+            int idUsuario = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Index", "DashbordCms");
+            }
             //var paginaCabs = new PaginasCmsService(new HttpClient());
             var paginaCabsLista = await _paginasCmsService.paginasListar();
 
